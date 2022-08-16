@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.039bf95e.css",
+    "main.js": "/static/js/main.c16c2b1e.js",
+    "static/media/weavement-main.jpg": "/static/media/weavement-main.37d017cb915bf812f1ab.jpg",
+    "static/media/weavement-about-1920w.webp": "/static/media/weavement-about-1920w.b176712eda93066a6fab.webp",
+    "static/media/weavement-main-1920w.webp": "/static/media/weavement-main-1920w.4242ba9e76edc01e2432.webp",
+    "static/media/weavement-main-768w.webp": "/static/media/weavement-main-768w.2106f489a0cc67f9181c.webp",
+    "static/media/weavement-main-3.jpg": "/static/media/weavement-main-3.224264cbfbcc83b1ff97.jpg",
+    "static/media/weavement-about-768w.webp": "/static/media/weavement-about-768w.8d46af09974a2738059b.webp",
+    "static/media/weavement-main-3-768w.webp": "/static/media/weavement-main-3-768w.dec09577815025670fe8.webp",
+    "static/media/weavement-main-375w.webp": "/static/media/weavement-main-375w.0b900dec175c360c27f6.webp",
+    "static/media/weavement-main-3-375w.webp": "/static/media/weavement-main-3-375w.f6dfe72cfc7b7078811b.webp",
+    "index.html": "/index.html",
+    "main.039bf95e.css.map": "/static/css/main.039bf95e.css.map",
+    "main.c16c2b1e.js.map": "/static/js/main.c16c2b1e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.039bf95e.css",
+    "static/js/main.c16c2b1e.js"
+  ]
+}
