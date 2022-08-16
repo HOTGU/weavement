@@ -39,10 +39,7 @@ db.on("error", handleError);
 db.on("disconnected", dbConnect);
 
 const corsOptions = {
-    origin:
-        process.env.NODE_ENV === "development"
-            ? "http://localhost:3000"
-            : process.env.CLIENT_URL,
+    origin: process.env.NODE_ENV === "development" && "http://localhost:3000",
     credentials: true,
 };
 
