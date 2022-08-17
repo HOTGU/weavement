@@ -7,12 +7,14 @@ import mainImg from "../images/weavement-main.jpg";
 import mainPhoneImg from "../images/weavement-main-375w.webp";
 import mainTabletImg from "../images/weavement-main-768w.webp";
 import mainDesktopImg from "../images/weavement-main-1920w.webp";
+import main2Img from "../images/weavement-main-2.jpg";
+import main2PhoneImg from "../images/weavement-main-2-375w.webp";
+import main2TabletImg from "../images/weavement-main-3-768w.webp";
+import main2DesktopImg from "../images/weavement-main-2-1920w.webp";
 import main3Img from "../images/weavement-main-3.jpg";
 import main3PhoneImg from "../images/weavement-main-3-375w.webp";
 import main3DefaultImg from "../images/weavement-main-3-768w.webp";
-import aboutDesktopImg from "../images/weavement-about-1920w.webp";
-import aboutTabletImg from "../images/weavement-about-768w.webp";
-import { device } from "../device";
+import Process from "../Components/Process";
 
 function Main() {
     const [show, setShow] = useState(false);
@@ -42,7 +44,7 @@ function Main() {
                                 감각적인 제조 업체, 위브먼트
                             </div>
                             <Link to="/contact">
-                                <div className="button">문의하기</div>
+                                <div className="button red-btn">문의하기</div>
                             </Link>
                         </div>
                     </div>
@@ -103,60 +105,60 @@ function Main() {
                         </div>
                     </div>
                 </ThirdColumn>
-            </Container>
-            <About className="page default-container">
-                <div className="image-container about-page">
-                    <div className="default-container about-text">
-                        <div className="page__text">About Us</div>
-                    </div>
-                </div>
-                <div className="text-container">
+                <Process />
+                <About>
                     <div className="default-container">
-                        <p>
-                            산업혁명의 시작은 ‘엮어 내는 것’, 면직물 공업의
-                            자동화였습니다.
-                            <br /> 예술과 제조가 융합된 초기 산업이자 본질이 담긴 단어
-                            <br />
-                            ‘Weave.’ 위브먼트도 이 단어에서 시작합니다.
-                            <br />
-                            <br />
-                            오늘날 인간의 미적 창조 활동이라 일컬어지는 예술(art)은 <br />
-                            ‘기능’, ‘기술’ 을 의미하는 라틴어(ars)와 그리스어(techne)에서
-                            유래하기에 <br /> 위브먼트가 정의하는 예술은 표현하는
-                            매체이자, 실행하는 기술과 행위이기도 합니다.
-                            <br />
-                            <br />
-                            <span className="bold-span">
-                                우리(We)는 고객이 나아갈 길(Ave.)을 표현하고 실행하는
-                                예술적 결과(Ment)가 되겠습니다.
-                            </span>
-                        </p>
+                        <div className="img-container">
+                            <img
+                                srcSet={`
+                            ${main2PhoneImg} 375w, ${main2TabletImg} 768w, ${main2DesktopImg}
+                            `}
+                                sizes="(max-width: 375px) 360px,
+                            (max-width: 768px) 760px,
+                            1200px"
+                                src={main2Img}
+                                alt="main2"
+                            />
+                            <div className="page__text">About Us</div>
+                        </div>
                     </div>
-                </div>
-            </About>
-            {/* <Column>
-                <img
-                    srcSet={`
-                        ${mainPhoneImg} 375w, ${mainTabletImg} 768w, ${mainDesktopImg}
-                    `}
-                    sizes="375"
-                    src="(srcset을 지원하지 않는 ie대비용 주소)"
-                    alt="main image"
-                />
-            </Column>
-            <Column>
-                <div className="default-container text-container">
-                    <div className="bold-text">
-                        본질에 충실한 제품과 서비스가 필요하세요?
+                    <div className="text-container">
+                        <div className="default-container">
+                            <p>
+                                산업혁명의 시작은 ‘엮어 내는 것’, 면직물 공업의
+                                자동화였습니다.
+                                <br /> 예술과 제조가 융합된 초기 산업이자 본질이 담긴 단어
+                                <br />
+                                ‘Weave.’ 위브먼트도 이 단어에서 시작합니다.
+                                <br />
+                                <br />
+                                오늘날 인간의 미적 창조 활동이라 일컬어지는 예술(art)은{" "}
+                                <br />
+                                ‘기능’, ‘기술’ 을 의미하는 라틴어(ars)와
+                                그리스어(techne)에서 유래하기에 <br /> 위브먼트가 정의하는
+                                예술은 표현하는 매체이자, 실행하는 기술과 행위이기도
+                                합니다.
+                                <br />
+                                <br />
+                                <span className="bold">
+                                    우리(We)는 고객이 나아갈 길(Ave.)을 표현하고 실행하는
+                                    예술적 결과(Ment)가 되겠습니다.
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                    <div className="default-text">감각적인 제조 업체, 위브먼트</div>
-                    <div className="button">문의하기</div>{" "}
-                </div>
-            </Column>
+                </About>
+                <LastColumn>
+                    <div className="wrapper default-container">
+                        <h2>감각적인 제조, 위브먼트</h2>
+                        <h1>WEAVEMENT</h1>
+                        <Link to="/contact">
+                            <div className="button white-btn">문의하기</div>
+                        </Link>
+                    </div>
+                </LastColumn>
+            </Container>
 
-            <Column>
-                <div className="page"></div>
-            </Column> */}
             <Modal show={show} setShow={setShow}>
                 <ModalItem>
                     <div>현재 홈페이지 개선 중입니다</div>
@@ -174,6 +176,19 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: -82px;
+    .button {
+        padding: 16px 40px;
+        border-radius: 10px;
+        font-size: 24px;
+    }
+    .red-btn {
+        background-color: ${(props) => props.theme.accentColor};
+        color: white;
+    }
+    .white-btn {
+        background-color: white;
+        color: ${(props) => props.theme.accentColor};
+    }
 `;
 const MainColumn = styled.div`
     width: 100%;
@@ -205,30 +220,24 @@ const SecondColumn = styled.div`
             margin-top: 10px;
             margin-bottom: 40px;
         }
-        .button {
-            padding: 20px 48px;
-            border-radius: 5px;
-            font-size: 24px;
-            background-color: ${(props) => props.theme.accentColor};
-            color: white;
-        }
     }
 `;
 const ThirdColumn = styled.div`
     background-color: #7a7876;
     width: 100%;
     height: auto;
-    padding: 150px 0;
+    padding: 120px 0;
     .column {
         display: flex;
+        /* flex-direction: column; */
+        justify-content: space-between;
         gap: 30px;
         &__item {
-            width: 50%;
+            width: 40%;
             display: flex;
             align-items: center;
-            justify-content: center;
             img {
-                width: 75%;
+                width: 90%;
                 height: auto;
                 border-radius: 10px;
             }
@@ -247,6 +256,7 @@ const ThirdColumn = styled.div`
                     font-size: 18px;
                     margin-left: 20px;
                     color: #d2dae2;
+                    line-height: 24px;
                 }
             }
         }
@@ -256,42 +266,65 @@ const ThirdColumn = styled.div`
 const About = styled.div`
     display: flex;
     flex-direction: column;
+    background-color: ${(props) => props.theme.subAccentColor};
+    position: relative;
+    padding-bottom: 360px;
+    .img-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    img {
+        width: 100%;
+        height: 650px;
+        object-fit: cover;
+    }
     .page__text {
         font-family: "Racing Sans One", cursive;
-        height: fit-content;
-    }
-    .image-container {
-        height: 500px;
-        display: flex;
-        align-items: flex-end;
-        @media ${device.desktop} {
-            background-image: url(${aboutDesktopImg});
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: 50% 70%;
-        }
-        @media ${device.tablet} {
-            background: url(${aboutTabletImg}) no-repeat center/cover;
-        }
-        .about-text {
-            color: white;
-            height: fit-content;
-            font-size: 240px;
-        }
+        font-size: 120px;
+        position: absolute;
+        bottom: -15px;
+        color: white;
+        z-index: 99;
     }
     .text-container {
-        height: 350px;
+        position: absolute;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
+        bottom: 0;
+        height: 450px;
+        width: 100%;
         font-size: 20px;
         line-height: 26px;
+        background-color: rgba(0, 0, 0, 0.4);
         color: white;
-        color: black;
-        .bold-span {
-s        }
+        p {
+            padding-bottom: 50px;
+            .bold {
+                font-weight: 700;
+                font-size: 24px;
+            }
+        }
     }
 `;
-
+const LastColumn = styled.div`
+    background-color: ${(props) => props.theme.accentColor};
+    padding: 120px 0;
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        color: white;
+        gap: 15px;
+        h1 {
+            font-family: "Racing Sans One", cursive;
+            font-size: 96px;
+        }
+        h2 {
+            font-size: 28px;
+        }
+    }
+`;
 const ModalItem = styled.div`
     width: 400px;
     height: 250px;

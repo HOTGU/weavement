@@ -1,10 +1,10 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { getCookie, setCookie } from "./utils/cookie";
+import logout from "./utils/logout";
 
 // axios.defaults.baseURL = "http://localhost:5000/api";
 axios.defaults.baseURL = "/api";
-// axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const axiosJWT = axios.create({
     withCredentials: true,
@@ -56,24 +56,20 @@ axiosJWT.interceptors.request.use(
     }
 );
 
-// axiosJWT.interceptors.response.use(
-//     function (response) {
-//         return response;
-//     },
-//     async (error) => {
-//         const {
-//             response: { status },
-//         } = error;
-//         if (status === 401) {
-//             removeCookie("accessToken");
-//             removeCookie("user");
-//             removeCookie("refreshToken");
-//             window.location.href = "/";
-//             window.alert(`인증이 만료되었습니다 \n 다시 로그인해주세요`);
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+axiosJWT.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    async (error) => {
+        const {
+            response: { status },
+        } = error;
+        if (status === 401) {
+            logout();
+        }
+        return Promise.reject(error);
+    }
+);
 
 // user
 

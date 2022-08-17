@@ -118,9 +118,9 @@ function ContactCard({ data }) {
                     <span className="contact__clientCompany">{data.clientCompany}</span>
                 </RowWrapper>
                 <RowWrapper>
-                    {data.month && data.day && (
+                    {data.createdAt && (
                         <span className="row__text">
-                            {data.month}/{data.day}
+                            <Moment format="MM/DD">{data.createdAt}</Moment>
                         </span>
                     )}
                     {data.clientPhone && (

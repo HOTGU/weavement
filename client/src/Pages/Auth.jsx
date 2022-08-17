@@ -10,6 +10,7 @@ import Input from "../Components/Input";
 import { setCookie } from "../utils/cookie";
 import Loader from "../Components/Loader";
 import Button from "../Components/Button";
+import logout from "../utils/logout";
 
 function Auth() {
     const navigate = useNavigate();
@@ -61,11 +62,12 @@ function Auth() {
             try {
                 const res = await signinApi(input);
 
+                if (!res.data?.user.isAdmin) return logout();
+
                 setCookie("accessToken", res?.data?.accessToken, {
                     path: "/",
                     secure: true,
                     // httpOnly: true,
-                    sameSite: "None",
                 });
                 const refreshDate = new Date();
                 refreshDate.setTime(refreshDate.getTime() + 1000 * 60 * 60 * 24 * 14); //14일
@@ -74,13 +76,11 @@ function Auth() {
                     expires: refreshDate,
                     secure: true,
                     // httpOnly: true,
-                    sameSite: "None",
                 });
                 setCookie("user", res?.data?.user, {
                     path: "/",
                     secure: true,
                     // httpOnly: true,
-                    sameSite: "None",
                 });
                 toast.success(`${res?.data?.user?.name}님 환영합니다`);
                 setUser(res?.data?.user);

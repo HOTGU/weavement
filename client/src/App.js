@@ -12,6 +12,7 @@ import Admin from "./Pages/Admin";
 import Contact from "./Pages/Contact";
 import AdminPortfolio from "./Pages/AdminPortfolio";
 import AdminProject from "./Pages/AdminProject";
+import Footer from "./Components/Footer";
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path="admin/portfolio" element={<AdminPortfolio />} />
                     <Route path="/admin/project" element={<AdminProject />} />
                 </Routes>
+                <Footer />
                 <ToastContainer
                     theme="dark"
                     position="top-center"
