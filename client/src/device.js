@@ -1,7 +1,7 @@
 const size = {
     mobile: "450px",
-    tablet: "768px",
-    laptop: "1024px",
+    tablet: "770px",
+    laptop: "1025px",
     laptopL: "1440px",
     desktop: "1980px",
 };

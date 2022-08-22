@@ -9,12 +9,13 @@ import mainTabletImg from "../images/weavement-main-768w.webp";
 import mainDesktopImg from "../images/weavement-main-1920w.webp";
 import main2Img from "../images/weavement-main-2.jpg";
 import main2PhoneImg from "../images/weavement-main-2-375w.webp";
-import main2TabletImg from "../images/weavement-main-3-768w.webp";
+import main2TabletImg from "../images/weavement-main-2-768w.webp";
 import main2DesktopImg from "../images/weavement-main-2-1920w.webp";
 import main3Img from "../images/weavement-main-3.jpg";
 import main3PhoneImg from "../images/weavement-main-3-375w.webp";
 import main3DefaultImg from "../images/weavement-main-3-768w.webp";
 import Process from "../Components/Process";
+import { device } from "../device";
 
 function Main() {
     const [show, setShow] = useState(false);
@@ -34,7 +35,7 @@ function Main() {
                         alt="main"
                     />
                 </MainColumn>
-                <SecondColumn>
+                <SecondColumn className="column">
                     <div className="default-container">
                         <div className="text-container">
                             <div className="bold-text">
@@ -49,9 +50,9 @@ function Main() {
                         </div>
                     </div>
                 </SecondColumn>
-                <ThirdColumn>
+                <ThirdColumn className="column">
                     <div className="default-container">
-                        <div className="column">
+                        <div className="column__container">
                             <div className="column__item">
                                 <img
                                     srcSet={`
@@ -105,7 +106,9 @@ function Main() {
                         </div>
                     </div>
                 </ThirdColumn>
-                <Process />
+                <div className="column">
+                    <Process />
+                </div>
                 <About>
                     <div className="default-container">
                         <div className="img-container">
@@ -119,36 +122,38 @@ function Main() {
                                 src={main2Img}
                                 alt="main2"
                             />
-                            <div className="page__text">About Us</div>
+                            <div className="page__text column__head">About Us</div>
                         </div>
                     </div>
                     <div className="text-container">
                         <div className="default-container">
                             <p>
-                                산업혁명의 시작은 ‘엮어 내는 것’, 면직물 공업의
-                                자동화였습니다.
-                                <br /> 예술과 제조가 융합된 초기 산업이자 본질이 담긴 단어
+                                인류의 삶을 바꾼 산업혁명은 면직물 공업의 자동화로
+                                시작되었습니다.
+                                <br /> 예술과 제조가 융합하는 최초의 행위, ‘Weave.’
+                                위브먼트도 이 단어에서 시작합니다.
                                 <br />
-                                ‘Weave.’ 위브먼트도 이 단어에서 시작합니다.
                                 <br />
-                                <br />
-                                오늘날 인간의 미적 창조 활동이라 일컬어지는 예술(art)은{" "}
-                                <br />
+                                오늘날 인간의 미적 창조 활동이라 일컬어지는 예술(art)은
                                 ‘기능’, ‘기술’ 을 의미하는 라틴어(ars)와
-                                그리스어(techne)에서 유래하기에 <br /> 위브먼트가 정의하는
-                                예술은 표현하는 매체이자, 실행하는 기술과 행위이기도
-                                합니다.
+                                그리스어(techne)에서 유래하기에 위브먼트가 정의하는 예술은
+                                표현하는 매체이자, 실행하는 기술과 행위이기도 합니다.
                                 <br />
                                 <br />
                                 <span className="bold">
-                                    우리(We)는 고객이 나아갈 길(Ave.)을 표현하고 실행하는
-                                    예술적 결과(Ment)가 되겠습니다.
+                                    <span className="strong">우리(We)</span>는 고객이{" "}
+                                    <span className="strong">나아갈 길(Ave.)</span>을
+                                    제시하고{" "}
+                                    <span className="strong">예술적인 결과(Ment)</span>
+                                    만드는{" "}
+                                    <span className="strong">위브먼트 WEAVEMENT</span>
+                                    입니다
                                 </span>
                             </p>
                         </div>
                     </div>
                 </About>
-                <LastColumn>
+                <LastColumn className="column">
                     <div className="wrapper default-container">
                         <h2>감각적인 제조, 위브먼트</h2>
                         <h1>WEAVEMENT</h1>
@@ -180,6 +185,14 @@ const Container = styled.div`
         padding: 16px 40px;
         border-radius: 10px;
         font-size: 24px;
+        @media ${device.tablet} {
+            padding: 12px 30px;
+            font-size: 20px;
+        }
+        @media ${device.mobile} {
+            padding: 10px 30px;
+            font-size: 18px;
+        }
     }
     .red-btn {
         background-color: ${(props) => props.theme.accentColor};
@@ -189,22 +202,46 @@ const Container = styled.div`
         background-color: white;
         color: ${(props) => props.theme.accentColor};
     }
+    .column {
+        padding: 120px 0;
+        @media ${device.tablet} {
+            padding: 70px 0;
+        }
+        @media ${device.mobile} {
+            padding: 50px 0;
+        }
+    }
+    .column__head {
+        font-family: "Racing Sans One", cursive;
+        font-size: 120px;
+        @media ${device.tablet} {
+            font-size: 80px;
+        }
+        @media ${device.mobile} {
+            font-size: 60px 0;
+        }
+    }
 `;
 const MainColumn = styled.div`
     width: 100%;
     height: 100%;
     img {
         width: 100%;
-        height: 100%;
-        max-height: 800px;
+        height: 740px;
         object-fit: cover;
+        @media ${device.tablet} {
+            height: 600px;
+            object-position: right;
+        }
+        @media ${device.mobile} {
+            height: 500px;
+            object-position: right;
+        }
     }
 `;
 const SecondColumn = styled.div`
     width: 100%;
-    height: 500px;
     .text-container {
-        height: 450px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -212,13 +249,24 @@ const SecondColumn = styled.div`
         .bold-text {
             font-size: 40px;
             font-weight: 700;
+            @media ${device.tablet} {
+                font-size: 32px;
+            }
+            @media ${device.mobile} {
+                font-size: 20px;
+            }
         }
         .default-text {
             text-align: center;
             font-size: 20px;
             font-weight: 200;
-            margin-top: 10px;
+            margin-top: 16px;
             margin-bottom: 40px;
+            @media ${device.mobile} {
+                margin-bottom: 20px;
+                margin-top: 10px;
+                font-size: 16px;
+            }
         }
     }
 `;
@@ -226,37 +274,98 @@ const ThirdColumn = styled.div`
     background-color: #7a7876;
     width: 100%;
     height: auto;
-    padding: 120px 0;
-    .column {
+    @media ${device.tablet} {
+        position: relative;
+    }
+    .column__container {
         display: flex;
-        /* flex-direction: column; */
         justify-content: space-between;
         gap: 30px;
-        &__item {
-            width: 40%;
+        @media ${device.tablet} {
+            flex-direction: column;
+            justify-content: center;
+            font-size: 32px;
+            gap: 0px;
+        }
+        .column__item {
+            width: 49%;
             display: flex;
             align-items: center;
+            @media ${device.tablet} {
+                width: 100%;
+            }
             img {
-                width: 90%;
+                width: 70%;
                 height: auto;
+                object-fit: cover;
                 border-radius: 10px;
+                @media ${device.tablet} {
+                    width: 100%;
+                    height: 600px;
+                    object-position: 50% 20%;
+
+                    /* max-width: 500px; */
+                    margin: 0 auto;
+                }
             }
             &__flexContainer {
                 height: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+                @media ${device.tablet} {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    height: auto;
+                    background-color: rgba(0, 0, 0, 0.2);
+                    width: fit-content;
+                    display: block;
+                    padding: 20px;
+                    width: 100%;
+                }
+                @media ${device.mobile} {
+                    padding: 10px;
+                }
+                .flex-item {
+                    display: flex;
+                    flex-direction: column;
+                    @media ${device.tablet} {
+                        margin-bottom: 16px;
+                    }
+                    @media ${device.mobile} {
+                        margin-bottom: 10px;
+                    }
+                }
                 h4 {
                     color: white;
                     font-family: "Racing Sans One", cursive;
                     font-size: 60px;
                     margin-bottom: 10px;
+                    @media ${device.tablet} {
+                        margin-bottom: 7px;
+                        font-size: 36px;
+                    }
+                    @media ${device.mobile} {
+                        margin-bottom: 4px;
+                        font-size: 24px;
+                    }
                 }
                 span {
                     font-size: 18px;
                     margin-left: 20px;
                     color: #d2dae2;
                     line-height: 24px;
+                    @media ${device.tablet} {
+                        line-height: 16px;
+                        margin-left: 12px;
+                        font-size: 16px;
+                    }
+                    @media ${device.mobile} {
+                        line-height: 16px;
+                        margin-left: 8px;
+                        font-size: 11px;
+                    }
                 }
             }
         }
@@ -268,7 +377,13 @@ const About = styled.div`
     flex-direction: column;
     background-color: ${(props) => props.theme.subAccentColor};
     position: relative;
-    padding-bottom: 360px;
+    padding-bottom: 310px;
+    @media ${device.tablet} {
+        padding-bottom: 290px;
+    }
+    @media ${device.mobile} {
+        padding-bottom: 260px;
+    }
     .img-container {
         position: relative;
         width: 100%;
@@ -278,10 +393,15 @@ const About = styled.div`
         width: 100%;
         height: 650px;
         object-fit: cover;
+        @media ${device.tablet} {
+            height: 550px;
+        }
+        @media ${device.mobile} {
+            height: 400px;
+            object-position: right;
+        }
     }
     .page__text {
-        font-family: "Racing Sans One", cursive;
-        font-size: 120px;
         position: absolute;
         bottom: -15px;
         color: white;
@@ -292,36 +412,78 @@ const About = styled.div`
         display: flex;
         align-items: flex-end;
         bottom: 0;
-        height: 450px;
+        height: 400px;
         width: 100%;
-        font-size: 20px;
         line-height: 26px;
         background-color: rgba(0, 0, 0, 0.4);
         color: white;
+        @media ${device.tablet} {
+            line-height: 24px;
+            height: 345px;
+        }
+        @media ${device.mobile} {
+            line-height: 20px;
+            height: 315px;
+        }
         p {
+            font-size: 18px;
+            font-weight: 100;
             padding-bottom: 50px;
+            @media ${device.tablet} {
+                padding-bottom: 40px;
+                font-size: 16px;
+            }
+            @media ${device.mobile} {
+                padding-bottom: 20px;
+                font-size: 14px;
+            }
             .bold {
-                font-weight: 700;
-                font-size: 24px;
+                font-size: 22px;
+                @media ${device.tablet} {
+                    font-size: 20px;
+                }
+                @media ${device.mobile} {
+                    font-size: 16px;
+                }
+                .strong {
+                    font-weight: 500;
+                }
             }
         }
     }
 `;
 const LastColumn = styled.div`
     background-color: ${(props) => props.theme.accentColor};
-    padding: 120px 0;
     .wrapper {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         color: white;
         gap: 15px;
+        @media ${device.tablet} {
+            gap: 10px;
+        }
+        @media ${device.mobile} {
+            gap: 5px;
+        }
         h1 {
             font-family: "Racing Sans One", cursive;
-            font-size: 96px;
+            font-size: 80px;
+            @media ${device.tablet} {
+                font-size: 60px;
+            }
+            @media ${device.mobile} {
+                font-size: 45px;
+            }
         }
         h2 {
             font-size: 28px;
+            @media ${device.tablet} {
+                font-size: 20px;
+            }
+            @media ${device.mobile} {
+                font-size: 16px;
+            }
         }
     }
 `;

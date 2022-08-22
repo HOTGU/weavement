@@ -1,78 +1,75 @@
 import React from "react";
 import styled from "styled-components";
+import { device } from "../device";
 
 function Process() {
     return (
-        <Container>
-            <div className="default-container">
-                <ProcessHead>
-                    <div>Process</div>
-                </ProcessHead>
-                <ProcessWrapper>
-                    <div className="process__item">
-                        <div className="process__index process__font">01.</div>
-                        <div className="process__title process__font accent__font">
-                            프로젝트 의뢰
-                        </div>
-                        <div className="process__description">
-                            자세한 상담을 위해 문의 내용을 작성해주세요.
-                        </div>
+        <div className="default-container">
+            <ProcessHead className="column__head">
+                <div>Process</div>
+            </ProcessHead>
+            <ProcessWrapper>
+                <div className="process__item">
+                    <div className="process__index process__font">01.</div>
+                    <div className="process__description">
+                        <h4>프로젝트 의뢰</h4>
+                        <p>자세한 상담을 위해 문의 내용을 가급적 상세히 작성해주세요.</p>
                     </div>
-                    <div className="process__item">
-                        <div className="process__index process__font">02.</div>
-                        <div className="process__title process__font accent__font">
-                            상담
-                        </div>
-                        <div className="process__description">
-                            작성해주신 내용을 검토하여 전문 프로젝트매니저와의 상세한
-                            무료상담이 진행됩니다.
-                        </div>
-                    </div>
-                    <div className="process__item">
-                        <div className="process__index process__font">03.</div>
-                        <div className="process__title process__font accent__font">
-                            기획&디자인&설계
-                        </div>
-                        <div className="process__description">
-                            목적에 알맞는 컨텐츠 제작을 위한 기획 단계입니다. 2D, 3D
-                            디자인부터 기술 설계도 문제없습니다.
-                        </div>
-                    </div>
-                    <div className="process__item">
-                        <div className="process__index process__font">04.</div>
-                        <div className="process__title process__font accent__font">
-                            제작
-                        </div>
-                        <div className="process__description">
-                            기획, 디자인 설계 내용을 토대로 최적의 소재와 제작 방식을 통해
-                            유형의 컨텐츠를 구현합니다.
-                        </div>
-                    </div>
-                    <div className="process__item">
-                        <div className="process__index process__font">05.</div>
-                        <div className="process__title process__font accent__font">
-                            운송&설치
-                        </div>
-                        <div className="process__description">
-                            제작된 컨텐츠의 특징, 현장 상황에 알맞게 안전한 운반과 설치가
+                </div>
+                <div className="process__item">
+                    <div className="process__index process__font">02.</div>
+                    <div className="process__description">
+                        <h4>상담</h4>
+                        <p>
+                            문의 내용을 검토하여 전문 프로젝트 매니저와의 무료 상담이
                             진행됩니다.
-                        </div>
+                        </p>
                     </div>
-                </ProcessWrapper>
-            </div>
-        </Container>
+                </div>
+                <div className="process__item">
+                    <div className="process__index process__font">03.</div>
+                    <div className="process__description">
+                        <h4>기획 | 디자인 | 설계</h4>
+                        <p>
+                            제작을 위한 사전 단계로 2D디자인, 3D 디자인 혹은 기술 설계
+                            과정이 포함됩니다.
+                        </p>
+                    </div>
+                </div>
+                <div className="process__item">
+                    <div className="process__index process__font">04.</div>
+                    <div className="process__description">
+                        <h4>제작</h4>
+                        <p>
+                            기획, 디자인, 설계 내용을 토대로 최적의 소재와 방식을 이용해
+                            컨텐츠를 제작합니다.
+                        </p>
+                    </div>
+                </div>
+                <div className="process__item">
+                    <div className="process__index process__font">05.</div>
+                    <div className="process__description">
+                        <h4>운송&설치</h4>
+                        <p>
+                            제작된 컨텐츠의 특징, 현장 상황에 알맞게 안전한 운반과 설치가
+                            진행됩니다
+                        </p>
+                    </div>
+                </div>
+            </ProcessWrapper>
+        </div>
     );
 }
 
-const Container = styled.div`
-    padding: 120px 0;
-`;
-
 const ProcessHead = styled.div`
     margin-bottom: 40px;
-    font-family: "Racing Sans One", cursive;
-    font-size: 120px;
     color: ${(props) => props.theme.textColor};
+    @media ${device.tablet} {
+        margin-bottom: 20px;
+    }
+    @media ${device.tablet} {
+        margin-bottom: 10px;
+    }
 `;
 
 const ProcessWrapper = styled.div`
@@ -81,33 +78,61 @@ const ProcessWrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
+    @media ${device.tablet} {
+        flex-direction: column;
+        gap: 0;
+    }
     .process__item {
         width: 100%;
-        height: 185px;
+        height: 200px;
         display: flex;
         flex-direction: column;
-        background-color: #f1f2f6;
-        border-radius: 10px;
+        border-right: 1px solid ${(props) => props.theme.borderColor};
         padding: 10px;
-        .process__font {
-            font-size: 28px;
-            font-weight: 700;
+        @media ${device.tablet} {
+            border-bottom: 1px solid ${(props) => props.theme.borderColor};
+            height: auto;
+            border-right: none;
+            padding: 30px 0;
         }
-        .accent__font {
-            color: ${(props) => props.theme.accentColor};
+        @media ${device.tablet} {
+            padding: 20px 0;
+        }
+        @media ${device.mobile} {
+            padding: 12px 0;
         }
         .process__index {
-            flex: 2;
-        }
-        .process__title {
-            flex: 1;
-            font-weight: 900;
+            font-size: 28px;
+            margin-bottom: 60px;
+            @media ${device.tablet} {
+                margin-bottom: 40px;
+                font-size: 24px;
+            }
+            @media ${device.mobile} {
+                margin-bottom: 30px;
+                font-size: 24px;
+            }
         }
         .process__description {
             font-size: 16px;
             word-break: keep-all;
-            flex: 1.5;
             line-height: 20px;
+            h4 {
+                color: ${(props) => props.theme.accentColor};
+                margin-bottom: 10px;
+                font-size: 20px;
+                font-weight: 700;
+                @media ${device.mobile} {
+                    justify-content: flex-end;
+                    font-size: 18px;
+                }
+            }
+            p {
+                font-size: 14px;
+            }
+            @media ${device.tablet} {
+                justify-content: flex-end;
+            }
         }
     }
 `;

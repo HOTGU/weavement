@@ -52,7 +52,7 @@ export const GlobalStyles = createGlobalStyle`
 `;
 
 export const myTheme = {
-    navbarHeight: "80px",
+    navbarHeight: "100px",
     bgColor: "white",
     textColor: "black",
     accentColor: "rgb(166,25,46)",

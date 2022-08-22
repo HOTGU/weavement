@@ -3,8 +3,8 @@ import jwt_decode from "jwt-decode";
 import { getCookie, setCookie } from "./utils/cookie";
 import logout from "./utils/logout";
 
-// axios.defaults.baseURL = "http://localhost:5000/api";
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL =
+    process.env.NODE_ENV === "development" ? "http://localhost:5000/api" : "/api";
 
 const axiosJWT = axios.create({
     withCredentials: true,
