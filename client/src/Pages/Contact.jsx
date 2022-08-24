@@ -420,21 +420,33 @@ function Contact() {
 export default Contact;
 
 const ProcessHead = styled.div`
-    padding: 60px 0 20px 0;
-    margin-bottom: 40px;
+    padding: 60px 0;
     color: ${(props) => props.theme.textColor};
-    @media ${device.laptop} {
-        padding: 40px 0 10px 0;
-        margin-bottom: 30px;
+    font-weight: 700;
+    @media ${device.tablet} {
+        padding: 40px 0;
+    }
+    @media ${device.mobile} {
+        padding: 20px 0;
     }
     div:first-child {
         font-size: 34px;
-        font-weight: 900;
+        @media ${device.tablet} {
+            font-size: 28px;
+        }
+        @media ${device.mobile} {
+            font-size: 24px;
+        }
     }
     div:last-child {
         font-size: 25px;
-        font-weight: 900;
         margin-top: 2px;
+        @media ${device.tablet} {
+            font-size: 22px;
+        }
+        @media ${device.mobile} {
+            font-size: 18px;
+        }
     }
 `;
 
@@ -442,11 +454,6 @@ const ProcessForm = styled.form`
     height: 100%;
     display: flex;
     flex-direction: column;
-    .form__head {
-        align-self: center;
-        font-size: 48px;
-        margin-bottom: 140px;
-    }
 `;
 
 const Column = styled.div`
@@ -459,16 +466,27 @@ const Column = styled.div`
         flex-direction: column;
         margin-bottom: 60px;
     }
+    @media ${device.tablet} {
+        margin-bottom: 40px;
+    }
+    @media ${device.mobile} {
+        margin-bottom: 30px;
+    }
     .column__head {
         width: 40%;
         border-left: 4px solid ${(props) => props.theme.accentColor};
         padding: 4px 12px;
         font-size: 24px;
-        font-weight: 900;
+        font-weight: 700;
         line-height: 28px;
         @media ${device.laptop} {
             width: 100%;
             margin-bottom: 20px;
+        }
+        @media ${device.tablet} {
+            font-size: 20px;
+            margin-bottom: 10px;
+            padding: 2px 8px;
         }
     }
 
@@ -533,11 +551,25 @@ const MultiColumn = styled.div`
         transition: all 0.2s ease-in-out;
         font-family: "Pretendard";
         line-height: 1.5rem;
+        @media ${device.tablet} {
+            padding: 14px;
+            font-size: 16px;
+        }
+        @media ${device.mobile} {
+            padding: 10px;
+            font-size: 14px;
+        }
         &:focus {
             border: 2px solid ${(props) => props.theme.accentColor};
         }
         &::placeholder {
             font-size: 18px;
+            @media ${device.tablet} {
+                font-size: 16px;
+            }
+            @media ${device.mobile} {
+                font-size: 14px;
+            }
         }
     }
     .column__explanation {
@@ -581,21 +613,24 @@ const InfoColumn = styled.div`
     width: 100%;
     align-items: center;
     span {
-        width: 40%;
+        width: 30%;
         margin-right: 20px;
         font-size: 20px;
         min-width: 100px;
+        @media ${device.tablet} {
+            font-size: 16px;
+        }
         @media ${device.mobile} {
-            width: 50%;
+            width: 40%;
         }
     }
     input {
-        width: 60%;
+        width: 65%;
         &::placeholder {
             font-family: "Pretendard";
         }
         @media ${device.mobile} {
-            width: 50%;
+            width: 60%;
         }
     }
 `;
@@ -603,9 +638,6 @@ const InfoColumn = styled.div`
 const SubmitBtn = styled.button`
     width: 50%;
     height: 80px;
-    @media ${device.tablet} {
-        width: 100%;
-    }
     background-color: ${(props) => props.theme.subAccentColor};
     color: white;
     font-size: 26px;
@@ -617,4 +649,14 @@ const SubmitBtn = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    @media ${device.tablet} {
+        width: 100%;
+        height: 60px;
+        font-size: 22px;
+    }
+    @media ${device.mobile} {
+        width: 100%;
+        height: 50px;
+        font-size: 20px;
+    }
 `;

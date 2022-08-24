@@ -30,7 +30,7 @@ function Main() {
                         `}
                         sizes="(max-width: 375px) 360px,
                         (max-width: 768px) 760px,
-                        800px"
+                        1400px"
                         src={mainImg}
                         alt="main"
                     />
@@ -126,31 +126,27 @@ function Main() {
                         </div>
                     </div>
                     <div className="text-container">
-                        <div className="default-container">
-                            <p>
-                                인류의 삶을 바꾼 산업혁명은 면직물 공업의 자동화로
-                                시작되었습니다.
-                                <br /> 예술과 제조가 융합하는 최초의 행위, ‘Weave.’
-                                위브먼트도 이 단어에서 시작합니다.
-                                <br />
-                                <br />
-                                오늘날 인간의 미적 창조 활동이라 일컬어지는 예술(art)은
-                                ‘기능’, ‘기술’ 을 의미하는 라틴어(ars)와
-                                그리스어(techne)에서 유래하기에 위브먼트가 정의하는 예술은
-                                표현하는 매체이자, 실행하는 기술과 행위이기도 합니다.
-                                <br />
-                                <br />
-                                <span className="bold">
-                                    <span className="strong">우리(We)</span>는 고객이{" "}
-                                    <span className="strong">나아갈 길(Ave.)</span>을
-                                    제시하고{" "}
-                                    <span className="strong">예술적인 결과(Ment)</span>
-                                    만드는{" "}
-                                    <span className="strong">위브먼트 WEAVEMENT</span>
-                                    입니다
-                                </span>
-                            </p>
-                        </div>
+                        <p>
+                            인류의 삶을 바꾼 산업혁명은 면직물 공업의 자동화로
+                            시작되었습니다.
+                            <br /> 예술과 제조가 융합하는 최초의 행위, ‘Weave.’ 위브먼트도
+                            이 단어에서 시작합니다.
+                            <br />
+                            <br />
+                            오늘날 인간의 미적 창조 활동이라 일컬어지는 예술(art)은
+                            ‘기능’, ‘기술’ 을 의미하는 라틴어(ars)와 그리스어(techne)에서
+                            유래하기에 위브먼트가 정의하는 예술은 표현하는 매체이자,
+                            실행하는 기술과 행위이기도 합니다.
+                            <br />
+                            <br />
+                            <span className="bold">
+                                <span className="strong">우리(We)</span>는 고객이{" "}
+                                <span className="strong">나아갈 길(Ave.)</span>을 제시하고{" "}
+                                <span className="strong">예술적인 결과(Ment)</span>
+                                만드는 <span className="strong">위브먼트 WEAVEMENT</span>
+                                입니다
+                            </span>
+                        </p>
                     </div>
                 </About>
                 <LastColumn className="column">
@@ -180,7 +176,7 @@ function Main() {
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    margin-top: -82px;
+    margin-top: -100px;
     .button {
         padding: 16px 40px;
         border-radius: 10px;
@@ -274,6 +270,7 @@ const ThirdColumn = styled.div`
     background-color: #7a7876;
     width: 100%;
     height: auto;
+    z-index: -1;
     @media ${device.tablet} {
         position: relative;
     }
@@ -303,8 +300,6 @@ const ThirdColumn = styled.div`
                     width: 100%;
                     height: 600px;
                     object-position: 50% 20%;
-
-                    /* max-width: 500px; */
                     margin: 0 auto;
                 }
             }
@@ -378,11 +373,12 @@ const About = styled.div`
     background-color: ${(props) => props.theme.subAccentColor};
     position: relative;
     padding-bottom: 310px;
+    height: 100%;
     @media ${device.tablet} {
         padding-bottom: 290px;
     }
     @media ${device.mobile} {
-        padding-bottom: 260px;
+        padding-bottom: 280px;
     }
     .img-container {
         position: relative;
@@ -423,18 +419,19 @@ const About = styled.div`
         }
         @media ${device.mobile} {
             line-height: 20px;
-            height: 315px;
+            height: 335px;
         }
         p {
+            align-self: flex-end;
             font-size: 18px;
             font-weight: 100;
-            padding-bottom: 50px;
+            padding: 0 30px 50px 30px;
             @media ${device.tablet} {
-                padding-bottom: 40px;
+                padding: 0 20px 40px 20px;
                 font-size: 16px;
             }
             @media ${device.mobile} {
-                padding-bottom: 20px;
+                padding: 0 10px 20px 10px;
                 font-size: 14px;
             }
             .bold {

@@ -23,7 +23,7 @@ function Footer() {
                     </Item>
                     <Item>
                         <div className="column-container">
-                            <div>전화 상담</div>
+                            <div className="toggle">전화 상담</div>
                             <h4>010 . 2564 . 7181</h4>
                             <div>영업시간 9:00-18:00 | 토,일 휴무</div>
                         </div>
@@ -35,37 +35,40 @@ function Footer() {
 }
 
 const Container = styled.div`
+    position: absolute;
+    bottom: 0;
     border-top: 1px solid ${(props) => props.theme.borderColor};
-    height: auto;
+    height: 160px;
+    width: 100%;
 `;
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 40px 0;
-    @media ${device.tablet} {
+    height: 100%;
+    @media ${device.mobile} {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 20px 0;
-    }
-    @media ${device.mobile} {
     }
 `;
 const Item = styled.div`
     display: flex;
     gap: 20px;
-    @media ${device.tablet} {
+    align-items: center;
+    @media ${device.mobile} {
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 0;
-        /* height: auto; */
     }
     img {
         height: 70px;
         @media ${device.tablet} {
             height: 50px;
+        }
+        @media ${device.mobile} {
+            height: 40px;
         }
     }
     .column-container {
@@ -73,13 +76,18 @@ const Item = styled.div`
         flex-direction: column;
         justify-content: space-between;
         gap: 10px;
-        /* color: ${(props) => props.theme.gray}; */
         font-weight: 300;
         @media ${device.tablet} {
             gap: 2px;
-            align-items: center;
-            margin-top: 14px;
             font-size: 14px;
+            margin-top: 5px;
+        }
+        @media ${device.mobile} {
+            font-size: 12px;
+            text-align: center;
+            .toggle {
+                display: none;
+            }
         }
         h3 {
             font-weight: 500;
@@ -87,12 +95,18 @@ const Item = styled.div`
             @media ${device.tablet} {
                 font-size: 16px;
             }
+            @media ${device.mobile} {
+                font-size: 14px;
+            }
         }
         h4 {
             font-size: 26px;
             font-weight: 500;
             @media ${device.tablet} {
                 font-size: 20px;
+            }
+            @media ${device.mobile} {
+                font-size: 18px;
             }
         }
         div {

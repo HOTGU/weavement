@@ -15,12 +15,21 @@ export const GlobalStyles = createGlobalStyle`
         outline: none;
         border: none;
     }
+    html,boty{
+        height: 100%;
+    }
     body{
         background-color:${(props) => props.theme.bgColor};
         color:${(props) => props.theme.textColor};
         font-family: "Pretendard";
         font-size: 16px;
-        padding-top: 80px;
+        padding-top: 100px;
+        @media ${device.tablet} {
+            padding-top: 90px;
+        }
+        @media ${device.mobile} {
+            padding-top: 80px;
+        }
         overflow-x: hidden;
         width: 100%;
     }
@@ -29,10 +38,11 @@ export const GlobalStyles = createGlobalStyle`
     }
     .default-container {
         width:100%;
+        height:100%;
         max-width: 1400px;
         margin: 0 auto;
         padding: 0 30px;
-        @media ${device.laptop} {
+        @media ${device.tablet} {
             padding: 0 20px;
         }
         @media ${device.mobile} {
@@ -45,9 +55,20 @@ export const GlobalStyles = createGlobalStyle`
         border-radius: 3px;
         transition: all 0.3s ease-in-out;
         border: 1px solid #dcdde1;
+        @media ${device.tablet} {
+            padding: 8px 10px;
+            font-size: 16px;
+        }
+        @media ${device.mobile} {
+            padding: 6px 8px;
+            font-size: 14px;
+        }
     }
     .Toastify__toast-body {
         white-space: pre-line;
+    }
+    .apexcharts-toolbar {
+        z-index: -1 !important;
     }
 `;
 

@@ -681,6 +681,7 @@ const Container = styled.div`
     height: fit-content;
     cursor: default;
     position: relative;
+    z-index: -1;
 `;
 
 const RowWrapper = styled.div`

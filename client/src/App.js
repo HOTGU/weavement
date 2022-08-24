@@ -1,4 +1,4 @@
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,22 +14,30 @@ import AdminPortfolio from "./Pages/AdminPortfolio";
 import AdminProject from "./Pages/AdminProject";
 import Footer from "./Components/Footer";
 
+const Wrapper = styled.div`
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 160px;
+`;
+
 function App() {
     return (
         <Router>
             <ThemeProvider theme={myTheme}>
                 <GlobalStyles />
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<Main />} />
-                    <Route path="/portfolio" element={<Portfolio />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="admin/portfolio" element={<AdminPortfolio />} />
-                    <Route path="/admin/project" element={<AdminProject />} />
-                </Routes>
-                <Footer />
+                <Wrapper>
+                    <Navbar />
+                    <Routes>
+                        <Route path="/" element={<Main />} />
+                        <Route path="/portfolio" element={<Portfolio />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="admin/portfolio" element={<AdminPortfolio />} />
+                        <Route path="/admin/project" element={<AdminProject />} />
+                    </Routes>
+                    <Footer />
+                </Wrapper>
                 <ToastContainer
                     theme="dark"
                     position="top-center"

@@ -11,6 +11,7 @@ import { device } from "../device";
 import useOutsideClick from "../hooks/useOutsideClick";
 
 const SideNavbar = ({ show, setShow }) => {
+    const { pathname } = useLocation();
     const ref = useRef();
 
     useOutsideClick(ref, () => setShow(false));
@@ -19,29 +20,57 @@ const SideNavbar = ({ show, setShow }) => {
         <>
             <SideNavbarContainer show={show}>
                 <SideNavbarItem ref={ref} show={show}>
-                    <a
-                        href="https://blog.naver.com/weavement"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="nav__column"
-                        onClick={() => setShow(false)}
-                    >
-                        전문가 칼럼
-                    </a>
-                    <Link
-                        to="/portfolio"
-                        className="nav__column"
-                        onClick={() => setShow(false)}
-                    >
-                        포트폴리오
-                    </Link>
-                    <Link
-                        to="/contact"
-                        className="nav__column"
-                        onClick={() => setShow(false)}
-                    >
-                        문의하기
-                    </Link>
+                    {pathname.includes("admin") ? (
+                        <>
+                            <Link
+                                to="/admin"
+                                className="nav__column"
+                                onClick={() => setShow(false)}
+                            >
+                                분석
+                            </Link>
+                            <Link
+                                to="/admin/project"
+                                className="nav__column"
+                                onClick={() => setShow(false)}
+                            >
+                                프로젝트관리
+                            </Link>
+                            <Link
+                                to="/admin/portfolio"
+                                className="nav__column"
+                                onClick={() => setShow(false)}
+                            >
+                                포트폴리오관리
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <a
+                                href="https://blog.naver.com/weavement"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="nav__column"
+                                onClick={() => setShow(false)}
+                            >
+                                전문가 칼럼
+                            </a>
+                            <Link
+                                to="/portfolio"
+                                className="nav__column"
+                                onClick={() => setShow(false)}
+                            >
+                                포트폴리오
+                            </Link>
+                            <Link
+                                to="/contact"
+                                className="nav__column"
+                                onClick={() => setShow(false)}
+                            >
+                                문의하기
+                            </Link>
+                        </>
+                    )}
                 </SideNavbarItem>
             </SideNavbarContainer>
         </>
@@ -62,7 +91,7 @@ const SideNavbarContainer = styled.div`
 `;
 const SideNavbarItem = styled.div`
     position: fixed;
-    width: 250px;
+    width: 200px;
     height: 100vh;
     background-color: white;
     right: 0;
@@ -77,7 +106,7 @@ const SideNavbarItem = styled.div`
     .nav__column {
         width: 100%;
         transition: all 0.1s linear;
-        padding: 26px 40px;
+        padding: 20px 30px;
         font-size: 20px;
         border-bottom: 1px solid ${(props) => props.theme.borderColor};
         &:hover {
@@ -160,9 +189,16 @@ const NavbarContainer = styled.div`
     position: fixed;
     top: 0;
     width: 100%;
-    height: ${(props) => props.theme.navbarHeight};
+    height: 100px;
     font-size: 18px;
     font-weight: 700;
+    z-index: 100;
+    @media ${device.tablet} {
+        height: 90px;
+    }
+    @media ${device.mobile} {
+        height: 80px;
+    }
     color: ${(props) =>
         props.isMain
             ? props.isScroll
@@ -191,6 +227,12 @@ const Wrapper = styled.div`
     position: relative;
     .logo {
         width: 85px;
+        @media ${device.tablet} {
+            width: 80px;
+        }
+        @media ${device.mobile} {
+            width: 70px;
+        }
     }
     nav {
         display: flex;
