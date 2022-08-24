@@ -425,6 +425,8 @@ const About = styled.div`
             align-self: flex-end;
             font-size: 18px;
             font-weight: 100;
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 0 30px 50px 30px;
             @media ${device.tablet} {
                 padding: 0 20px 40px 20px;
