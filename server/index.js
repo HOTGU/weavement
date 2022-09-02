@@ -41,9 +41,22 @@ const corsOptions = {
     credentials: true,
 };
 
-console.log(corsOptions);
+const cspOptions = {
+    directives: {
+        // 기본 옵션을 가져옵니다.
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
 
-app.use(helmet());
+        // 리그오브레전드 사이트의 이미지 소스를 허용합니다.
+        "img-src": ["'self'", "data:", "*.amazonaws.com"],
+    },
+};
+
+// Helmet의 모든 기능 사용. (contentSecurityPolicy에는 custom option 적용)
+app.use(
+    helmet({
+        contentSecurityPolicy: cspOptions,
+    })
+);
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());

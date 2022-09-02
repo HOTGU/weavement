@@ -3,9 +3,8 @@ import { getPortfolioApi } from "../api";
 
 export const getPortfolioSelector = selector({
     key: "portfolioSelector",
-    get: async ({ get }) => {
+    get: async () => {
         const res = await getPortfolioApi();
-        console.log(res);
         return res.data;
     },
 });
