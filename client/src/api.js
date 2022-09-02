@@ -98,3 +98,9 @@ export const updateContactApi = (id, data) => axiosJWT.patch(`/contact/${id}`, d
 export const deleteContactApi = (id) => axiosJWT.delete(`/contact/${id}`);
 
 export const createContactApi = (data) => axios.post(`/contact`, data);
+
+// portfolio
+
+export const getPortfolioApi = () => axiosJWT.get(`/portfolio`);
+
+export const createPortfolioApi = (data) => axiosJWT.post(`/portfolio`, data);

@@ -11,6 +11,7 @@ dotenv.config();
 
 import userRouter from "./routes/userRouter.js";
 import contactRouter from "./routes/contactRouter.js";
+import portfolioRouter from "./routes/portfolioRouter.js";
 
 if (process.env.NODE_ENV == "production") {
     console.log("Production Mode");
@@ -21,9 +22,6 @@ if (process.env.NODE_ENV == "production") {
 const app = express();
 
 const dbConnect = () => {
-    // if (process.env.NODE_ENV !== "production") {
-    //     mongoose.set("debug", true);
-    // }
     mongoose.connect(process.env.MONGO_URL);
 };
 
@@ -43,7 +41,7 @@ const corsOptions = {
     credentials: true,
 };
 
-console.log(corsOptions, process.env.NODE_ENV);
+console.log(corsOptions);
 
 app.use(helmet());
 app.use(cors(corsOptions));
@@ -54,6 +52,7 @@ app.use(cookieParser(process.env.SESSION_SECRET));
 
 app.use("/api/user", userRouter);
 app.use("/api/contact", contactRouter);
+app.use("/api/portfolio", portfolioRouter);
 
 app.use(express.static("build"));
 

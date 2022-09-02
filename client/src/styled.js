@@ -11,13 +11,15 @@ export const GlobalStyles = createGlobalStyle`
     *{
         box-sizing: border-box;
     }
-    input,button {
+    input,button,textarea {
         outline: none;
         border: none;
+        resize: none;
     }
     html,boty{
         height: 100%;
     }
+   
     body{
         background-color:${(props) => props.theme.bgColor};
         color:${(props) => props.theme.textColor};
@@ -39,7 +41,7 @@ export const GlobalStyles = createGlobalStyle`
     .default-container {
         width:100%;
         height:100%;
-        max-width: 1400px;
+        max-width: 1480px;
         margin: 0 auto;
         padding: 0 30px;
         @media ${device.tablet} {
@@ -82,8 +84,9 @@ export const myTheme = {
     hoverColor: "#bdc3c7",
     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;",
     gray: "#95a5a6",
-    black: "black",
     darkGray: "#3e3a39",
+    lightGray: "#ecf0f1",
+    black: "black",
     white: "#f5f6fa",
     blue: "#0097e6",
     red: "#e74c3c",

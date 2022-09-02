@@ -192,7 +192,7 @@ const NavbarContainer = styled.div`
     height: 100px;
     font-size: 18px;
     font-weight: 700;
-    z-index: 100;
+    z-index: 80;
     @media ${device.tablet} {
         height: 90px;
     }

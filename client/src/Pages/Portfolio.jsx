@@ -1,22 +1,46 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { useRecoilValueLoadable } from "recoil";
 import styled from "styled-components";
+import { getPortfolioSelector } from "../atoms/portfolio";
+import Loader from "../Components/Loader";
+import { device } from "../device";
+import PortfolioCard from "../Components/PortfolioCard";
 
 function Portfolio() {
-    // const [inputValue, setInputValue] = useState();
+    const portfolioLoadable = useRecoilValueLoadable(getPortfolioSelector);
 
-    // const handleInput = (e) => {
-    //     setInputValue(e.target.value);
-    // };
+    const portfolios = useMemo(() => {
+        return portfolioLoadable.state === "hasValue" ? portfolioLoadable.contents : [];
+    }, [portfolioLoadable]);
 
-    return <Container></Container>;
+    return (
+        <>
+            {portfolioLoadable.state === "loading" ? (
+                <Loader isCenter={true} width="40px" height="40px" />
+            ) : (
+                <div className="default-container">
+                    <Container>
+                        {portfolios.map((portfolio) => {
+                            return (
+                                <PortfolioCard
+                                    portfolio={portfolio}
+                                    key={portfolio._id}
+                                />
+                            );
+                        })}
+                    </Container>
+                </div>
+            )}
+        </>
+    );
 }
 
 const Container = styled.div`
-    width: 100%;
-    height: 100vh;
-    padding-top: ${(props) => props.theme.navbarHeight};
-    & input {
-        border: 1px solid red;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    @media ${device.tablet} {
+        flex-direction: column;
     }
 `;
 

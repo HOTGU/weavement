@@ -13,6 +13,7 @@ import Contact from "./Pages/Contact";
 import AdminPortfolio from "./Pages/AdminPortfolio";
 import AdminProject from "./Pages/AdminProject";
 import Footer from "./Components/Footer";
+import PortfolioDetail from "./Pages/PortfolioDetail";
 
 const Wrapper = styled.div`
     min-height: 100vh;
@@ -30,6 +31,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Main />} />
                         <Route path="/portfolio" element={<Portfolio />} />
+                        <Route path="/portfolio/:id" element={<PortfolioDetail />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/auth" element={<Auth />} />
                         <Route path="/admin" element={<Admin />} />
