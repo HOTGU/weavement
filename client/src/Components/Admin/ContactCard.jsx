@@ -86,6 +86,8 @@ function ContactCard({ data }) {
         reset(data);
     }, [currentId, data, reset]);
 
+    console.log(data);
+
     const watchAll = watch();
 
     return (
@@ -681,7 +683,7 @@ const Container = styled.div`
     height: fit-content;
     cursor: default;
     position: relative;
-    z-index: -1;
+    z-index: 1;
 `;
 
 const RowWrapper = styled.div`

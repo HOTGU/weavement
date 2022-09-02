@@ -18,6 +18,7 @@ function PortfolioCard({ portfolio }) {
                         alt="images"
                         width="100%"
                         height="100%"
+                        crossorigin="anonymous"
                     />
                 </div>
             </div>

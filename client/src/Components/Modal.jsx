@@ -9,14 +9,21 @@ function Modal({ children, show, setShow }) {
     useOutsideClick(modalRef, () => setShow(false));
 
     return (
-        <Wrapper show={show}>
-            <ModalContainer show={show} ref={modalRef}>
-                <div className="emoji-container">
-                    <FontAwesomeIcon icon={faTimes} onClick={() => setShow(false)} />
-                </div>
-                {children}
-            </ModalContainer>
-        </Wrapper>
+        <>
+            {show && (
+                <Wrapper show={show}>
+                    <ModalContainer show={show} ref={modalRef}>
+                        <div className="emoji-container">
+                            <FontAwesomeIcon
+                                icon={faTimes}
+                                onClick={() => setShow(false)}
+                            />
+                        </div>
+                        {children}
+                    </ModalContainer>
+                </Wrapper>
+            )}
+        </>
     );
 }
 

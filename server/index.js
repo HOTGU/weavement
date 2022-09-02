@@ -46,8 +46,7 @@ const cspOptions = {
         // 기본 옵션을 가져옵니다.
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
 
-        // 리그오브레전드 사이트의 이미지 소스를 허용합니다.
-        "img-src": ["'self'", "data:", "*.amazonaws.com"],
+        "img-src": ["'self'", "data:", "blob:", "*.amazonaws.com"],
     },
 };
 

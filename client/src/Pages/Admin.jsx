@@ -128,7 +128,7 @@ function Admin() {
 const Wrapper = styled.div`
     width: 100%;
     padding: 30px 0;
-    z-index: -1;
+    z-index: 1;
     select,
     .refreshBtn {
         padding: 10px;

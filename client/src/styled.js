@@ -69,9 +69,6 @@ export const GlobalStyles = createGlobalStyle`
     .Toastify__toast-body {
         white-space: pre-line;
     }
-    .apexcharts-toolbar {
-        z-index: -1 !important;
-    }
 `;
 
 export const myTheme = {
