@@ -44,6 +44,7 @@ const CreateColumn = ({ columnPage, target, text }) => {
                                             alt="images"
                                             width="100%"
                                             height="100%"
+                                            crossorigin="anonymous"
                                         />
                                     </Column>
                                 </div>
