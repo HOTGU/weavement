@@ -10,7 +10,7 @@ function Portfolio() {
     const portfolioLoadable = useRecoilValueLoadable(getPortfolioSelector);
 
     const portfolios = useMemo(() => {
-        return portfolioLoadable.state === "hasValue" ? portfolioLoadable.contents : [];
+        return portfolioLoadable?.state === "hasValue" ? portfolioLoadable.contents : [];
     }, [portfolioLoadable]);
 
     return (
@@ -38,9 +38,13 @@ function Portfolio() {
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
+    margin: 40px 0;
     gap: 10px;
     @media ${device.tablet} {
         flex-direction: column;
+    }
+    @media ${device.mobile} {
+        margin: 10px 0;
     }
 `;
 

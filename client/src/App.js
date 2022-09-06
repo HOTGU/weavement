@@ -14,16 +14,22 @@ import AdminPortfolio from "./Pages/AdminPortfolio";
 import AdminProject from "./Pages/AdminProject";
 import Footer from "./Components/Footer";
 import PortfolioDetail from "./Pages/PortfolioDetail";
+import { device } from "./device";
+import ScrollToTop from "./Components/ScrollToTop";
 
 const Wrapper = styled.div`
     min-height: 100vh;
     position: relative;
     padding-bottom: 160px;
+    @media ${device.mobile} {
+        padding-bottom: 90px;
+    }
 `;
 
 function App() {
     return (
         <Router>
+            <ScrollToTop />
             <ThemeProvider theme={myTheme}>
                 <GlobalStyles />
                 <Wrapper>

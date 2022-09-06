@@ -30,15 +30,15 @@ const Container = styled.div`
     margin-top: -100px;
     .button {
         padding: 16px 40px;
-        border-radius: 10px;
+        border-radius: 24px;
         font-size: 24px;
         @media ${device.tablet} {
             padding: 12px 30px;
             font-size: 20px;
         }
         @media ${device.mobile} {
-            padding: 10px 30px;
-            font-size: 18px;
+            padding: 6px 12px;
+            font-size: 14px;
         }
     }
     .red-btn {
@@ -55,7 +55,7 @@ const Container = styled.div`
             padding: 70px 0;
         }
         @media ${device.mobile} {
-            padding: 50px 0;
+            padding: 40px 0;
         }
     }
     .column__head {
@@ -65,7 +65,7 @@ const Container = styled.div`
             font-size: 80px;
         }
         @media ${device.mobile} {
-            font-size: 60px 0;
+            font-size: 50px;
         }
     }
 `;

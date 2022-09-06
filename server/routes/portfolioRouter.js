@@ -1,10 +1,7 @@
 import express from "express";
 import { create, get } from "../controllers/portfolioController.js";
-
 import { verifyIsAdmin, verifyUser } from "../middleware/verify.js";
-
 import upload from "../utils/multer.js";
-const multerUpload = upload.array("image", 18);
 
 const portfolioRouter = express.Router();
 

@@ -103,7 +103,7 @@ const ProcessWrapper = styled.div`
             padding: 20px 0;
         }
         @media ${device.mobile} {
-            padding: 12px 0;
+            padding: 8px 0;
         }
         .process__index {
             font-size: 28px;
@@ -113,8 +113,8 @@ const ProcessWrapper = styled.div`
                 font-size: 24px;
             }
             @media ${device.mobile} {
-                margin-bottom: 30px;
-                font-size: 24px;
+                margin-bottom: 10px;
+                font-size: 16px;
             }
         }
         .process__description {
@@ -128,11 +128,15 @@ const ProcessWrapper = styled.div`
                 font-weight: 700;
                 @media ${device.mobile} {
                     justify-content: flex-end;
-                    font-size: 18px;
+                    margin-bottom: 5px;
+                    font-size: 16px;
                 }
             }
             p {
                 font-size: 14px;
+                @media ${device.mobile} {
+                    font-size: 11px;
+                }
             }
             @media ${device.tablet} {
                 justify-content: flex-end;

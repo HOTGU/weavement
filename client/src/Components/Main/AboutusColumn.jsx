@@ -16,6 +16,9 @@ const Wrapper = styled.div`
     @media ${device.tablet} {
         padding-bottom: 300px;
     }
+    @media ${device.mobile} {
+        padding-bottom: 250px;
+    }
     .img-container {
         position: relative;
         width: 100%;
@@ -36,8 +39,11 @@ const Wrapper = styled.div`
     .page__text {
         position: absolute;
         bottom: -15px;
+        @media ${device.mobile} {
+            bottom: -5px;
+        }
         color: white;
-        z-index: 99;
+        z-index: 30;
     }
     .text-container {
         position: absolute;
@@ -55,7 +61,7 @@ const Wrapper = styled.div`
         }
         @media ${device.mobile} {
             line-height: 20px;
-            height: 335px;
+            height: 290px;
         }
         p {
             align-self: flex-end;
@@ -70,7 +76,7 @@ const Wrapper = styled.div`
             }
             @media ${device.mobile} {
                 padding: 0 10px 20px 10px;
-                font-size: 14px;
+                font-size: 10px;
             }
             .bold {
                 font-size: 22px;
@@ -78,10 +84,10 @@ const Wrapper = styled.div`
                     font-size: 20px;
                 }
                 @media ${device.mobile} {
-                    font-size: 16px;
+                    font-size: 12px;
                 }
                 .strong {
-                    font-weight: 500;
+                    font-weight: 300;
                 }
             }
         }

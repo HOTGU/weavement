@@ -6,7 +6,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { device } from "../device";
 
 function PortfolioCard({ portfolio }) {
-    const length = 20;
+    const length = 25;
 
     return (
         <SLink to={`/portfolio/${portfolio._id}`} state={{ portfolio }}>
@@ -18,14 +18,14 @@ function PortfolioCard({ portfolio }) {
                         alt="images"
                         width="100%"
                         height="100%"
-                        crossorigin="anonymous"
+                        crossOrigin="anonymous"
                     />
                 </div>
             </div>
             <h3>{portfolio.text.title}</h3>
             <p>
                 {portfolio.text.description.length > length
-                    ? portfolio.text.description.substring(0, length - 3) + "..."
+                    ? portfolio.text.description.substring(0, 27) + "..."
                     : portfolio.text.description}
             </p>
         </SLink>
@@ -34,6 +34,7 @@ function PortfolioCard({ portfolio }) {
 
 const SLink = styled(Link)`
     width: calc(50% - 5px);
+    margin-bottom: 5px;
     @media ${device.tablet} {
         height: fit-content;
         width: 100%;
@@ -42,7 +43,6 @@ const SLink = styled(Link)`
         aspect-ratio: 3/2;
         width: 100%;
         overflow: hidden;
-
         .image_wrapper {
             width: 100%;
             height: 100%;

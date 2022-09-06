@@ -36,9 +36,7 @@ function AdminProject() {
                 <ContactFilterHead setShow={setShow} />
 
                 {contactList.state === "loading" ? (
-                    <LoaderContainer>
-                        <Loader width="40px" height="40px" />
-                    </LoaderContainer>
+                    <Loader isCenter={true} width="40px" height="40px" />
                 ) : (
                     <>
                         <Modal show={show} setShow={setShow}>
@@ -132,15 +130,6 @@ function AdminProject() {
         </div>
     );
 }
-
-const LoaderContainer = styled.div`
-    width: 100%;
-    height: 100%;
-    min-height: 50vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
 
 const ResultContainer = styled.div`
     margin: 0 auto;

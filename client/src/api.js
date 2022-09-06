@@ -101,6 +101,6 @@ export const createContactApi = (data) => axios.post(`/contact`, data);
 
 // portfolio
 
-export const getPortfolioApi = () => axiosJWT.get(`/portfolio`);
+export const getPortfolioApi = () => axios.get(`/portfolio`);
 
 export const createPortfolioApi = (data) => axiosJWT.post(`/portfolio`, data);

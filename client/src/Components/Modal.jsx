@@ -10,19 +10,14 @@ function Modal({ children, show, setShow }) {
 
     return (
         <>
-            {show && (
-                <Wrapper show={show}>
-                    <ModalContainer show={show} ref={modalRef}>
-                        <div className="emoji-container">
-                            <FontAwesomeIcon
-                                icon={faTimes}
-                                onClick={() => setShow(false)}
-                            />
-                        </div>
-                        {children}
-                    </ModalContainer>
-                </Wrapper>
-            )}
+            <Wrapper show={show}>
+                <ModalContainer show={show} ref={modalRef}>
+                    <div className="emoji-container">
+                        <FontAwesomeIcon icon={faTimes} onClick={() => setShow(false)} />
+                    </div>
+                    {children}
+                </ModalContainer>
+            </Wrapper>
         </>
     );
 }

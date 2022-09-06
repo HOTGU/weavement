@@ -42,7 +42,6 @@ function ContactFilterHead({ setShow }) {
     const [filterInput, setFilterInput] = useRecoilState(filterInputAtom);
     const reload = useResetRecoilState(contactListSelector);
     const [createModal, setCraeteModal] = useState(false);
-    const [isNumber, setIsNumber] = useState(false);
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, watch, setValue, reset } = useForm();
 
@@ -172,6 +171,14 @@ function ContactFilterHead({ setShow }) {
                                 <input {...register("step")} type="radio" value="제작" />
                                 제작
                             </label>
+                            <label>
+                                <input
+                                    {...register("step")}
+                                    type="radio"
+                                    value="미확인"
+                                />
+                                미확인
+                            </label>
                         </div>
                     </div>
                     <div className="form__column">
@@ -208,6 +215,14 @@ function ContactFilterHead({ setShow }) {
                                     value="없음"
                                 />
                                 없음
+                            </label>
+                            <label>
+                                <input
+                                    {...register("hasDesign")}
+                                    type="radio"
+                                    value="미확인"
+                                />
+                                미확인
                             </label>
                         </div>
                     </div>
@@ -246,7 +261,26 @@ function ContactFilterHead({ setShow }) {
                         </div>
                     </div>
                     <div className="form__column">
-                        <div className="column__head">클라이언트</div>
+                        <div className="column__head">알게된경로</div>
+                        <div className="column__input">
+                            <div className="column__input">
+                                <select {...register("knowPath")}>
+                                    <option value="">경로를 선택해주세요.</option>
+                                    <option value="검색">검색(네이버, 구글, 다음)</option>
+                                    <option value="SNS">
+                                        SNS (인스타그램, 페이스북)
+                                    </option>
+                                    <option value="위브먼트블로그">
+                                        '위브먼트'블로그
+                                    </option>
+                                    <option value="네이버블로그">
+                                        네이버 블로그 (공식블로그 제외)
+                                    </option>
+                                    <option value="1억원이상">지인추천</option>
+                                    <option value="알수없음">알 수 없음</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div className="form__column">
                         <div className="column__head">회사명</div>
@@ -269,38 +303,9 @@ function ContactFilterHead({ setShow }) {
                     <div className="form__column">
                         <div className="column__head">연락처</div>
                         <div className="column__input">
-                            <input
-                                {...register("clientPhone", {
-                                    onChange: (e) => {
-                                        if (isNumber)
-                                            setValue("clientPhone", e.target.value);
-                                        if (!isNumber)
-                                            setValue("clientPhone", watchAll.clientPhone);
-                                    },
-                                })}
-                                onKeyDown={(e) => {
-                                    const acceptArr = [
-                                        "0",
-                                        "1",
-                                        "2",
-                                        "3",
-                                        "4",
-                                        "5",
-                                        "6",
-                                        "7",
-                                        "8",
-                                        "9",
-                                    ];
-                                    if (
-                                        acceptArr.includes(e.key) ||
-                                        e.key === "Backspace"
-                                    ) {
-                                        setIsNumber(true);
-                                    } else {
-                                        setIsNumber(false);
-                                    }
-                                }}
-                            />
+                            <input {...register("clientStartPhone")} />
+                            <input {...register("clientMiddlePhone")} />
+                            <input {...register("clientEndPhone")} />
                         </div>
                     </div>
                     <div className="form__column">
@@ -342,17 +347,15 @@ const SForm = styled.form`
     textarea {
         resize: none;
         outline: none;
-        width: 100%;
-        height: 100px;
+        height: 150px;
     }
     input {
-        font-size: 15px;
+        font-size: 14px;
     }
     label {
         display: flex;
     }
     input[type="radio"] {
-        /* width: 100%; */
         width: 10px;
     }
     input[type="submit"] {

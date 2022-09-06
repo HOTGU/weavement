@@ -48,6 +48,15 @@ function Contact() {
         imgRef.current.value = "";
     };
 
+    const handleOnlyNumber = (e) => {
+        const acceptArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        if (acceptArr.includes(e.key) || e.key === "Backspace") {
+            setIsNumber(true);
+        } else {
+            setIsNumber(false);
+        }
+    };
+
     const onValid = async (data) => {
         data.images = files;
         if (
@@ -59,7 +68,9 @@ function Contact() {
             !data.knowPath ||
             !data.clientName ||
             !data.clientCompany ||
-            !data.clientPhone ||
+            !data.clientStartPhone ||
+            !data.clientMiddlePhone ||
+            !data.clientEndPhone ||
             !data.clientEmail
         ) {
             toast.error("필수항목들을 입력하세요");
@@ -81,7 +92,6 @@ function Contact() {
     };
 
     return (
-        // <div className="default-container">
         <div className="default-container">
             <ProcessForm onSubmit={handleSubmit(onValid)}>
                 <ProcessHead>
@@ -349,38 +359,55 @@ function Contact() {
                         <InfoColumn>
                             <span>연락처 *</span>
                             <input
-                                className="btn"
-                                placeholder="ex. 01012345678"
-                                {...register("clientPhone", {
+                                className="btn phone-btn"
+                                placeholder="010"
+                                {...register("clientStartPhone", {
                                     onChange: (e) => {
                                         if (isNumber)
-                                            setValue("clientPhone", e.target.value);
-                                        if (!isNumber)
-                                            setValue("clientPhone", watchAll.clientPhone);
+                                            setValue("clientStartPhone", e.target.value);
+                                        if (!isNumber || e.target.value.length > 3)
+                                            setValue(
+                                                "clientStartPhone",
+                                                watchAll.clientStartPhone
+                                            );
                                     },
                                 })}
-                                onKeyDown={(e) => {
-                                    const acceptArr = [
-                                        "0",
-                                        "1",
-                                        "2",
-                                        "3",
-                                        "4",
-                                        "5",
-                                        "6",
-                                        "7",
-                                        "8",
-                                        "9",
-                                    ];
-                                    if (
-                                        acceptArr.includes(e.key) ||
-                                        e.key === "Backspace"
-                                    ) {
-                                        setIsNumber(true);
-                                    } else {
-                                        setIsNumber(false);
-                                    }
-                                }}
+                                onKeyDown={handleOnlyNumber}
+                            />
+                            <div className="rowLine"></div>
+                            <input
+                                className="btn phone-btn"
+                                placeholder="1234"
+                                {...register("clientMiddlePhone", {
+                                    onChange: (e) => {
+                                        if (isNumber)
+                                            setValue("clientMiddlePhone", e.target.value);
+                                        if (!isNumber || e.target.value.length > 4)
+                                            setValue(
+                                                "clientMiddlePhone",
+                                                watchAll.clientMiddlePhone
+                                            );
+                                    },
+                                })}
+                                onKeyDown={handleOnlyNumber}
+                            />
+                            <div className="rowLine"></div>
+
+                            <input
+                                className="btn phone-btn"
+                                placeholder="5678"
+                                {...register("clientEndPhone", {
+                                    onChange: (e) => {
+                                        if (isNumber)
+                                            setValue("clientEndPhone", e.target.value);
+                                        if (!isNumber || e.target.value.length > 4)
+                                            setValue(
+                                                "clientEndPhone",
+                                                watchAll.clientEndPhone
+                                            );
+                                    },
+                                })}
+                                onKeyDown={handleOnlyNumber}
                             />
                         </InfoColumn>
                         <InfoColumn>
@@ -484,9 +511,11 @@ const Column = styled.div`
             margin-bottom: 20px;
         }
         @media ${device.tablet} {
-            font-size: 20px;
-            margin-bottom: 10px;
-            padding: 2px 8px;
+            font-size: 16px;
+            margin-bottom: 8px;
+            padding: 1px 4px;
+            border-left: 2px solid ${(props) => props.theme.accentColor};
+            line-height: 20px;
         }
     }
 
@@ -578,6 +607,10 @@ const MultiColumn = styled.div`
         font-weight: 400;
         margin-bottom: 5px;
         width: 100%;
+        @media ${device.mobile} {
+            font-size: 11px;
+            line-height: 16px;
+        }
     }
 `;
 
@@ -621,7 +654,7 @@ const InfoColumn = styled.div`
             font-size: 16px;
         }
         @media ${device.mobile} {
-            width: 40%;
+            width: 35%;
         }
     }
     input {
@@ -631,6 +664,25 @@ const InfoColumn = styled.div`
         }
         @media ${device.mobile} {
             width: 60%;
+        }
+    }
+    .phone-btn {
+        width: 80px;
+        @media ${device.mobile} {
+            width: 50px;
+        }
+    }
+    .rowLine {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 1px;
+        background-color: black;
+        margin: 0 10px;
+        @media ${device.mobile} {
+            width: 8px;
+            margin: 0 3px;
         }
     }
 `;

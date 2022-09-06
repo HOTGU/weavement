@@ -15,7 +15,7 @@ const Wrapper = styled.div`
             gap: 10px;
         }
         @media ${device.mobile} {
-            gap: 5px;
+            gap: 2px;
         }
         h1 {
             font-family: "Racing Sans One", cursive;
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
                 font-size: 60px;
             }
             @media ${device.mobile} {
-                font-size: 45px;
+                font-size: 30px;
             }
         }
         h2 {
@@ -33,7 +33,7 @@ const Wrapper = styled.div`
                 font-size: 20px;
             }
             @media ${device.mobile} {
-                font-size: 16px;
+                font-size: 12px;
             }
         }
     }

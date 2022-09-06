@@ -3,7 +3,7 @@ import Portfolio from "../models/Portfolio.js";
 export const get = async (req, res, next) => {
     try {
         const portfolios = await Portfolio.find();
-        res.status(200).json(portfolios);
+        return res.status(200).json(portfolios);
     } catch (error) {
         console.log(error);
         next(error);

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { device } from "../device";
 
 const CreateColumn = ({ columnPage, target, text }) => {
     const isText = Boolean(
@@ -24,30 +25,28 @@ const CreateColumn = ({ columnPage, target, text }) => {
                     <ColumnWrapper>
                         {columnPage[target].map((imgObj) => {
                             return (
-                                <div key={imgObj.id}>
-                                    <Column page={columnPage[target].length}>
-                                        <LazyLoadImage
-                                            effect="blur"
-                                            srcSet={`
+                                <Column page={columnPage[target].length} key={imgObj.id}>
+                                    <LazyLoadImage
+                                        effect="blur"
+                                        srcSet={`
                                                         ${imgObj.small} 450w, ${imgObj.medium} 768w, ${imgObj.large}
                                                     `}
-                                            sizes="(max-width: 500px) 375px,
+                                        sizes="(max-width: 500px) 375px,
                                                     (max-width: 780px) 760px,
                                                     1400px"
-                                            src={
-                                                columnPage[target].length === 1
-                                                    ? imgObj.large
-                                                    : columnPage[target].length === 2
-                                                    ? imgObj.medium
-                                                    : imgObj.small
-                                            }
-                                            alt="images"
-                                            width="100%"
-                                            height="100%"
-                                            crossorigin="anonymous"
-                                        />
-                                    </Column>
-                                </div>
+                                        src={
+                                            columnPage[target].length === 1
+                                                ? imgObj.large
+                                                : columnPage[target].length === 2
+                                                ? imgObj.medium
+                                                : imgObj.small
+                                        }
+                                        alt="images"
+                                        width="100%"
+                                        height="100%"
+                                        crossOrigin="anonymous"
+                                    />
+                                </Column>
                             );
                         })}
                     </ColumnWrapper>
@@ -61,13 +60,17 @@ const ColumnWrapper = styled.div`
     width: 100%;
     aspect-ratio: 3/2;
     display: flex;
-    gap: 5px;
-    margin-bottom: 5px;
+    gap: 15px;
+    margin-bottom: 15px;
+    @media ${device.mobile} {
+        gap: 5px;
+        margin-bottom: 5px;
+    }
 `;
 
 const Column = styled.div`
     width: 100%;
-    aspect-ratio: ${(props) => (props.page === 1 ? 3 / 2 : 3 / 4)};
+    aspect-ratio: ${(props) => (props.page === 1 ? 3 / 2 : 0.742)};
     img {
         object-fit: cover;
     }
@@ -78,7 +81,10 @@ const TextWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 130px 0;
+    margin: 130px 0;
+    @media ${device.mobile} {
+        margin: 60px 0;
+    }
     h3 {
         font-size: 20px;
         font-weight: 500;

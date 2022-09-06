@@ -9,7 +9,7 @@ function Footer() {
             <div className="default-container">
                 <Wrapper>
                     <Item>
-                        <div className="img-container">
+                        <div className="img-container toggle">
                             <img src={LogoImg} alt="" />
                         </div>
                         <div className="column-container">
@@ -40,6 +40,9 @@ const Container = styled.div`
     border-top: 1px solid ${(props) => props.theme.borderColor};
     height: 160px;
     width: 100%;
+    @media ${device.mobile} {
+        height: 90px;
+    }
 `;
 const Wrapper = styled.div`
     display: flex;
@@ -61,14 +64,14 @@ const Item = styled.div`
         justify-content: center;
         align-items: center;
         gap: 0;
+        .toggle {
+            display: none;
+        }
     }
     img {
         height: 70px;
         @media ${device.tablet} {
             height: 50px;
-        }
-        @media ${device.mobile} {
-            height: 40px;
         }
     }
     .column-container {
@@ -83,11 +86,8 @@ const Item = styled.div`
             margin-top: 5px;
         }
         @media ${device.mobile} {
-            font-size: 12px;
+            font-size: 10px;
             text-align: center;
-            .toggle {
-                display: none;
-            }
         }
         h3 {
             font-weight: 500;
@@ -96,7 +96,8 @@ const Item = styled.div`
                 font-size: 16px;
             }
             @media ${device.mobile} {
-                font-size: 14px;
+                font-size: 12px;
+                margin-bottom: 1px;
             }
         }
         h4 {
@@ -106,7 +107,7 @@ const Item = styled.div`
                 font-size: 20px;
             }
             @media ${device.mobile} {
-                font-size: 18px;
+                font-size: 16px;
             }
         }
         div {
