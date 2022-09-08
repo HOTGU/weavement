@@ -13,16 +13,19 @@ import userRouter from "./routes/userRouter.js";
 import contactRouter from "./routes/contactRouter.js";
 import portfolioRouter from "./routes/portfolioRouter.js";
 
-if (process.env.NODE_ENV == "production") {
-    console.log("Production Mode");
-} else if (process.env.NODE_ENV == "development") {
+if (process.env.NODE_ENV == "development") {
     console.log("Development Mode");
 }
 
 const app = express();
 
 const dbConnect = () => {
-    mongoose.connect(process.env.MONGO_URL);
+    if (process.env.NODE_ENV == "production") {
+        mongoose.connect(process.env.MONGO_URL);
+    } else if (process.env.NODE_ENV == "development") {
+        console.log("local db에 연결");
+        mongoose.connect(process.env.DEV_MONGO_URL);
+    }
 };
 
 dbConnect();

@@ -2,8 +2,15 @@ import Portfolio from "../models/Portfolio.js";
 
 export const get = async (req, res, next) => {
     try {
-        const portfolios = await Portfolio.find();
-        return res.status(200).json(portfolios);
+        const PAGE_SIZES = 6;
+        const SKIP_PAGE = Number(req.query.page || "1") - 1;
+        const total = await Portfolio.countDocuments({});
+        const portfolios = await Portfolio.find()
+            .limit(PAGE_SIZES)
+            .skip(PAGE_SIZES * SKIP_PAGE);
+        return res
+            .status(200)
+            .json({ totalPages: Math.ceil(total / PAGE_SIZES), portfolios });
     } catch (error) {
         console.log(error);
         next(error);

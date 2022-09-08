@@ -21,7 +21,11 @@ const upload = multer({
             {
                 id: "largeSize",
                 key: function (req, file, cb) {
-                    cb(null, `images/large/${Date.now()}_${file.originalname}`);
+                    if (process.env.NODE_ENV == "production") {
+                        cb(null, `images/large/${Date.now()}_${file.originalname}`);
+                    } else {
+                        cb(null, `test/large/${Date.now()}_${file.originalname}`);
+                    }
                 },
                 transform: function (req, file, cb) {
                     cb(
@@ -37,7 +41,11 @@ const upload = multer({
             {
                 id: "mediumSize",
                 key: function (req, file, cb) {
-                    cb(null, `images/medium/${Date.now()}_${file.originalname}`);
+                    if (process.env.NODE_ENV == "production") {
+                        cb(null, `images/medium/${Date.now()}_${file.originalname}`);
+                    } else {
+                        cb(null, `test/medium/${Date.now()}_${file.originalname}`);
+                    }
                 },
                 transform: function (req, file, cb) {
                     cb(
@@ -53,7 +61,11 @@ const upload = multer({
             {
                 id: "smallSize",
                 key: function (req, file, cb) {
-                    cb(null, `images/small/${Date.now()}_${file.originalname}`);
+                    if (process.env.NODE_ENV == "production") {
+                        cb(null, `images/small/${Date.now()}_${file.originalname}`);
+                    } else {
+                        cb(null, `test/small/${Date.now()}_${file.originalname}`);
+                    }
                 },
                 transform: function (req, file, cb) {
                     cb(

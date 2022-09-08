@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { faCircleCheck, faPlus, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 import Modal from "../Components/Modal";
 import {
@@ -169,6 +169,7 @@ const FileWrapper = styled.div`
 const CreateImages = ({ target, watchAll }) => {
     const column = useRecoilValue(pageColumnAtom);
     const images = useRecoilValue(pageImagesAtom);
+
     const [thumb, setThumb] = useRecoilState(thumbImageWhereAtom);
 
     const isText = Boolean(
@@ -249,6 +250,17 @@ function AdminPortfolio() {
     const [column, setColumn] = useRecoilState(pageColumnAtom);
     const images = useRecoilValue(pageImagesAtom);
     const thumbWhere = useRecoilValue(thumbImageWhereAtom);
+    const resetImages = useResetRecoilState(pageImagesAtom);
+    const resetPageColumns = useResetRecoilState(pageColumnAtom);
+    const resetTotalColumns = useResetRecoilState(totalColumnAtom);
+    const resetThumb = useResetRecoilState(thumbImageWhereAtom);
+
+    const resetAtoms = () => {
+        resetImages();
+        resetPageColumns();
+        resetThumb();
+        resetTotalColumns();
+    };
 
     const { handleSubmit, register, watch, reset } = useForm();
 
@@ -306,6 +318,7 @@ function AdminPortfolio() {
             toast.success("포트폴리오가 정상적으로 업로드되었습니다");
             setCraeteModal(false);
             reset();
+            resetAtoms();
         } catch (error) {
             setLoading(false);
             if (error.response.data.message === "File too large") {
