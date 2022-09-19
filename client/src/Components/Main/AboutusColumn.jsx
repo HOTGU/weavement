@@ -10,6 +10,9 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     background-color: ${(props) => props.theme.subAccentColor};
+    /* background-color: ${(props) => props.theme.textColor}; */
+    /* background-color: rgba(0, 0, 0, 0.4); */
+
     position: relative;
     padding-bottom: 310px;
     height: 100%;
@@ -53,7 +56,7 @@ const Wrapper = styled.div`
         height: 400px;
         width: 100%;
         line-height: 26px;
-        background-color: rgba(0, 0, 0, 0.4);
+        background-color: rgba(0, 0, 0, 0.7);
         color: white;
         @media ${device.tablet} {
             line-height: 24px;

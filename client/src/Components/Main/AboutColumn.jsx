@@ -8,7 +8,7 @@ import AboutDefaultImg from "../../images/weavement-about-768w.webp";
 import { device } from "../../device";
 
 const Wrapper = styled.div`
-    background-color: #7a7876;
+    background-color: ${(props) => props.theme.textColor};
     width: 100%;
     height: auto;
     z-index: -1;

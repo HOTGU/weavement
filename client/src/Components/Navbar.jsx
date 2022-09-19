@@ -34,14 +34,14 @@ const SideNavbar = ({ show, setShow }) => {
                                 className="nav__column"
                                 onClick={() => setShow(false)}
                             >
-                                프로젝트관리
+                                프로젝트
                             </Link>
                             <Link
                                 to="/admin/portfolio"
                                 className="nav__column"
                                 onClick={() => setShow(false)}
                             >
-                                포트폴리오관리
+                                포트폴리오
                             </Link>
                         </>
                     ) : (
@@ -154,8 +154,8 @@ function Navbar() {
                     {pathname.includes("admin") ? (
                         <>
                             <Link to="/admin">분석</Link>
-                            <Link to="/admin/project">프로젝트관리</Link>
-                            <Link to="/admin/portfolio">포트폴리오관리</Link>
+                            <Link to="/admin/project">프로젝트</Link>
+                            <Link to="/admin/portfolio">포트폴리오</Link>
                         </>
                     ) : (
                         <>

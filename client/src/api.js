@@ -103,4 +103,13 @@ export const createContactApi = (data) => axios.post(`/contact`, data);
 
 export const getPortfolioApi = (params) => axios.get(`/portfolio`, { params });
 
+export const allGetPortfoiloApi = () => axiosJWT.get(`/portfolio/all`);
+
 export const createPortfolioApi = (data) => axiosJWT.post(`/portfolio`, data);
+
+// note
+
+export const createNoteApi = (contactId, data) =>
+    axiosJWT.post(`/contact/note/${contactId}`, data);
+
+export const getNoteApi = (id) => axiosJWT.get(`/contact/note/${id}`);

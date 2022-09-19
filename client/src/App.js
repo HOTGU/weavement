@@ -11,7 +11,7 @@ import Auth from "./Pages/Auth";
 import Admin from "./Pages/Admin";
 import Contact from "./Pages/Contact";
 import AdminPortfolio from "./Pages/AdminPortfolio";
-import AdminProject from "./Pages/AdminProject";
+import AdminContact from "./Pages/AdminContact";
 import Footer from "./Components/Footer";
 import PortfolioDetail from "./Pages/PortfolioDetail";
 import { device } from "./device";
@@ -42,7 +42,7 @@ function App() {
                         <Route path="/auth" element={<Auth />} />
                         <Route path="/admin" element={<Admin />} />
                         <Route path="admin/portfolio" element={<AdminPortfolio />} />
-                        <Route path="/admin/project" element={<AdminProject />} />
+                        <Route path="/admin/project" element={<AdminContact />} />
                     </Routes>
                     <Footer />
                 </Wrapper>

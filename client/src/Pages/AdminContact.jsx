@@ -12,7 +12,7 @@ import ContactFilterForm from "../Components/Admin/ContactFilterForm";
 import ContactFilterHead from "../Components/Admin/ContactFilterHead";
 import { removeCookie } from "../utils/cookie";
 
-function AdminProject() {
+function AdminContact() {
     const [filterItem, setFilterItem] = useRecoilState(filterItemAtom);
     const [filterInput, setFilterInput] = useRecoilState(filterInputAtom);
     const contactList = useRecoilValueLoadable(contactListSelector);
@@ -33,7 +33,7 @@ function AdminProject() {
     return (
         <div>
             <ResultContainer>
-                <ContactFilterHead setShow={setShow} />
+                <ContactFilterHead setShow={setShow} excelData={contacts} />
 
                 {contactList.state === "loading" ? (
                     <Loader isCenter={true} width="40px" height="40px" />
@@ -169,4 +169,4 @@ const SearchText = styled.div`
     }
 `;
 
-export default AdminProject;
+export default AdminContact;

@@ -1,45 +1,41 @@
-import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
 import { useResetRecoilState } from "recoil";
 import Moment from "react-moment";
 import { toast } from "react-toastify";
 
-import { deleteContactApi, updateContactApi } from "../../api";
+import { deleteContactApi, createNoteApi } from "../../api";
 import { contactListSelector } from "../../atoms/contact";
 import Modal from "../Modal";
-import Button from "../Button";
 import Confirm from "../Confirm";
+import UpdateContactForm from "../Form/UpdateContactForm";
 import Loader from "../Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 function ContactCard({ data }) {
     const [showContact, setShowContact] = useState(false);
     const [showCounsel, setShowCounsel] = useState(false);
     const [showSign, setShowSign] = useState(false);
     const [show, setShow] = useState(false);
+    const [showNote, setShowNote] = useState(false);
+    const [showAlertNote, setShowAlertNote] = useState(false);
+    const [alertNoteArr, setAlertNoteArr] = useState([]);
     const [confirm, setConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
     const [currentId, setCurrentId] = useState();
     const reload = useResetRecoilState(contactListSelector);
-    const { register, handleSubmit, reset, watch, setValue } = useForm({
-        defaultValues: useMemo(() => {
-            return data;
-        }, [data]),
-    });
+    const noteEndRef = useRef();
 
-    const onValid = async (formData) => {
-        setLoading(true);
-        try {
-            await updateContactApi(currentId, formData);
-            setShow(false);
-            reload();
-            toast.success("수정되었습니다.");
-        } catch (error) {
-            toast.error("수정실패했습니다.");
-            console.log(error);
-        }
-        setLoading(false);
-    };
+    const { register, handleSubmit } = useForm({
+        defaultValues: useMemo(() => {
+            const today = new Date();
+            return {
+                createdAt: today.toISOString().substring(0, 10),
+            };
+        }, []),
+    });
 
     const deleteContact = async () => {
         setLoading(true);
@@ -54,55 +50,41 @@ function ContactCard({ data }) {
         }
     };
 
-    const handleKeyDown = (e) => {
-        const {
-            target: { name },
-        } = e;
-        if (name === "detail") {
-            if (!watchAll.detail && e.key !== "Backspace") {
-                setValue("detail", "▪ ");
-            }
-            if (e.key === "Enter" && watchAll.detail) {
-                setValue("detail", watchAll.detail + "\n▪ ");
-                e.preventDefault();
-            } else {
-                return true;
-            }
-        }
-        if (name === "note") {
-            if (!watchAll.note && e.key !== "Backspace") {
-                setValue("note", "▪ ");
-            }
-            if (e.key === "Enter" && watchAll.note) {
-                setValue("note", watchAll.note + "\n▪ ");
-                e.preventDefault();
-            } else {
-                return true;
-            }
-        }
-        if (name === "description") {
-            if (!watchAll.description && e.key !== "Backspace") {
-                setValue("description", "▪ ");
-            }
-            if (e.key === "Enter" && watchAll.description) {
-                setValue("description", watchAll.description + "\n▪ ");
-                e.preventDefault();
-            } else {
-                return true;
-            }
+    useEffect(() => {
+        noteEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        const alertNoteArr = data.note.filter((note) => note.category === "공지");
+        setAlertNoteArr(alertNoteArr);
+    }, [showNote, data.note]);
+
+    const onValid = async (data) => {
+        setLoading(true);
+        try {
+            await createNoteApi(currentId, data);
+            setShowNote(false);
+            setLoading(false);
+            toast.success("특이사항이 등록되었습니다");
+            reload();
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
         }
     };
-
-    useEffect(() => {
-        reset(data);
-    }, [currentId, data, reset]);
-
-    const watchAll = watch();
 
     return (
         <>
             <Container isState={data.state}>
                 <BtnWrapper>
+                    <Btn
+                        onClick={() => {
+                            setCurrentId(data._id);
+                            setShowContact(false);
+                            setShowCounsel(false);
+                            setShowSign(false);
+                            setShowNote(true);
+                        }}
+                    >
+                        ❗
+                    </Btn>
                     <Btn
                         onClick={() => {
                             setCurrentId(data._id);
@@ -146,8 +128,8 @@ function ContactCard({ data }) {
                     <SecondRowWrapper>
                         {data.state === "상담" && !showCounsel && (
                             <>
-                                {data.counselPM && (
-                                    <span className="slash-item"> {data.counselPM}</span>
+                                {data.pm && (
+                                    <span className="slash-item"> {data.pm}</span>
                                 )}
                                 {data.meterial.length > 0 && (
                                     <span className="slash-item">
@@ -195,10 +177,8 @@ function ContactCard({ data }) {
                                         )}
                                     </span>
                                 )}
-                                {data.confirmContent && (
-                                    <span className="slash-item">
-                                        {data.confirmContent}
-                                    </span>
+                                {data.content && (
+                                    <span className="slash-item">{data.content}</span>
                                 )}
                                 {data.deadline && (
                                     <span className="slash-item">
@@ -361,10 +341,10 @@ function ContactCard({ data }) {
                 )}
                 {showCounsel && (
                     <ColumnWrapper>
-                        {data.counselPM && (
+                        {data.pm && (
                             <Column>
-                                <div className="column__text">상담PM</div>
-                                <div> {data.counselPM}</div>
+                                <div className="column__text">PM</div>
+                                <div> {data.pm}</div>
                             </Column>
                         )}
                         {data.detail && (
@@ -413,7 +393,7 @@ function ContactCard({ data }) {
                     <ColumnWrapper>
                         {data.signPM && (
                             <Column>
-                                <div className="column__text">계약PM</div>
+                                <div className="column__text">PM</div>
                                 <div> {data.signPM}</div>
                             </Column>
                         )}
@@ -439,10 +419,10 @@ function ContactCard({ data }) {
                                 </div>
                             </Column>
                         )}
-                        {data.confirmContent && (
+                        {data.content && (
                             <Column>
                                 <div className="column__text">콘텐츠</div>
-                                <div>{data.confirmContent}</div>
+                                <div>{data.content}</div>
                             </Column>
                         )}
                         {data.deadline && (
@@ -463,468 +443,88 @@ function ContactCard({ data }) {
                 )}
             </Container>
             <Modal show={show} setShow={setShow}>
-                <SForm onSubmit={handleSubmit(onValid)}>
-                    <div className="form__head">'{data.clientCompany}' 프로젝트</div>
-
-                    <div className="form__column first__column">
-                        <div className="column__head">상태변경</div>
-                        <div className="column__input">
-                            <label>
-                                <input {...register("state")} type="radio" value="문의" />
-                                문의
-                            </label>
-                            <label>
-                                <input {...register("state")} type="radio" value="상담" />
-                                상담
-                            </label>
-                            <label>
-                                <input {...register("state")} type="radio" value="계약" />
-                                계약
-                            </label>
-                            <label>
-                                <input {...register("state")} type="radio" value="완료" />
-                                완료
-                            </label>
+                <UpdateContactForm data={data} setModal={setShow} id={currentId} />
+            </Modal>
+            <Modal show={showNote} setShow={setShowNote}>
+                <NoteContainer>
+                    {alertNoteArr.length > 0 && (
+                        <div className="alertNote">
+                            <div className="alertNote__head">
+                                <h4>
+                                    🔊{" "}
+                                    <Moment format="MM/DD">
+                                        {alertNoteArr[alertNoteArr.length - 1]?.noteDate}
+                                    </Moment>{" "}
+                                    {alertNoteArr[alertNoteArr.length - 1]?.text}
+                                </h4>
+                                {alertNoteArr.length > 1 && (
+                                    <FontAwesomeIcon
+                                        onClick={() => {
+                                            setShowAlertNote((prev) => !prev);
+                                        }}
+                                        icon={showAlertNote ? faChevronUp : faChevronDown}
+                                    />
+                                )}
+                            </div>
+                            <div
+                                className={`alertNote__body ${
+                                    showAlertNote ? "isActive" : ""
+                                }`}
+                            >
+                                {alertNoteArr.reverse().map((note, index) => {
+                                    if (index === 0) return false;
+                                    return (
+                                        <div key={index}>
+                                            <Moment format="MM/DD">
+                                                {note?.noteDate}
+                                            </Moment>{" "}
+                                            {note.text}
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
+                    )}
+                    <div className="wrapper">
+                        {data.note.map((n) => {
+                            return (
+                                <NoteColumn category={n.category} key={n._id}>
+                                    <Moment
+                                        className={
+                                            n.category === "답변" ? "isAnswer" : ""
+                                        }
+                                        format="YYYY/MM/DD"
+                                    >
+                                        {n.noteDate}
+                                    </Moment>
+                                    <Note category={n.category}>
+                                        <div className="note__text">{n.text}</div>
+                                    </Note>
+                                </NoteColumn>
+                            );
+                        })}
+                        <div ref={noteEndRef}></div>
                     </div>
-                    {watchAll.state === "문의" && (
-                        <>
-                            <div className="form__column">
-                                <div className="column__head">단계</div>
-                                <div className="column__input">
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("step")}
-                                            value="기획,예편"
-                                        />
-                                        기획,예편
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("step")}
-                                            value="디자인,설계"
-                                        />
-                                        디자인,설계
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("step")}
-                                            value="제작"
-                                        />
-                                        제작
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("step")}
-                                            value="미확인"
-                                        />
-                                        미확인
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">디자인,도면</div>
-                                <div className="column__input">
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("hasDesign")}
-                                            value="2D"
-                                        />
-                                        2D
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("hasDesign")}
-                                            value="3D"
-                                        />
-                                        3D
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("hasDesign")}
-                                            value="도면"
-                                        />
-                                        도면
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("hasDesign")}
-                                            value="없음"
-                                        />
-                                        없음
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("hasDesign")}
-                                            value="미확인"
-                                        />
-                                        미확인
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">예산</div>
-                                <div className="column__input">
-                                    <select {...register("cost")}>
-                                        <option value="">예산을 선택해주세요.</option>
-                                        <option value="500만원이하">500만원 이하</option>
-                                        <option value="2000만원이하">
-                                            2000만원 이하
-                                        </option>
-                                        <option value="5000만원이하">
-                                            5000만원 이하
-                                        </option>
-                                        <option value="1억원이하">1억원 이하</option>
-                                        <option value="1억원이상">1억원 이상</option>
-                                        <option value="미정">미정</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">일정</div>
-                                <div className="column__input">
-                                    <select {...register("schedule")}>
-                                        <option value="">일정을 선택해주세요. *</option>
-                                        <option value="1개월내">
-                                            시급해요! (1개월 내 완료)
-                                        </option>
-                                        <option value="3개월내">3개월 내 완료</option>
-                                        <option value="3개월이상">3개월 이상</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">문의내용</div>
-                                <div className="column__input">
-                                    <div className="column__input">
-                                        <textarea
-                                            placeholder="상담내용"
-                                            onKeyDown={handleKeyDown}
-                                            {...register("description")}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">알게된경로</div>
-                                <div className="column__input">
-                                    <div className="column__input">
-                                        <select {...register("knowPath")}>
-                                            <option value="">경로를 선택해주세요.</option>
-                                            <option value="검색">
-                                                검색(네이버, 구글, 다음)
-                                            </option>
-                                            <option value="SNS">
-                                                SNS (인스타그램, 페이스북)
-                                            </option>
-                                            <option value="위브먼트블로그">
-                                                '위브먼트'블로그
-                                            </option>
-                                            <option value="네이버블로그">
-                                                네이버 블로그 (공식블로그 제외)
-                                            </option>
-                                            <option value="1억원이상">지인추천</option>
-                                            <option value="알수없음">알 수 없음</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">회사명</div>
-                                <div className="column__input">
-                                    <input {...register("clientCompany")} />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">담당자</div>
-                                <div className="column__input">
-                                    <input {...register("clientName")} />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">직책</div>
-                                <div className="column__input">
-                                    <input {...register("clientPosition")} />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">연락처</div>
-                                <div className="column__input">
-                                    <input {...register("clientStartPhone")} />
-                                    <input {...register("clientMiddlePhone")} />
-                                    <input {...register("clientEndPhone")} />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">이메일</div>
-                                <div className="column__input">
-                                    <input {...register("clientEmail")} />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">홈페이지</div>
-                                <div className="column__input">
-                                    <input {...register("clientHomepage")} />
-                                </div>
-                            </div>
-                        </>
-                    )}
-                    {watchAll.state === "상담" && (
-                        <>
-                            <div className="form__column">
-                                <div className="column__head">상담 PM</div>
-                                <div className="column__input">
-                                    <input
-                                        {...register("counselPM")}
-                                        placeholder="이름"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">소재</div>
-                                <div className="column__input">
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("meterial")}
-                                            value="FRP"
-                                        />
-                                        FRP
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("meterial")}
-                                            value="스티로폼"
-                                        />
-                                        스티로폼
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("meterial")}
-                                            value="목재"
-                                        />
-                                        목재
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("meterial")}
-                                            value="금속"
-                                        />
-                                        금속
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("meterial")}
-                                            value="3D프린팅"
-                                        />
-                                        3D프린팅
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head"></div>
-                                <div className="column__input">
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("meterial")}
-                                            value="복합소재"
-                                        />
-                                        복합소재
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("meterial")}
-                                            value="미정"
-                                        />
-                                        미정
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("meterial")}
-                                            value="기타"
-                                        />
-                                        기타
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">콘텐츠</div>
-                                <div className="column__input">
-                                    <input
-                                        {...register("content")}
-                                        placeholder="콘텐츠"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">크기</div>
-                                <div className="column__input">
-                                    <input
-                                        {...register("size")}
-                                        placeholder="크기"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">일정</div>
-                                <div className="column__input">
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("due")}
-                                            value="2주이내"
-                                        />
-                                        2주이내
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("due")}
-                                            value="2주~4주"
-                                        />
-                                        2주~4주
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("due")}
-                                            value="1달~3달"
-                                        />
-                                        1달~3달
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            {...register("due")}
-                                            value="3달이상"
-                                        />
-                                        3달이상
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">상담내용</div>
-                                <div className="column__input">
-                                    <textarea
-                                        placeholder="상담내용"
-                                        onKeyDown={handleKeyDown}
-                                        {...register("detail")}
-                                    />
-                                </div>
-                            </div>
-                        </>
-                    )}
-                    {watchAll.state === "계약" && (
-                        <>
-                            <div className="form__column">
-                                <div className="column__head">계약 PM</div>
-                                <div className="column__input">
-                                    <input
-                                        {...register("signPM")}
-                                        placeholder="이름"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">협력사</div>
-                                <div className="column__input">
-                                    <input
-                                        {...register("orderCompany")}
-                                        placeholder="회사명"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
+                    <form onSubmit={handleSubmit(onValid)}>
+                        <div className="form__column">
+                            <textarea {...register("text")} />
+                        </div>
 
-                            <div className="form__column">
-                                <div className="column__head">소재</div>
-                                <div className="column__input">
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("confirmMeterial")}
-                                            value="FRP"
-                                        />
-                                        FRP
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("confirmMeterial")}
-                                            value="스티로폼"
-                                        />
-                                        스티로폼
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("confirmMeterial")}
-                                            value="청동"
-                                        />
-                                        청동
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            {...register("confirmMeterial")}
-                                            value="금속"
-                                        />
-                                        금속
-                                    </label>
-                                </div>
+                        <div className="form__column">
+                            <div className="row__column">
+                                <input type="date" {...register("createdAt")} />
+                                <select {...register("category")}>
+                                    <option value="질문">질문</option>
+                                    <option value="답변">답변</option>
+                                    <option value="공지">공지</option>
+                                </select>
                             </div>
-                            <div className="form__column">
-                                <div className="column__head">콘텐츠</div>
-                                <div className="column__input">
-                                    <input
-                                        {...register("confirmContent")}
-                                        placeholder="콘텐츠"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">납기일</div>
-                                <div className="column__input">
-                                    <input {...register("deadline")} type="date" />
-                                </div>
-                            </div>
-                            <div className="form__column">
-                                <div className="column__head">참고사항</div>
-                                <div className="column__input">
-                                    <textarea
-                                        onKeyDown={handleKeyDown}
-                                        {...register("note")}
-                                        placeholder="참고사항"
-                                    />
-                                </div>
-                            </div>
-                        </>
-                    )}
-                    <Button onClick={handleSubmit(onValid)} disabled={loading}>
-                        {loading ? <Loader /> : "수정"}
-                    </Button>
-                </SForm>
+                            <button disabled={loading}>
+                                {loading ? <Loader /> : "생성"}
+                            </button>
+                        </div>
+                    </form>
+                </NoteContainer>
             </Modal>
             <Confirm
                 show={confirm}
@@ -1057,72 +657,165 @@ const StateBtn = styled.span`
     color: white;
 `;
 
-const SForm = styled.form`
+const NoteContainer = styled.div`
+    width: 800px;
+    height: 800px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    min-height: 300px;
-    width: 600px;
-    textarea,
-    input,
-    select {
-        border: 1px solid ${(props) => props.theme.borderColor};
-        padding: 6px 10px;
-        border-radius: 5px;
+    gap: 5px;
+    .alertNote {
+        height: fit-content;
         width: 100%;
-    }
-    textarea {
-        resize: none;
-        outline: none;
-        height: 150px;
-    }
-    label {
-        display: flex;
-        align-items: center;
-    }
-    input,
-    select {
-        font-size: 14px;
-    }
-    input[type="submit"] {
-        cursor: pointer;
-        background-color: ${(props) => props.theme.subAccentColor};
-        color: white;
-        border: none;
-        margin-top: auto;
-    }
-    input[type="radio"],
-    input[type="checkbox"] {
-        width: 10px;
-    }
-    .form__head {
-        text-align: center;
-        font-weight: 700;
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
-    .form__column {
-        display: flex;
-        align-items: center;
-        &:first-child {
-            color: red;
+        border: 1px solid ${(props) => props.theme.borderColor};
+        border-radius: 5px;
+        padding: 10px;
+
+        &__head {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            h4 {
+                font-size: 20px;
+                font-weight: 700;
+            }
+            svg {
+                cursor: pointer;
+            }
+        }
+        &__body {
+            transition: all 0.25s ease;
+            overflow: hidden;
+            padding: 0;
+            line-height: 0;
+        }
+        .isActive {
+            line-height: 1.5;
         }
     }
-    .first__column {
-        border-bottom: 1px solid ${(props) => props.theme.borderColor};
-        padding-bottom: 20px;
-    }
-    .column__head {
-        flex: 3;
-        font-weight: 300;
-        font-size: 18px;
-    }
-    .column__input {
-        flex: 7;
+    .wrapper {
         display: flex;
+        flex-direction: column;
+        height: 100%;
         gap: 10px;
+        overflow-y: scroll;
+        border: 1px solid ${(props) => props.theme.borderColor};
+        border-radius: 5px;
+        padding: 10px;
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: ${(props) => props.theme.borderColor};
+            border-radius: 10px;
+        }
+        &::-webkit-scrollbar-track {
+            background-color: ${(props) => props.theme.bgColor};
+        }
     }
+    form {
+        justify-self: flex-end;
+        margin-top: auto;
+        display: flex;
+        gap: 5px;
+        height: 100px;
+        .form__column {
+            &:first-child {
+                width: 65%;
+            }
+            &:last-child {
+                width: 35%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 5px;
+                .row__column {
+                    display: flex;
+                    height: 100%;
+                    gap: 5px;
+                    input,
+                    select {
+                        width: 50%;
+                    }
+                }
+                button {
+                    width: 100%;
+                    height: calc(50% - 5px);
+                    background-color: ${(props) => props.theme.subAccentColor};
+                    color: ${(props) => props.theme.white};
+                    font-weight: 700;
+                    font-size: 20px;
+                }
+            }
+        }
+        input,
+        select,
+        textarea,
+        button {
+            border: 1px solid ${(props) => props.theme.borderColor};
+            border-radius: 5px;
+            padding: 12px 15px;
+        }
+        button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        select {
+            outline: none;
+        }
+        textarea {
+            width: 100%;
+            height: 100%;
+            resize: none;
+            outline: none;
+        }
+    }
+`;
+const NoteColumn = styled.div`
+    align-self: ${(props) =>
+        props.category === "답변"
+            ? "flex-end"
+            : props.category === "질문"
+            ? "flex-start"
+            : "center"};
+    width: fit-content;
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    .note__text {
+        white-space: pre-wrap;
+    }
+    time {
+        width: 100%;
+        font-size: 12px;
+        color: ${(props) => props.theme.gray};
+        text-align: ${(props) =>
+            props.category === "답변"
+                ? "right"
+                : props.category === "질문"
+                ? "left"
+                : "center"};
+    }
+`;
+
+const Note = styled.div`
+    color: ${(props) =>
+        props.category === "답변" ? props.theme.black : props.theme.white};
+    padding: 10px 24px;
+    line-height: 20px;
+    border-radius: 16px;
+    border-top-left-radius: ${(props) => props.category === "질문" && "0"};
+    border-top-right-radius: ${(props) => props.category === "답변" && "0"};
+    background-color: ${(props) =>
+        props.category === "답변"
+            ? props.theme.white
+            : props.category === "질문"
+            ? props.theme.subAccentColor
+            : props.theme.darkGray};
+    box-shadow: ${(props) => (props.category === "공지" ? "" : props.theme.boxShadow)};
+    font-weight: ${(props) => (props.category === "공지" ? "700" : "400")};
 `;
 
 export default ContactCard;

@@ -1,10 +1,14 @@
-import { faFilter, faRefresh, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useForm } from "react-hook-form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import {
+    faFilter,
+    faRefresh,
+    faPlus,
+    faFileExcel,
+} from "@fortawesome/free-solid-svg-icons";
+import { CSVLink } from "react-csv";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import styled from "styled-components";
-import { toast } from "react-toastify";
 
 import {
     contactListSelector,
@@ -12,78 +16,95 @@ import {
     filterItemAtom,
 } from "../../atoms/contact";
 import Modal from "../Modal";
-import Button from "../Button";
-import { createContactApi } from "../../api";
-import Loader from "../Loader";
+import AdminCreateContactForm from "../Form/AdminCreateContactForm";
+import moment from "moment";
 
 const FilterWrapper = styled.div`
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
     select,
-    svg {
+    .svg {
         cursor: pointer;
         border: 1px solid ${(props) => props.theme.hoverColor};
+        border-radius: 5px;
     }
     select {
         width: fit-content;
         outline: none;
     }
-    svg {
+    .svg {
         width: 18px;
         height: 18px;
         padding: 8px;
     }
 `;
 
-function ContactFilterHead({ setShow }) {
+function ContactFilterHead({ setShow, excelData }) {
     const monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const [filterItem, setFilterItem] = useRecoilState(filterItemAtom);
     const [filterInput, setFilterInput] = useRecoilState(filterInputAtom);
     const reload = useResetRecoilState(contactListSelector);
     const [createModal, setCraeteModal] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, watch, setValue, reset } = useForm();
 
     const handleClickReload = () => {
         reload();
     };
 
-    const watchAll = watch();
+    const data = excelData.map((contact, index) => ({
+        ...contact,
+        id: index + 1,
+        client: `회사명: ${contact.clientCompany} \n성함: ${contact.clientName} \n직급: ${contact.clientPosition} \n번호: ${contact.clientStartPhone}-${contact.clientMiddlePhone}-${contact.clientEndPhone} \n홈페이지: ${contact.clientHomepage} \n이메일: ${contact.clientEmail} \n특이사항 :${contact.clientRequest}`,
+        request: contact.note
+            .filter((note) => {
+                const isRequest = Boolean(note.category === "질문");
+                return isRequest;
+            })
+            .map((note) => {
+                return `${moment(note.noteDate).format("MM월DD일")} \n${note.text} \n`;
+            }),
+        response: contact.note
+            .filter((note) => {
+                const isRequest = Boolean(note.category === "답변");
+                return isRequest;
+            })
+            .map((note) => {
+                return `${moment(note.noteDate).format("MM월DD일")} \n${note.text}\n`;
+            }),
+        alert: contact.note
+            .filter((note) => {
+                const isRequest = Boolean(note.category === "공지");
+                return isRequest;
+            })
+            .map((note) => {
+                return `${moment(note.noteDate).format("MM월DD일")}\n${note.text}\n`;
+            }),
+        createdAt: `${moment(contact.createdAt).format("YYYY년MM월DD일")}`,
+    }));
 
-    const handleKeyDown = (e) => {
-        if (!watchAll.description && e.key !== "Backspace") {
-            setValue("description", "▪ ");
-        }
-        if (e.key === "Enter" && watchAll.description) {
-            setValue("description", watchAll.description + "\n▪ ");
-            e.preventDefault();
-        } else {
-            return true;
-        }
-    };
-
-    const onValid = async (data) => {
-        const dateArr = data.contactDate.split("-");
-        dateArr.forEach((item, index) => {
-            const convertItem = Number(item);
-            if (index === 0) data.year = convertItem;
-            if (index === 1) data.month = convertItem;
-            if (index === 2) data.day = convertItem;
-        });
-        setLoading(true);
-        try {
-            await createContactApi(data);
-            setCraeteModal(false);
-            reload();
-            reset();
-            toast.success("문의가 생성되었습니다");
-        } catch (error) {
-            console.log(error);
-            toast.error("문의생성이 실패했습니다");
-        }
-        setLoading(false);
-    };
+    const headers = [
+        { label: "Id", key: "id" },
+        { label: "상태", key: "state" },
+        { label: "생성날짜", key: "createdAt" },
+        { label: "단계", key: "step" },
+        { label: "디자인여부", key: "hasDesign" },
+        { label: "예산", key: "cost" },
+        { label: "일정", key: "schedule" },
+        { label: "문의내용", key: "description" },
+        { label: "예시", key: "like" },
+        { label: "알게된경로", key: "knowPath" },
+        { label: "클라이언트", key: "client" },
+        { label: "재료", key: "meterial" },
+        { label: "콘텐츠", key: "content" },
+        { label: "크기", key: "size" },
+        { label: "일정", key: "due" },
+        { label: "PM", key: "pm" },
+        { label: "협력사", key: "orderCompany" },
+        { label: "납기일", key: "deadline" },
+        { label: "질문내용", key: "request" },
+        { label: "문의내용", key: "response" },
+        { label: "공지", key: "alert" },
+    ];
 
     return (
         <FilterWrapper>
@@ -131,263 +152,29 @@ function ContactFilterHead({ setShow }) {
                 <option value="완료">완료</option>
             </select>
             <div onClick={() => setShow(true)}>
-                <FontAwesomeIcon icon={faFilter} />
+                <FontAwesomeIcon className="svg" icon={faFilter} />
             </div>
             <div onClick={handleClickReload}>
-                <FontAwesomeIcon icon={faRefresh} />
+                <FontAwesomeIcon className="svg" icon={faRefresh} />
             </div>
             <div onClick={() => setCraeteModal(true)}>
-                <FontAwesomeIcon icon={faPlus} />
+                <FontAwesomeIcon className="svg" icon={faPlus} />
             </div>
+            <div>
+                <CSVLink
+                    headers={headers}
+                    data={data}
+                    filename={`${moment().format("YYMMDD")}_프로젝트관리`}
+                >
+                    <FontAwesomeIcon className="svg" icon={faFileExcel} />
+                </CSVLink>
+            </div>
+
             <Modal show={createModal} setShow={setCraeteModal}>
-                <SForm onSubmit={handleSubmit(onValid)}>
-                    <div className="form__head">문의 생성</div>
-                    <div className="form__column">
-                        <div className="column__head">문의날짜</div>
-                        <div className="column__input">
-                            <input {...register("contactDate")} type="date" />
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">단계</div>
-                        <div className="column__input">
-                            <label>
-                                <input
-                                    {...register("step")}
-                                    type="radio"
-                                    value="기획,예편"
-                                />
-                                기획,예편
-                            </label>
-                            <label>
-                                <input
-                                    {...register("step")}
-                                    type="radio"
-                                    value="디자인,설계"
-                                />
-                                디자인,설계
-                            </label>
-                            <label>
-                                <input {...register("step")} type="radio" value="제작" />
-                                제작
-                            </label>
-                            <label>
-                                <input
-                                    {...register("step")}
-                                    type="radio"
-                                    value="미확인"
-                                />
-                                미확인
-                            </label>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">디자인여부</div>
-                        <div className="column__input">
-                            <label>
-                                <input
-                                    {...register("hasDesign")}
-                                    type="radio"
-                                    value="2D"
-                                />
-                                2D
-                            </label>
-                            <label>
-                                <input
-                                    {...register("hasDesign")}
-                                    type="radio"
-                                    value="3D"
-                                />
-                                3D
-                            </label>
-                            <label>
-                                <input
-                                    {...register("hasDesign")}
-                                    type="radio"
-                                    value="도면"
-                                />
-                                도면
-                            </label>
-                            <label>
-                                <input
-                                    {...register("hasDesign")}
-                                    type="radio"
-                                    value="없음"
-                                />
-                                없음
-                            </label>
-                            <label>
-                                <input
-                                    {...register("hasDesign")}
-                                    type="radio"
-                                    value="미확인"
-                                />
-                                미확인
-                            </label>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">예산</div>
-                        <div className="column__input">
-                            <select {...register("cost")}>
-                                <option value="">예산을 선택해주세요.</option>
-                                <option value="500만원이하">500만원 이하</option>
-                                <option value="2000만원이하">2000만원 이하</option>
-                                <option value="5000만원이하">5000만원 이하</option>
-                                <option value="1억원이하">1억원 이하</option>
-                                <option value="1억원이상">1억원 이상</option>
-                                <option value="미정">미정</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">일정</div>
-                        <div className="column__input">
-                            <select {...register("schedule")}>
-                                <option value="">일정을 선택해주세요. *</option>
-                                <option value="1개월내">시급해요! (1개월 내 완료)</option>
-                                <option value="3개월내">3개월 내 완료</option>
-                                <option value="3개월이상">3개월 이상</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">문의내용</div>
-                        <div className="column__input">
-                            <textarea
-                                onKeyDown={handleKeyDown}
-                                {...register("description")}
-                            ></textarea>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">알게된경로</div>
-                        <div className="column__input">
-                            <div className="column__input">
-                                <select {...register("knowPath")}>
-                                    <option value="">경로를 선택해주세요.</option>
-                                    <option value="검색">검색(네이버, 구글, 다음)</option>
-                                    <option value="SNS">
-                                        SNS (인스타그램, 페이스북)
-                                    </option>
-                                    <option value="위브먼트블로그">
-                                        '위브먼트'블로그
-                                    </option>
-                                    <option value="네이버블로그">
-                                        네이버 블로그 (공식블로그 제외)
-                                    </option>
-                                    <option value="1억원이상">지인추천</option>
-                                    <option value="알수없음">알 수 없음</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">회사명</div>
-                        <div className="column__input">
-                            <input {...register("clientCompany")} />
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">담당자</div>
-                        <div className="column__input">
-                            <input {...register("clientName")} />
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">직책</div>
-                        <div className="column__input">
-                            <input {...register("clientPosition")} />
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">연락처</div>
-                        <div className="column__input">
-                            <input {...register("clientStartPhone")} />
-                            <input {...register("clientMiddlePhone")} />
-                            <input {...register("clientEndPhone")} />
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">이메일</div>
-                        <div className="column__input">
-                            <input {...register("clientEmail")} />
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">홈페이지</div>
-                        <div className="column__input">
-                            <input {...register("clientHomepage")} />
-                        </div>
-                    </div>
-                    <Button onClick={handleSubmit(onValid)} disabled={loading}>
-                        {loading ? <Loader /> : "생성"}
-                    </Button>
-                </SForm>
+                <AdminCreateContactForm setModal={setCraeteModal} />
             </Modal>
         </FilterWrapper>
     );
 }
 
-const SForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 20px;
-    min-height: 300px;
-    width: 500px;
-    textarea,
-    input,
-    select {
-        border: 1px solid ${(props) => props.theme.borderColor};
-        padding: 6px 10px;
-        border-radius: 5px;
-        width: 100%;
-    }
-    textarea {
-        resize: none;
-        outline: none;
-        height: 150px;
-    }
-    input {
-        font-size: 14px;
-    }
-    label {
-        display: flex;
-    }
-    input[type="radio"] {
-        width: 10px;
-    }
-    input[type="submit"] {
-        cursor: pointer;
-        background-color: ${(props) => props.theme.subAccentColor};
-        color: white;
-        border: none;
-        margin-top: auto;
-    }
-    .form__head {
-        text-align: center;
-        font-weight: 700;
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
-    .form__column {
-        display: flex;
-        align-items: center;
-    }
-    .first__column {
-        border-bottom: 1px solid ${(props) => props.theme.borderColor};
-        padding-bottom: 20px;
-    }
-    .column__head {
-        flex: 2;
-        font-weight: 300;
-        font-size: 18px;
-    }
-    .column__input {
-        flex: 4;
-        display: flex;
-        gap: 10px;
-    }
-`;
 export default ContactFilterHead;

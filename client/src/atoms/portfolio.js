@@ -1,5 +1,5 @@
 import { selector, atom } from "recoil";
-import { getPortfolioApi } from "../api";
+import { allGetPortfoiloApi, getPortfolioApi } from "../api";
 
 export const portfoliosPage = atom({
     key: "portfoliosCurrentPage",
@@ -7,12 +7,24 @@ export const portfoliosPage = atom({
 });
 
 export const getPortfolioSelector = selector({
-    key: "portfolioSelector",
+    key: "portfolioGetSelector",
     get: async ({ get }) => {
         try {
             const currentPage = get(portfoliosPage);
             const { data } = await getPortfolioApi({ page: currentPage });
             return { ...data };
+        } catch (error) {
+            console.log(error);
+        }
+    },
+});
+
+export const allGetPortfolioSelector = selector({
+    key: "portfolioAllGetSelector",
+    get: async () => {
+        try {
+            const { data } = await allGetPortfoiloApi();
+            return data;
         } catch (error) {
             console.log(error);
         }
