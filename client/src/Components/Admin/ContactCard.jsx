@@ -24,7 +24,6 @@ function ContactCard({ data }) {
     const [alertNoteArr, setAlertNoteArr] = useState([]);
     const [confirm, setConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [currentId, setCurrentId] = useState();
     const reload = useResetRecoilState(contactListSelector);
     const noteEndRef = useRef();
 
@@ -43,9 +42,9 @@ function ContactCard({ data }) {
             await deleteContactApi(data._id);
             setLoading(false);
             reload();
-            toast.success("삭제되었습니다.");
+            toast.success("삭제 성공 🎉");
         } catch (error) {
-            toast.error("삭제실패했습니다.");
+            toast.error("삭제 실패 🤡");
             setLoading(false);
         }
     };
@@ -56,17 +55,17 @@ function ContactCard({ data }) {
         setAlertNoteArr(alertNoteArr);
     }, [showNote, data.note]);
 
-    const onValid = async (data) => {
+    const onValid = async (formData) => {
         setLoading(true);
         try {
-            await createNoteApi(currentId, data);
+            await createNoteApi(data._id, formData);
             setShowNote(false);
             setLoading(false);
-            toast.success("특이사항이 등록되었습니다");
+            toast.success("특이사항 등록성공🎉");
             reload();
         } catch (error) {
-            console.log(error);
             setLoading(false);
+            toast.success("특이사항 등록실패🤡");
         }
     };
 
@@ -76,7 +75,6 @@ function ContactCard({ data }) {
                 <BtnWrapper>
                     <Btn
                         onClick={() => {
-                            setCurrentId(data._id);
                             setShowContact(false);
                             setShowCounsel(false);
                             setShowSign(false);
@@ -87,7 +85,6 @@ function ContactCard({ data }) {
                     </Btn>
                     <Btn
                         onClick={() => {
-                            setCurrentId(data._id);
                             setShowContact(false);
                             setShowCounsel(false);
                             setShowSign(false);
@@ -443,7 +440,7 @@ function ContactCard({ data }) {
                 )}
             </Container>
             <Modal show={show} setShow={setShow}>
-                <UpdateContactForm data={data} setModal={setShow} id={currentId} />
+                <UpdateContactForm data={data} setModal={setShow} />
             </Modal>
             <Modal show={showNote} setShow={setShowNote}>
                 <NoteContainer>

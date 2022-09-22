@@ -43,10 +43,10 @@ function AdminCreateContactForm({ setModal }) {
             setModal(false);
             reload();
             reset();
-            toast.success("문의가 생성되었습니다");
+            toast.success("문의생성 성공 🎉");
         } catch (error) {
             console.log(error);
-            toast.error("문의생성이 실패했습니다");
+            toast.error("문의생성 실패 🤡");
         }
         setLoading(false);
     };

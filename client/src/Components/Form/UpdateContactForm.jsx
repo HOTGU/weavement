@@ -8,7 +8,7 @@ import { updateContactApi } from "../../api";
 import Button from "../Button";
 import Loader from "../Loader";
 
-function UpdateContactForm({ data, setModal, id }) {
+function UpdateContactForm({ data, setModal }) {
     const reload = useResetRecoilState(contactListSelector);
     const [loading, setLoading] = useState(false);
 
@@ -23,20 +23,19 @@ function UpdateContactForm({ data, setModal, id }) {
     const onValid = async (formData) => {
         setLoading(true);
         try {
-            await updateContactApi(id, formData);
+            await updateContactApi(data._id, formData);
             setModal(false);
             reload();
-            toast.success("수정되었습니다.");
+            toast.success("수정 성공 🎉");
         } catch (error) {
-            toast.error("수정실패했습니다.");
-            console.log(error);
+            toast.error("수정 실패 🤡");
         }
         setLoading(false);
     };
 
     useEffect(() => {
         reset(data);
-    }, [id, data, reset]);
+    }, [data, reset]);
 
     return (
         <SForm onSubmit={handleSubmit(onValid)}>

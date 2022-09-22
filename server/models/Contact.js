@@ -20,19 +20,14 @@ const ContactSchema = mongoose.Schema({
     clientRequest: { type: String },
     createdAt: Date,
     state: { type: String, default: "문의" },
-    note: String,
-    detail: String,
     meterial: Array,
     content: String,
     size: String,
     due: String,
-    counselPM: String,
-    signPM: String,
+    pm: String,
     orderCompany: String,
-    confirmMeterial: Array,
-    confirmContent: String,
-    confirmSize: String,
     deadline: Date,
+    note: [{ noteId: String, text: String, noteDate: Date, category: String }],
 });
 
 const Contact = mongoose.model("Contact", ContactSchema);

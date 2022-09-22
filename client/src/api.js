@@ -105,6 +105,8 @@ export const getPortfolioApi = (params) => axios.get(`/portfolio`, { params });
 
 export const allGetPortfoiloApi = () => axiosJWT.get(`/portfolio/all`);
 
+export const deletePortfolioApi = (id) => axiosJWT.delete(`/portfolio/${id}`);
+
 export const createPortfolioApi = (data) => axiosJWT.post(`/portfolio`, data);
 
 // note

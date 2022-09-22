@@ -29,11 +29,11 @@ const CreateColumn = ({ columnPage, target, text }) => {
                                     <LazyLoadImage
                                         effect="blur"
                                         srcSet={`
-                                                        ${imgObj.small} 450w, ${imgObj.medium} 768w, ${imgObj.large}
-                                                    `}
+                                                ${imgObj.small} 450w, ${imgObj.medium} 768w, ${imgObj.large}
+                                            `}
                                         sizes="(max-width: 500px) 375px,
-                                                    (max-width: 780px) 760px,
-                                                    1400px"
+                                            (max-width: 780px) 760px,
+                                            1400px"
                                         src={
                                             columnPage[target].length === 1
                                                 ? imgObj.large
@@ -86,16 +86,30 @@ const TextWrapper = styled.div`
         margin: 60px 0;
     }
     h3 {
-        font-size: 20px;
+        font-size: 32px;
         font-weight: 500;
         margin-bottom: 20px;
+        @media ${device.tablet} {
+            font-size: 24px;
+        }
+        @media ${device.mobile} {
+            font-size: 20px;
+        }
     }
     p {
-        font-size: 13px;
-        line-height: 13px;
+        font-size: 20px;
+        line-height: 24px;
         font-weight: 300;
         white-space: pre-wrap;
         text-align: center;
+        @media ${device.tablet} {
+            line-height: 18px;
+            font-size: 16px;
+        }
+        @media ${device.mobile} {
+            line-height: 15px;
+            font-size: 13px;
+        }
     }
 `;
 

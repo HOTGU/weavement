@@ -14,7 +14,10 @@ const portfolioSchema = mongoose.Schema({
             where: String,
         },
     ],
-    thumb: String,
+    thumb: {
+        location: String,
+        where: String,
+    },
 });
 
 const Portfolio = mongoose.model("Portfolio", portfolioSchema);

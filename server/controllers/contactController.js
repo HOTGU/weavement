@@ -1,4 +1,5 @@
 import Contact from "../models/Contact.js";
+import Note from "../models/Note.js";
 import { getCurrentDate } from "../utils/getCurrentDate.js";
 
 export const chartFilter = async (req, res, next) => {
@@ -75,7 +76,7 @@ export const get = async (req, res, next) => {
                 $lt: new Date(Date.UTC(2022, Number(query.month))),
             };
 
-        const contacts = await Contact.find(filterQuery);
+        const contacts = await Contact.find(filterQuery).populate("note");
 
         return res.status(200).json(contacts);
     } catch (error) {
@@ -117,7 +118,6 @@ export const update = async (req, res, next) => {
         );
         return res.status(200).json(updateContact);
     } catch (error) {
-        console.log(error);
         next(error);
     }
 };
@@ -129,6 +129,33 @@ export const remove = async (req, res, next) => {
     try {
         await Contact.findByIdAndDelete(id);
         return res.status(200).json({ message: "ok" });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// note
+
+export const getNote = (req, res, next) => {};
+
+export const createNote = async (req, res, next) => {
+    const {
+        body,
+        params: { contactId },
+    } = req;
+    try {
+        const contact = await Contact.findById(contactId);
+        const newNote = new Note({ ...body });
+        const noteObj = {
+            noteId: newNote._id,
+            text: newNote.text,
+            noteDate: newNote.createdAt,
+            category: newNote.category,
+        };
+        contact.note.push(noteObj);
+        await newNote.save();
+        await contact.save();
+        return res.status(200).json(noteObj);
     } catch (error) {
         next(error);
     }

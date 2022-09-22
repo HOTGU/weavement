@@ -14,7 +14,7 @@ function PortfolioCard({ portfolio }) {
                 <div className="image_wrapper">
                     <LazyLoadImage
                         effect="blur"
-                        src={portfolio.thumb}
+                        src={portfolio.thumb.location}
                         alt="images"
                         width="100%"
                         height="100%"

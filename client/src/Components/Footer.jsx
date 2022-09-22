@@ -24,7 +24,7 @@ function Footer() {
                     <Item>
                         <div className="column-container">
                             <div className="toggle">전화 상담</div>
-                            <h4>010 . 2564 . 7181</h4>
+                            <h4>010 . 6803 . 7181</h4>
                             <div>영업시간 9:00-18:00 | 토,일 휴무</div>
                         </div>
                     </Item>

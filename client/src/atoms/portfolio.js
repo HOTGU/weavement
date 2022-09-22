@@ -19,14 +19,23 @@ export const getPortfolioSelector = selector({
     },
 });
 
+export const portfolioSelectorTrigger = atom({
+    key: "portfolioTriggerAtom",
+    default: 0,
+});
+
 export const allGetPortfolioSelector = selector({
     key: "portfolioAllGetSelector",
-    get: async () => {
+    get: async ({ get }) => {
         try {
+            get(portfolioSelectorTrigger);
             const { data } = await allGetPortfoiloApi();
             return data;
         } catch (error) {
             console.log(error);
         }
+    },
+    set: ({ set }) => {
+        set(portfolioSelectorTrigger, Math.random());
     },
 });

@@ -22,7 +22,7 @@ export const filterInputAtom = atom({
 });
 
 export const contactSelectorTrigger = atom({
-    key: "triggerAtom",
+    key: "contactTriggerAtom",
     default: 0,
 });
 

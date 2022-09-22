@@ -23,8 +23,8 @@ const dbConnect = () => {
     if (process.env.NODE_ENV == "production") {
         mongoose.connect(process.env.MONGO_URL);
     } else if (process.env.NODE_ENV == "development") {
-        console.log("local db에 연결");
         mongoose.connect(process.env.DEV_MONGO_URL);
+        console.log("local db에 연결");
     }
 };
 

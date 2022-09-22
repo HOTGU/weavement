@@ -1,5 +1,15 @@
 import Portfolio from "../models/Portfolio.js";
 
+export const allGet = async (req, res, next) => {
+    try {
+        const portfolios = await Portfolio.find();
+        return res.status(200).json(portfolios);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
 export const get = async (req, res, next) => {
     try {
         const PAGE_SIZES = 6;
@@ -22,9 +32,10 @@ export const create = async (req, res, next) => {
         files,
         body: { title, description, where, imageWhere, thumbWhere },
     } = req;
+    console.log(files);
     try {
         const imagesArr = [];
-        let thumb = "";
+        let thumb = {};
 
         files.forEach(({ transforms }, i) => {
             const obj = {
@@ -46,7 +57,8 @@ export const create = async (req, res, next) => {
             });
             obj.where = imageWhere[i];
             if (obj.where === thumbWhere) {
-                thumb = obj.mediumLocation;
+                thumb.location = obj.mediumLocation;
+                thumb.where = thumbWhere;
             }
             imagesArr.push(obj);
         });
@@ -63,6 +75,18 @@ export const create = async (req, res, next) => {
         res.status(200).json({ message: "ok" });
     } catch (error) {
         console.log(error);
+        next(error);
+    }
+};
+
+export const deleteById = async (req, res, next) => {
+    const {
+        params: { id },
+    } = req;
+    try {
+        await Portfolio.findByIdAndDelete(id);
+        return res.status(200).json({ message: "ok" });
+    } catch (error) {
         next(error);
     }
 };

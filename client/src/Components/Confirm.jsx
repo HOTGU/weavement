@@ -48,12 +48,14 @@ const Wrapper = styled.div`
             display: flex;
             justify-content: center;
             align-items: center;
+            border: none;
         }
         .no {
-            background-color: ${(props) => props.theme.darkGray};
+            background-color: ${(props) => props.theme.lightGray};
+            color: ${(props) => props.theme.gray};
         }
         .yes {
-            background-color: ${(props) => props.theme.subAccentColor};
+            background-color: ${(props) => props.theme.accentColor};
         }
     }
 `;

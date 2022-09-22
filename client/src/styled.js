@@ -17,7 +17,8 @@ export const GlobalStyles = createGlobalStyle`
         resize: none;
     }
     html,boty{
-        height: 100%;
+        margin:0px;
+        height:100%;
     }
    
     body{
@@ -80,7 +81,6 @@ export const myTheme = {
     borderColor: "#dcdde1",
     hoverColor: "#bdc3c7",
     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;",
-    // gray: "#95a5a6",
     gray: "dimgray",
     darkGray: "#3e3a39",
     lightGray: "#ecf0f1",

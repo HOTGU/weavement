@@ -1,136 +1,129 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+// import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
-import { faCircleCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
+import { toast } from "react-toastify";
 
-import Modal from "../Components/Modal";
-import {
-    pageColumnAtom,
-    pageImagesAtom,
-    thumbImageWhereAtom,
-    totalColumnAtom,
-} from "../atoms/adminPortfolio";
 import CreatePortfolioForm from "../Components/Form/CreatePortfolioForm";
-// import { allGetPortfolioSelector } from "../atoms/portfolio";
+import { allGetPortfolioSelector } from "../atoms/portfolio";
+import { deletePortfolioApi } from "../api";
+import Confirm from "../Components/Confirm";
+import Modal from "../Components/Modal";
+
+const PortfolioRow = ({ portfolio, index }) => {
+    const [createConfirm, setCreateConfirm] = useState(false);
+    const [updateModal, setUpdateModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const reload = useResetRecoilState(allGetPortfolioSelector);
+
+    const deletePortfolio = async () => {
+        setLoading(true);
+        try {
+            await deletePortfolioApi(portfolio._id);
+            setLoading(false);
+            toast.success("삭제 성공 🎉");
+            reload();
+        } catch (error) {
+            setLoading(false);
+            toast.error("삭제 실패 🤡");
+        }
+    };
+
+    return (
+        <>
+            <div
+                className={`portfolio ${(index + 1) % 2 === 0 && "double"}`}
+                key={portfolio._id}
+            >
+                <div className="portfolio__index">{index + 1}</div>
+                <div className="portfolio__title">{portfolio.text.title}</div>
+                <div className="portfolio__description">{portfolio.text.description}</div>
+                <div className="portfolio__btnContainer">
+                    <div
+                        className="btn"
+                        onClick={() => {
+                            setUpdateModal(true);
+                        }}
+                    >
+                        수정
+                    </div>
+                    <div
+                        className="delete btn"
+                        onClick={() => {
+                            setCreateConfirm(true);
+                        }}
+                    >
+                        삭제
+                    </div>
+                </div>
+            </div>
+            <Confirm
+                show={createConfirm}
+                setShow={setCreateConfirm}
+                title="정말 삭제하시겠습니까?"
+                loading={loading}
+                successCallback={deletePortfolio}
+            />
+            <Modal show={updateModal} setShow={setUpdateModal}>
+                <ModalContainer>
+                    <CreatePortfolioForm
+                        setModal={setUpdateModal}
+                        isUpdate={true}
+                        data={portfolio}
+                    />
+                </ModalContainer>
+            </Modal>
+        </>
+    );
+};
 
 function AdminPortfolio() {
     const [createModal, setCraeteModal] = useState(false);
-    const totalColumn = useRecoilValue(totalColumnAtom);
-    // const portfoliosLoadable = useRecoilStateLoadable(allGetPortfolioSelector);
+    const portfoliosLoadable = useRecoilValueLoadable(allGetPortfolioSelector);
 
-    const { watch } = useForm();
+    // const { handleSubmit, register, watch } = useForm();
 
-    const watchAll = watch();
+    // console.log(watch().column);
+
+    const portfolios = useMemo(() => {
+        return portfoliosLoadable.state === "hasValue" ? portfoliosLoadable.contents : [];
+    }, [portfoliosLoadable]);
 
     return (
-        <Container>
+        <Container className="default-container">
             <div onClick={() => setCraeteModal(true)}>
                 <FontAwesomeIcon className="svg" icon={faPlus} />
             </div>
+            <PortfolioContainer>
+                {portfolios.map((portfolio, index) => (
+                    <PortfolioRow portfolio={portfolio} index={index} />
+                ))}
+            </PortfolioContainer>
+            {/* <form
+                onSubmit={handleSubmit((data) => {
+                    console.log(data);
+                })}
+            >
+                <select {...register("column")}>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6</option>
+                </select>
+            </form> */}
+
             <Modal show={createModal} setShow={setCraeteModal}>
                 <ModalContainer>
-                    <CreatePortfolioForm setModal={setCraeteModal} />
-
-                    <Preview>
-                        <h3>미리보기</h3>
-                        {[...Array(totalColumn)].map((e, i) => {
-                            return (
-                                <div key={i}>
-                                    <CreateImages target={i + 1} watchAll={watchAll} />
-                                </div>
-                            );
-                        })}
-                    </Preview>
+                    <CreatePortfolioForm setModal={setCraeteModal} isUpdate={false} />
                 </ModalContainer>
             </Modal>
         </Container>
     );
 }
 
-const CreateImages = ({ target, watchAll }) => {
-    const column = useRecoilValue(pageColumnAtom);
-    const images = useRecoilValue(pageImagesAtom);
-
-    const [thumb, setThumb] = useRecoilState(thumbImageWhereAtom);
-
-    const isText = Boolean(
-        (target === 1 && watchAll.where === "top") ||
-            (target === 2 && watchAll.where === "middle") ||
-            (target === 3 && watchAll.where === "bottom")
-    );
-
-    return (
-        <>
-            {isText && (
-                <TextWrapper>
-                    <div className="textTitle">{watchAll.title}</div>
-                    <div className="textDescription">{watchAll.description}</div>
-                </TextWrapper>
-            )}
-            <div className="column">
-                {column[target]?.length > 0 &&
-                    column[target].map((n, index) => {
-                        return (
-                            <div className="wrapper" key={index}>
-                                {images.map((i, imageIndex) => {
-                                    if (i.where === `${target}-${n}`) {
-                                        return (
-                                            <>
-                                                <img
-                                                    key={imageIndex}
-                                                    src={i.url}
-                                                    alt="img"
-                                                    onClick={() => {
-                                                        setThumb(i.where);
-                                                    }}
-                                                />
-                                                {i.where === thumb && (
-                                                    <div className="isThumb">
-                                                        <FontAwesomeIcon
-                                                            icon={faCircleCheck}
-                                                        />
-                                                    </div>
-                                                )}
-                                            </>
-                                        );
-                                    } else {
-                                        return false;
-                                    }
-                                })}
-                            </div>
-                        );
-                    })}
-            </div>
-        </>
-    );
-};
-
-const TextWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 30px 0;
-    .textTitle {
-        font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 4px;
-    }
-    .textDescription {
-        font-size: 10px;
-        font-weight: 300;
-        white-space: pre-line;
-        text-align: center;
-    }
-`;
-
 const Container = styled.div`
-    margin: 0 auto;
-    width: 100%;
-    max-width: 1800px;
-    padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,47 +150,58 @@ const ModalContainer = styled.div`
     }
 `;
 
-const Preview = styled.div`
-    width: 400px;
+const PortfolioContainer = styled.div`
+    margin: 20px 0;
     height: auto;
-    border: 1px solid ${(props) => props.theme.gray};
-    overflow-y: scroll;
-    .column {
-        width: 310px;
-        aspect-ratio: 3/2;
-        margin: 0 auto 2px auto;
+    width: 100%;
+    .portfolio {
+        height: 50px;
+        width: 100%;
         display: flex;
-        border-radius: 5px;
-        gap: 2px;
-        .wrapper {
-            width: 100%;
-            height: 100%;
-            background-color: ${(props) => props.theme.gray};
-            position: relative;
-            img {
-                width: 100%;
-                height: 100%;
-                border-radius: 5px;
-                object-fit: cover;
+        background-color: #e6e6e6;
+        align-items: center;
+        div {
+            padding: 0 10px;
+            text-align: center;
+        }
+        &__index {
+            font-size: 20px;
+            font-weight: 700;
+            width: 100px;
+        }
+        &__title {
+            font-size: 20px;
+            font-weight: 500;
+            width: 30%;
+        }
+        &__description {
+            font-size: 20px;
+            font-weight: 300;
+            overflow: hidden;
+            width: 50%;
+        }
+        &__btnContainer {
+            width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            .btn {
+                width: 60px;
+                padding: 10px 0;
                 cursor: pointer;
+                background-color: ${(props) => props.theme.darkGray};
+                color: ${(props) => props.theme.white};
             }
-            .isThumb {
-                position: absolute;
-                z-index: 50;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(255, 255, 255, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                svg {
-                    height: 50px;
-                    color: rgba(0, 0, 0, 0.5);
-                }
+            .delete {
+                background-color: ${(props) => props.theme.accentColor};
+                color: ${(props) => props.theme.white};
             }
         }
     }
+    .double {
+        background-color: #f7f7f7;
+    }
 `;
+
 export default AdminPortfolio;

@@ -2,7 +2,9 @@ import express from "express";
 import {
     chartFilter,
     create,
+    createNote,
     get,
+    getNote,
     remove,
     update,
 } from "../controllers/contactController.js";
@@ -15,5 +17,7 @@ contactRouter.get("/filter", verifyUser, verifyIsAdmin, chartFilter);
 contactRouter.patch("/:id", verifyUser, verifyIsAdmin, update);
 contactRouter.delete("/:id", verifyUser, verifyIsAdmin, remove);
 contactRouter.post("/", create);
+contactRouter.get("/note/:id", verifyUser, verifyIsAdmin, getNote);
+contactRouter.post("/note/:contactId", verifyUser, verifyIsAdmin, createNote);
 
 export default contactRouter;
