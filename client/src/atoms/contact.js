@@ -38,3 +38,8 @@ export const contactListSelector = selector({
         set(contactSelectorTrigger, Math.random());
     },
 });
+
+export const currentNoteAtom = atom({
+    key: "currentNote",
+    default: null,
+});

@@ -4,6 +4,7 @@ const NoteSchema = mongoose.Schema({
     text: String,
     createdAt: Date,
     category: String,
+    contactId: String,
 });
 
 const Note = mongoose.model("Note", NoteSchema);

@@ -101,6 +101,8 @@ export const createContactApi = (data) => axios.post(`/contact`, data);
 
 // portfolio
 
+export const getTwoPortfolioApi = () => axios.get(`/portfolio/two`);
+
 export const getPortfolioApi = (params) => axios.get(`/portfolio`, { params });
 
 export const allGetPortfoiloApi = () => axiosJWT.get(`/portfolio/all`);
@@ -114,4 +116,9 @@ export const createPortfolioApi = (data) => axiosJWT.post(`/portfolio`, data);
 export const createNoteApi = (contactId, data) =>
     axiosJWT.post(`/contact/note/${contactId}`, data);
 
-export const getNoteApi = (id) => axiosJWT.get(`/contact/note/${id}`);
+export const updateNoteApi = (noteId, data) =>
+    axiosJWT.patch(`/contact/note/${noteId}`, data);
+
+export const removeNoteApi = (noteId) => axiosJWT.delete(`/contact/note/${noteId}`);
+
+export const getNoteApi = (contactId) => axiosJWT.get(`/contact/note/${contactId}`);

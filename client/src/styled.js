@@ -26,12 +26,12 @@ export const GlobalStyles = createGlobalStyle`
         color:${(props) => props.theme.textColor};
         font-family: "Pretendard";
         font-size: 16px;
-        padding-top: 100px;
+        padding-top: 70px;
         @media ${device.tablet} {
-            padding-top: 90px;
+            padding-top: 65px;
         }
         @media ${device.mobile} {
-            padding-top: 80px;
+            padding-top: 60px;
         }
         overflow-x: hidden;
         width: 100%;
@@ -76,10 +76,11 @@ export const myTheme = {
     navbarHeight: "100px",
     bgColor: "white",
     textColor: "black",
-    accentColor: "rgb(166,25,46)",
+    // accentColor: "rgb(166,25,46)",
+    accentColor: "rgb(123,25,30)",
     subAccentColor: "rgb(192,156,131)",
     borderColor: "#dcdde1",
-    hoverColor: "#bdc3c7",
+    hoverColor: "#dcdde1",
     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;",
     gray: "dimgray",
     darkGray: "#3e3a39",

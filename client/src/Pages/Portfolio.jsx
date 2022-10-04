@@ -75,7 +75,7 @@ function Portfolio() {
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
-    margin-top: 40px;
+    margin-top: 10px;
     gap: 10px;
     @media ${device.tablet} {
         flex-direction: column;
@@ -113,8 +113,6 @@ const Page = ({ page }) => {
 
 const PageBtn = styled.div`
     padding: 8px 16px;
-    /* border-bottom: 3px solid
-        ${(props) => (props.isActive ? props.theme.accentColor : props.theme.color)}; */
     color: ${(props) => (props.isActive ? props.theme.white : props.theme.color)};
     background-color: ${(props) =>
         props.isActive ? props.theme.accentColor : props.theme.bgColor};

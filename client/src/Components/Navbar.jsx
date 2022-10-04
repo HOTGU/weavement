@@ -189,15 +189,15 @@ const NavbarContainer = styled.div`
     position: fixed;
     top: 0;
     width: 100%;
-    height: 100px;
+    height: 70px;
     font-size: 18px;
     font-weight: 700;
     z-index: 80;
     @media ${device.tablet} {
-        height: 90px;
+        height: 65px;
     }
     @media ${device.mobile} {
-        height: 80px;
+        height: 60px;
     }
     color: ${(props) =>
         props.isMain
@@ -226,12 +226,12 @@ const Wrapper = styled.div`
     margin: 0 auto;
     position: relative;
     .logo {
-        width: 85px;
+        width: 70px;
         @media ${device.tablet} {
-            width: 80px;
+            width: 65px;
         }
         @media ${device.mobile} {
-            width: 70px;
+            width: 60px;
         }
     }
     nav {

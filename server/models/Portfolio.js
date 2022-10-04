@@ -1,24 +1,36 @@
 import mongoose from "mongoose";
 
-const portfolioSchema = mongoose.Schema({
-    text: {
-        title: String,
-        description: String,
-        where: String,
-    },
-    images: [
-        {
-            largeLocation: String,
-            mediumLocation: String,
+const portfolioSchema = mongoose.Schema(
+    {
+        columns: [
+            {
+                image: {
+                    largeLocation: String,
+                    mediumLocation: String,
+                    smallLocation: String,
+                },
+                text: {
+                    title: String,
+                    description: String,
+                },
+                columnIndex: Number,
+                width: String,
+                ratio: Number,
+            },
+        ],
+        thumb: {
+            location: String,
             smallLocation: String,
-            where: String,
         },
-    ],
-    thumb: {
-        location: String,
-        where: String,
+        rep: {
+            title: String,
+            description: String,
+        },
     },
-});
+    {
+        timestamps: true,
+    }
+);
 
 const Portfolio = mongoose.model("Portfolio", portfolioSchema);
 

@@ -49,8 +49,8 @@ export const chartFilter = async (req, res, next) => {
             if (monthData.length > 0) {
                 monthData.forEach((item) => {
                     chartData.data.total[i - 1] += item.count;
-                    if (item._id.state === "완료") {
-                        chartData.data.success[i - 1] = item.count;
+                    if (item._id.state === "완료" || item._id.state === "계약") {
+                        chartData.data.success[i - 1] += item.count;
                     }
                 });
             }
@@ -77,7 +77,6 @@ export const get = async (req, res, next) => {
             };
 
         const contacts = await Contact.find(filterQuery).populate("note");
-
         return res.status(200).json(contacts);
     } catch (error) {
         console.log(error);
@@ -136,7 +135,18 @@ export const remove = async (req, res, next) => {
 
 // note
 
-export const getNote = (req, res, next) => {};
+export const getNote = async (req, res, next) => {
+    const {
+        params: { contactId },
+    } = req;
+    try {
+        if (!contactId) return next(400, "잘못된 접근입니다");
+        const notes = await Note.find({ contactId });
+        return res.status(200).json(notes);
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const createNote = async (req, res, next) => {
     const {
@@ -144,19 +154,46 @@ export const createNote = async (req, res, next) => {
         params: { contactId },
     } = req;
     try {
+        if (!contactId) return next(400, "잘못된 접근입니다");
         const contact = await Contact.findById(contactId);
-        const newNote = new Note({ ...body });
-        const noteObj = {
-            noteId: newNote._id,
-            text: newNote.text,
-            noteDate: newNote.createdAt,
-            category: newNote.category,
-        };
-        contact.note.push(noteObj);
+        const newNote = new Note({ ...body, contactId });
+        contact.note.push(newNote);
         await newNote.save();
         await contact.save();
-        return res.status(200).json(noteObj);
+        return res.status(200).json(newNote);
     } catch (error) {
+        next(error);
+    }
+};
+
+export const updateNote = async (req, res, next) => {
+    const {
+        body,
+        params: { noteId },
+    } = req;
+    try {
+        if (!noteId) return next(400, "잘못된 접근입니다");
+        const updatedNote = await Note.findByIdAndUpdate(
+            noteId,
+            { ...body },
+            { new: true }
+        );
+        return res.status(200).json(updatedNote);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+export const removeNote = async (req, res, next) => {
+    const {
+        params: { noteId },
+    } = req;
+    try {
+        if (!noteId) return next(400, "잘못된 접근입니다");
+        await Note.findByIdAndDelete(noteId);
+        return res.status(200).json();
+    } catch (error) {
+        console.log(error);
         next(error);
     }
 };

@@ -6,7 +6,9 @@ import {
     get,
     getNote,
     remove,
+    removeNote,
     update,
+    updateNote,
 } from "../controllers/contactController.js";
 import { verifyIsAdmin, verifyUser } from "../middleware/verify.js";
 
@@ -17,7 +19,10 @@ contactRouter.get("/filter", verifyUser, verifyIsAdmin, chartFilter);
 contactRouter.patch("/:id", verifyUser, verifyIsAdmin, update);
 contactRouter.delete("/:id", verifyUser, verifyIsAdmin, remove);
 contactRouter.post("/", create);
-contactRouter.get("/note/:id", verifyUser, verifyIsAdmin, getNote);
+contactRouter.get("/note/:contactId", verifyUser, verifyIsAdmin, getNote);
 contactRouter.post("/note/:contactId", verifyUser, verifyIsAdmin, createNote);
+
+contactRouter.patch("/note/:noteId", verifyUser, verifyIsAdmin, updateNote);
+contactRouter.delete("/note/:noteId", verifyUser, verifyIsAdmin, removeNote);
 
 export default contactRouter;

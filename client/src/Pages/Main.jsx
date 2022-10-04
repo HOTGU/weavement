@@ -5,9 +5,10 @@ import { device } from "../device";
 import Process from "../Components/Process";
 import MainColumn from "../Components/Main/MainColumn";
 import SecondColumn from "../Components/Main/SecondColumn";
-import AboutColumn from "../Components/Main/AboutColumn";
 import AboutusColumn from "../Components/Main/AboutusColumn";
 import LastColumn from "../Components/Main/LastColumn";
+import PortfolioColumn from "../Components/Main/PortfolioColumn";
+import ArticleColumn from "../Components/Main/ArticleColumn";
 
 function Main() {
     return (
@@ -15,9 +16,10 @@ function Main() {
             <Container>
                 <MainColumn />
                 <SecondColumn />
-                <AboutColumn />
+                <PortfolioColumn />
                 <Process />
                 <AboutusColumn />
+                <ArticleColumn />
                 <LastColumn />
             </Container>
         </div>
@@ -66,6 +68,15 @@ const Container = styled.div`
         }
         @media ${device.mobile} {
             font-size: 50px;
+        }
+    }
+    .head__margin {
+        margin-bottom: 40px;
+        @media ${device.tablet} {
+            margin-bottom: 30px;
+        }
+        @media ${device.mobile} {
+            margin-bottom: 20px;
         }
     }
 `;

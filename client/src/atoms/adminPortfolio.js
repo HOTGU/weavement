@@ -1,25 +1,16 @@
 import { atom } from "recoil";
 
-export const totalColumnAtom = atom({
-    key: "totalColumn",
-    default: 3,
+export const columnAtom = atom({
+    key: "columnsPortfolioPreview",
+    default: [],
 });
 
-export const pageColumnAtom = atom({
-    key: "pageColumn",
-    default: {
-        1: [1],
-        2: [1],
-        3: [1],
-    },
+export const imageFilesAtom = atom({
+    key: "imageFilesAtom",
+    default: [],
 });
 
-export const thumbImageWhereAtom = atom({
-    key: "thumbImageWhere",
-    default: "1-1",
-});
-
-export const pageImagesAtom = atom({
-    key: "pageImages",
+export const textsAtom = atom({
+    key: "textsAtom",
     default: [],
 });

@@ -6,9 +6,9 @@ function Process() {
     return (
         <div className="column">
             <div className="default-container">
-                <ProcessHead className="column__head">
+                <h3 className="column__head">
                     <div>Process</div>
-                </ProcessHead>
+                </h3>
                 <ProcessWrapper>
                     <div className="process__item">
                         <div className="process__index process__font">01.</div>
@@ -64,17 +64,6 @@ function Process() {
         </div>
     );
 }
-
-const ProcessHead = styled.div`
-    margin-bottom: 40px;
-    color: ${(props) => props.theme.textColor};
-    @media ${device.tablet} {
-        margin-bottom: 20px;
-    }
-    @media ${device.tablet} {
-        margin-bottom: 10px;
-    }
-`;
 
 const ProcessWrapper = styled.div`
     width: 100%;

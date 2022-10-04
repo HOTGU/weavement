@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 import mainImg from "../../images/weavement-main.jpg";
 import mainPhoneImg from "../../images/weavement-main-375w.webp";
@@ -10,17 +12,21 @@ import { device } from "../../device";
 const Wrapper = styled.div`
     width: 100%;
     height: 100%;
-    img {
-        width: 100%;
-        height: 740px;
-        object-fit: cover;
-        @media ${device.tablet} {
-            height: 600px;
-            object-position: right;
-        }
-        @media ${device.mobile} {
-            height: 500px;
-            object-position: right;
+    span {
+        width: inherit;
+        height: inherit;
+        img {
+            width: 100%;
+            height: 740px;
+            object-fit: cover;
+            @media ${device.tablet} {
+                height: 600px;
+                object-position: right;
+            }
+            @media ${device.mobile} {
+                height: 500px;
+                object-position: right;
+            }
         }
     }
 `;
@@ -28,7 +34,8 @@ const Wrapper = styled.div`
 function MainColumn() {
     return (
         <Wrapper>
-            <img
+            <LazyLoadImage
+                effect="blur"
                 srcSet={`
                             ${mainPhoneImg} 375w, ${mainTabletImg} 760w, ${mainDesktopImg}
                         `}

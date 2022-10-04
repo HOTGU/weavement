@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 import AboutImg from "../../images/weavement-about.jpg";
 import AboutPhoneImg from "../../images/weavement-about-375w.webp";
@@ -8,7 +10,7 @@ import AboutDefaultImg from "../../images/weavement-about-768w.webp";
 import { device } from "../../device";
 
 const Wrapper = styled.div`
-    background-color: ${(props) => props.theme.textColor};
+    background-color: ${(props) => props.theme.bgColor};
     width: 100%;
     height: auto;
     z-index: -1;
@@ -32,16 +34,20 @@ const Wrapper = styled.div`
             @media ${device.tablet} {
                 width: 100%;
             }
-            img {
-                width: 70%;
-                height: auto;
-                object-fit: cover;
-                border-radius: 10px;
-                @media ${device.tablet} {
-                    width: 100%;
-                    height: 600px;
-                    object-position: 50% 20%;
-                    margin: 0 auto;
+            span {
+                width: 100%;
+                height: 100%;
+                img {
+                    width: 70%;
+                    height: auto;
+                    object-fit: cover;
+                    border-radius: 10px;
+                    @media ${device.tablet} {
+                        width: 100%;
+                        height: 600px;
+                        object-position: 50% 20%;
+                        margin: 0 auto;
+                    }
                 }
             }
             &__flexContainer {
@@ -74,7 +80,7 @@ const Wrapper = styled.div`
                     }
                 }
                 h4 {
-                    color: white;
+                    color: ${(props) => props.theme.textColor};
                     font-family: "Racing Sans One", cursive;
                     font-size: 60px;
                     margin-bottom: 10px;
@@ -90,7 +96,8 @@ const Wrapper = styled.div`
                 span {
                     font-size: 18px;
                     margin-left: 20px;
-                    color: #d2dae2;
+                    color: ${(props) => props.theme.textColor};
+                    /* color: #d2dae2; */
                     line-height: 24px;
                     @media ${device.tablet} {
                         line-height: 16px;
@@ -114,7 +121,8 @@ function AboutColumn() {
             <div className="default-container">
                 <div className="column__container">
                     <div className="column__item">
-                        <img
+                        <LazyLoadImage
+                            effect="blur"
                             srcSet={`
                                         ${AboutPhoneImg} 375w, ${AboutDefaultImg}
                                     `}
@@ -123,7 +131,7 @@ function AboutColumn() {
                                     800px"
                             src={AboutImg}
                             alt="main image3"
-                        ></img>
+                        />
                     </div>
                     <div className="column__item">
                         <div className="column__item__flexContainer">

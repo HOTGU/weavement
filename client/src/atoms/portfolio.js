@@ -1,5 +1,5 @@
 import { selector, atom } from "recoil";
-import { allGetPortfoiloApi, getPortfolioApi } from "../api";
+import { allGetPortfoiloApi, getPortfolioApi, getTwoPortfolioApi } from "../api";
 
 export const portfoliosPage = atom({
     key: "portfoliosCurrentPage",
@@ -37,5 +37,17 @@ export const allGetPortfolioSelector = selector({
     },
     set: ({ set }) => {
         set(portfolioSelectorTrigger, Math.random());
+    },
+});
+
+export const getTwoPortfolioSelector = selector({
+    key: "getTwoPortfolioSelector",
+    get: async () => {
+        try {
+            const { data } = await getTwoPortfolioApi();
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
     },
 });

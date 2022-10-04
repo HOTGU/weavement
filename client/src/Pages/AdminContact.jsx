@@ -4,12 +4,12 @@ import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
-import ContactCard from "../Components/Admin/ContactCard";
+import ContactCard from "../Components/Contact/ContactCard";
 import Loader from "../Components/Loader";
 import { contactListSelector, filterInputAtom, filterItemAtom } from "../atoms/contact";
 import Modal from "../Components/Modal";
-import ContactFilterForm from "../Components/Admin/ContactFilterForm";
-import ContactFilterHead from "../Components/Admin/ContactFilterHead";
+import ContactFilterForm from "../Components/Contact/ContactFilterForm";
+import ContactFilterHead from "../Components/Contact/ContactFilterHead";
 import { removeCookie } from "../utils/cookie";
 
 function AdminContact() {

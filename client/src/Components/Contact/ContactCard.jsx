@@ -1,18 +1,15 @@
-import React, { useMemo, useState, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useResetRecoilState } from "recoil";
 import Moment from "react-moment";
 import { toast } from "react-toastify";
 
-import { deleteContactApi, createNoteApi } from "../../api";
+import { deleteContactApi } from "../../api";
 import { contactListSelector } from "../../atoms/contact";
 import Modal from "../Modal";
 import Confirm from "../Confirm";
 import UpdateContactForm from "../Form/UpdateContactForm";
-import Loader from "../Loader";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import NoteContainer from "./NoteContainer";
 
 function ContactCard({ data }) {
     const [showContact, setShowContact] = useState(false);
@@ -20,21 +17,9 @@ function ContactCard({ data }) {
     const [showSign, setShowSign] = useState(false);
     const [show, setShow] = useState(false);
     const [showNote, setShowNote] = useState(false);
-    const [showAlertNote, setShowAlertNote] = useState(false);
-    const [alertNoteArr, setAlertNoteArr] = useState([]);
     const [confirm, setConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
     const reload = useResetRecoilState(contactListSelector);
-    const noteEndRef = useRef();
-
-    const { register, handleSubmit } = useForm({
-        defaultValues: useMemo(() => {
-            const today = new Date();
-            return {
-                createdAt: today.toISOString().substring(0, 10),
-            };
-        }, []),
-    });
 
     const deleteContact = async () => {
         setLoading(true);
@@ -48,27 +33,6 @@ function ContactCard({ data }) {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        noteEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        const alertNoteArr = data.note.filter((note) => note.category === "공지");
-        setAlertNoteArr(alertNoteArr);
-    }, [showNote, data.note]);
-
-    const onValid = async (formData) => {
-        setLoading(true);
-        try {
-            await createNoteApi(data._id, formData);
-            setShowNote(false);
-            setLoading(false);
-            toast.success("특이사항 등록성공🎉");
-            reload();
-        } catch (error) {
-            setLoading(false);
-            toast.success("특이사항 등록실패🤡");
-        }
-    };
-
     return (
         <>
             <Container isState={data.state}>
@@ -154,24 +118,18 @@ function ContactCard({ data }) {
                         )}
                         {data.state === "계약" && !showSign && (
                             <>
-                                {data.signPM && (
-                                    <span className="slash-item"> {data.signPM}</span>
+                                {data.pm && (
+                                    <span className="slash-item"> {data.pm}</span>
                                 )}
-                                {data.confirmMeterial.length > 0 && (
+                                {data.meterial.length > 0 && (
                                     <span className="slash-item">
-                                        {data.confirmMeterial.map(
-                                            (item, index, { length }) => {
-                                                if (length - 1 === index) {
-                                                    return (
-                                                        <span key={index}>{item}</span>
-                                                    );
-                                                } else {
-                                                    return (
-                                                        <span key={index}>{item},</span>
-                                                    );
-                                                }
+                                        {data.meterial.map((item, index, { length }) => {
+                                            if (length - 1 === index) {
+                                                return <span key={index}>{item}</span>;
+                                            } else {
+                                                return <span key={index}>{item},</span>;
                                             }
-                                        )}
+                                        })}
                                     </span>
                                 )}
                                 {data.content && (
@@ -298,6 +256,12 @@ function ContactCard({ data }) {
                                 <div> {data.knowPath}</div>
                             </Column>
                         )}
+                        {data.knowPath && (
+                            <Column>
+                                <div className="column__text">유입 경로</div>
+                                <div> {data.flowPath}</div>
+                            </Column>
+                        )}
                         {data.description && (
                             <Description>
                                 <div className="column__text">내용</div>
@@ -388,10 +352,10 @@ function ContactCard({ data }) {
                 )}
                 {showSign && (
                     <ColumnWrapper>
-                        {data.signPM && (
+                        {data.pm && (
                             <Column>
                                 <div className="column__text">PM</div>
-                                <div> {data.signPM}</div>
+                                <div> {data.pm}</div>
                             </Column>
                         )}
                         {data.note && (
@@ -400,19 +364,17 @@ function ContactCard({ data }) {
                                 <div> {data.note}</div>
                             </Description>
                         )}
-                        {data.confirmMeterial && (
+                        {data.meterial && (
                             <Column>
                                 <div className="column__text">소재</div>
                                 <div>
-                                    {data.confirmMeterial.map(
-                                        (item, index, { length }) => {
-                                            if (length - 1 === index) {
-                                                return <span key={index}>{item}</span>;
-                                            } else {
-                                                return <span key={index}>{item},</span>;
-                                            }
+                                    {data.meterial.map((item, index, { length }) => {
+                                        if (length - 1 === index) {
+                                            return <span key={index}>{item}</span>;
+                                        } else {
+                                            return <span key={index}>{item},</span>;
                                         }
-                                    )}
+                                    })}
                                 </div>
                             </Column>
                         )}
@@ -443,85 +405,7 @@ function ContactCard({ data }) {
                 <UpdateContactForm data={data} setModal={setShow} />
             </Modal>
             <Modal show={showNote} setShow={setShowNote}>
-                <NoteContainer>
-                    {alertNoteArr.length > 0 && (
-                        <div className="alertNote">
-                            <div className="alertNote__head">
-                                <h4>
-                                    🔊{" "}
-                                    <Moment format="MM/DD">
-                                        {alertNoteArr[alertNoteArr.length - 1]?.noteDate}
-                                    </Moment>{" "}
-                                    {alertNoteArr[alertNoteArr.length - 1]?.text}
-                                </h4>
-                                {alertNoteArr.length > 1 && (
-                                    <FontAwesomeIcon
-                                        onClick={() => {
-                                            setShowAlertNote((prev) => !prev);
-                                        }}
-                                        icon={showAlertNote ? faChevronUp : faChevronDown}
-                                    />
-                                )}
-                            </div>
-                            <div
-                                className={`alertNote__body ${
-                                    showAlertNote ? "isActive" : ""
-                                }`}
-                            >
-                                {alertNoteArr.reverse().map((note, index) => {
-                                    if (index === 0) return false;
-                                    return (
-                                        <div key={index}>
-                                            <Moment format="MM/DD">
-                                                {note?.noteDate}
-                                            </Moment>{" "}
-                                            {note.text}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )}
-                    <div className="wrapper">
-                        {data.note.map((n) => {
-                            return (
-                                <NoteColumn category={n.category} key={n._id}>
-                                    <Moment
-                                        className={
-                                            n.category === "답변" ? "isAnswer" : ""
-                                        }
-                                        format="YYYY/MM/DD"
-                                    >
-                                        {n.noteDate}
-                                    </Moment>
-                                    <Note category={n.category}>
-                                        <div className="note__text">{n.text}</div>
-                                    </Note>
-                                </NoteColumn>
-                            );
-                        })}
-                        <div ref={noteEndRef}></div>
-                    </div>
-                    <form onSubmit={handleSubmit(onValid)}>
-                        <div className="form__column">
-                            <textarea {...register("text")} />
-                        </div>
-
-                        <div className="form__column">
-                            <div className="row__column">
-                                <input type="date" {...register("createdAt")} />
-                                <select {...register("category")}>
-                                    <option value="질문">질문</option>
-                                    <option value="답변">답변</option>
-                                    <option value="공지">공지</option>
-                                </select>
-                            </div>
-                            <button disabled={loading}>
-                                {loading ? <Loader /> : "생성"}
-                            </button>
-                        </div>
-                    </form>
-                </NoteContainer>
+                <NoteContainer contact={data} show={showNote} setShow={setShowNote} />
             </Modal>
             <Confirm
                 show={confirm}
@@ -652,167 +536,6 @@ const StateBtn = styled.span`
     background-color: ${(props) => props.isState === "완료" && "#00a8ff"};
     padding: 3px 5px;
     color: white;
-`;
-
-const NoteContainer = styled.div`
-    width: 800px;
-    height: 800px;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    .alertNote {
-        height: fit-content;
-        width: 100%;
-        border: 1px solid ${(props) => props.theme.borderColor};
-        border-radius: 5px;
-        padding: 10px;
-
-        &__head {
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            h4 {
-                font-size: 20px;
-                font-weight: 700;
-            }
-            svg {
-                cursor: pointer;
-            }
-        }
-        &__body {
-            transition: all 0.25s ease;
-            overflow: hidden;
-            padding: 0;
-            line-height: 0;
-        }
-        .isActive {
-            line-height: 1.5;
-        }
-    }
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        gap: 10px;
-        overflow-y: scroll;
-        border: 1px solid ${(props) => props.theme.borderColor};
-        border-radius: 5px;
-        padding: 10px;
-        &::-webkit-scrollbar {
-            width: 10px;
-        }
-        &::-webkit-scrollbar-thumb {
-            background-color: ${(props) => props.theme.borderColor};
-            border-radius: 10px;
-        }
-        &::-webkit-scrollbar-track {
-            background-color: ${(props) => props.theme.bgColor};
-        }
-    }
-    form {
-        justify-self: flex-end;
-        margin-top: auto;
-        display: flex;
-        gap: 5px;
-        height: 100px;
-        .form__column {
-            &:first-child {
-                width: 65%;
-            }
-            &:last-child {
-                width: 35%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                gap: 5px;
-                .row__column {
-                    display: flex;
-                    height: 100%;
-                    gap: 5px;
-                    input,
-                    select {
-                        width: 50%;
-                    }
-                }
-                button {
-                    width: 100%;
-                    height: calc(50% - 5px);
-                    background-color: ${(props) => props.theme.subAccentColor};
-                    color: ${(props) => props.theme.white};
-                    font-weight: 700;
-                    font-size: 20px;
-                }
-            }
-        }
-        input,
-        select,
-        textarea,
-        button {
-            border: 1px solid ${(props) => props.theme.borderColor};
-            border-radius: 5px;
-            padding: 12px 15px;
-        }
-        button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        select {
-            outline: none;
-        }
-        textarea {
-            width: 100%;
-            height: 100%;
-            resize: none;
-            outline: none;
-        }
-    }
-`;
-const NoteColumn = styled.div`
-    align-self: ${(props) =>
-        props.category === "답변"
-            ? "flex-end"
-            : props.category === "질문"
-            ? "flex-start"
-            : "center"};
-    width: fit-content;
-    max-width: 60%;
-    display: flex;
-    flex-direction: column;
-    .note__text {
-        white-space: pre-wrap;
-    }
-    time {
-        width: 100%;
-        font-size: 12px;
-        color: ${(props) => props.theme.gray};
-        text-align: ${(props) =>
-            props.category === "답변"
-                ? "right"
-                : props.category === "질문"
-                ? "left"
-                : "center"};
-    }
-`;
-
-const Note = styled.div`
-    color: ${(props) =>
-        props.category === "답변" ? props.theme.black : props.theme.white};
-    padding: 10px 24px;
-    line-height: 20px;
-    border-radius: 16px;
-    border-top-left-radius: ${(props) => props.category === "질문" && "0"};
-    border-top-right-radius: ${(props) => props.category === "답변" && "0"};
-    background-color: ${(props) =>
-        props.category === "답변"
-            ? props.theme.white
-            : props.category === "질문"
-            ? props.theme.subAccentColor
-            : props.theme.darkGray};
-    box-shadow: ${(props) => (props.category === "공지" ? "" : props.theme.boxShadow)};
-    font-weight: ${(props) => (props.category === "공지" ? "700" : "400")};
 `;
 
 export default ContactCard;

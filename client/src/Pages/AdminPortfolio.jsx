@@ -1,20 +1,15 @@
 import React, { useMemo, useState } from "react";
-// import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
 import { toast } from "react-toastify";
 
-import CreatePortfolioForm from "../Components/Form/CreatePortfolioForm";
 import { allGetPortfolioSelector } from "../atoms/portfolio";
 import { deletePortfolioApi } from "../api";
 import Confirm from "../Components/Confirm";
-import Modal from "../Components/Modal";
+import Preview from "../Components/Portfolio/Preview";
 
 const PortfolioRow = ({ portfolio, index }) => {
     const [createConfirm, setCreateConfirm] = useState(false);
-    const [updateModal, setUpdateModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const reload = useResetRecoilState(allGetPortfolioSelector);
 
@@ -38,17 +33,9 @@ const PortfolioRow = ({ portfolio, index }) => {
                 key={portfolio._id}
             >
                 <div className="portfolio__index">{index + 1}</div>
-                <div className="portfolio__title">{portfolio.text.title}</div>
-                <div className="portfolio__description">{portfolio.text.description}</div>
+                <div className="portfolio__title">{portfolio.rep.title}</div>
+                <div className="portfolio__description">{portfolio.rep.description}</div>
                 <div className="portfolio__btnContainer">
-                    <div
-                        className="btn"
-                        onClick={() => {
-                            setUpdateModal(true);
-                        }}
-                    >
-                        수정
-                    </div>
                     <div
                         className="delete btn"
                         onClick={() => {
@@ -66,26 +53,12 @@ const PortfolioRow = ({ portfolio, index }) => {
                 loading={loading}
                 successCallback={deletePortfolio}
             />
-            <Modal show={updateModal} setShow={setUpdateModal}>
-                <ModalContainer>
-                    <CreatePortfolioForm
-                        setModal={setUpdateModal}
-                        isUpdate={true}
-                        data={portfolio}
-                    />
-                </ModalContainer>
-            </Modal>
         </>
     );
 };
 
 function AdminPortfolio() {
-    const [createModal, setCraeteModal] = useState(false);
     const portfoliosLoadable = useRecoilValueLoadable(allGetPortfolioSelector);
-
-    // const { handleSubmit, register, watch } = useForm();
-
-    // console.log(watch().column);
 
     const portfolios = useMemo(() => {
         return portfoliosLoadable.state === "hasValue" ? portfoliosLoadable.contents : [];
@@ -93,40 +66,29 @@ function AdminPortfolio() {
 
     return (
         <Container className="default-container">
-            <div onClick={() => setCraeteModal(true)}>
-                <FontAwesomeIcon className="svg" icon={faPlus} />
-            </div>
-            <PortfolioContainer>
+            <PortfolioContainer className="row">
                 {portfolios.map((portfolio, index) => (
-                    <PortfolioRow portfolio={portfolio} index={index} />
+                    <PortfolioRow
+                        key={portfolio._id}
+                        portfolio={portfolio}
+                        index={index}
+                    />
                 ))}
             </PortfolioContainer>
-            {/* <form
-                onSubmit={handleSubmit((data) => {
-                    console.log(data);
-                })}
-            >
-                <select {...register("column")}>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                    <option value={6}>6</option>
-                </select>
-            </form> */}
-
-            <Modal show={createModal} setShow={setCraeteModal}>
-                <ModalContainer>
-                    <CreatePortfolioForm setModal={setCraeteModal} isUpdate={false} />
-                </ModalContainer>
-            </Modal>
+            <div className="row">
+                <Preview />
+            </div>
         </Container>
     );
 }
 
 const Container = styled.div`
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    gap: 20px;
+    input,
+    textarea {
+        border: 1px solid black;
+    }
     .svg {
         width: 18px;
         height: 18px;
@@ -135,23 +97,18 @@ const Container = styled.div`
         border: 1px solid ${(props) => props.theme.hoverColor};
         border-radius: 5px;
     }
-`;
-
-const ModalContainer = styled.div`
-    display: flex;
-    gap: 30px;
-    padding: 30px;
-    width: auto;
-    max-height: 800px;
-    h3 {
-        text-align: center;
-        font-size: 18px;
-        margin: 6px auto;
+    .row {
+        margin-top: 10px;
+        &:first-child {
+            width: 55%;
+        }
+        &:last-child {
+            width: 45%;
+        }
     }
 `;
 
 const PortfolioContainer = styled.div`
-    margin: 20px 0;
     height: auto;
     width: 100%;
     .portfolio {

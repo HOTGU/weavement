@@ -22,11 +22,11 @@ function PortfolioCard({ portfolio }) {
                     />
                 </div>
             </div>
-            <h3>{portfolio.text.title}</h3>
+            <h3>{portfolio.rep.title}</h3>
             <p>
-                {portfolio.text.description.length > length
-                    ? portfolio.text.description.substring(0, 27) + "..."
-                    : portfolio.text.description}
+                {portfolio.rep.description.length > length
+                    ? portfolio.rep.description.substring(0, 27) + "..."
+                    : portfolio.rep.description}
             </p>
         </SLink>
     );
@@ -40,7 +40,7 @@ const SLink = styled(Link)`
         width: 100%;
     }
     .image_container {
-        aspect-ratio: 3/2;
+        aspect-ratio: 5/3;
         width: 100%;
         overflow: hidden;
         .image_wrapper {
@@ -54,6 +54,7 @@ const SLink = styled(Link)`
         }
     }
     h3 {
+        font-size: 20px;
         font-weight: 500;
         margin: 5px 0;
     }

@@ -27,7 +27,7 @@ const ContactSchema = mongoose.Schema({
     pm: String,
     orderCompany: String,
     deadline: Date,
-    note: [{ noteId: String, text: String, noteDate: Date, category: String }],
+    note: [{ type: mongoose.Schema.Types.ObjectId, ref: "Note" }],
 });
 
 const Contact = mongoose.model("Contact", ContactSchema);
