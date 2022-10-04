@@ -22,7 +22,7 @@ function PortfolioCard({ portfolio }) {
                     />
                 </div>
             </div>
-            <h3>{portfolio.rep.title}</h3>
+            <h3>{portfolio?.rep.title}</h3>
             <p>
                 {portfolio.rep.description.length > length
                     ? portfolio.rep.description.substring(0, 27) + "..."

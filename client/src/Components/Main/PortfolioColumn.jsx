@@ -26,9 +26,10 @@ function PortfolioColumn() {
                     </Link>
                 </div>
                 <div className="row-flex">
-                    {portfolios.map((portfolio) => {
-                        return <PortfolioCard portfolio={portfolio} />;
-                    })}
+                    {portfolios.length > 0 &&
+                        portfolios.map((portfolio) => {
+                            return <PortfolioCard portfolio={portfolio} />;
+                        })}
                 </div>
             </div>
         </Container>
