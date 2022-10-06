@@ -8,6 +8,7 @@ import { getPortfolioSelector, portfoliosPage } from "../atoms/portfolio";
 import Loader from "../Components/Loader";
 import { device } from "../device";
 import PortfolioCard from "../Components/PortfolioCard";
+import Metatag from "../Components/Metatag";
 
 function Portfolio() {
     const portfolioLoadable = useRecoilValueLoadable(getPortfolioSelector);
@@ -26,49 +27,56 @@ function Portfolio() {
     const pages = new Array(totalPages).fill(null).map((__, index) => index + 1);
 
     return (
-        <div className="default-container">
-            {portfolioLoadable.state === "loading" ? (
-                <Loader isCenter={true} width="40px" height="40px" />
-            ) : (
-                <>
-                    {portfolios.length > 0 && (
-                        <>
-                            <Container>
-                                {portfolios.map((portfolio) => {
-                                    return (
-                                        <PortfolioCard
-                                            portfolio={portfolio}
-                                            key={portfolio._id}
-                                        />
-                                    );
-                                })}
-                            </Container>
-                            <PageContainer>
-                                {currentPage !== 1 && (
-                                    <PageBtn
-                                        onClick={() => setCurrentPage((prev) => prev - 1)}
-                                        className="pageBtn"
-                                    >
-                                        <FontAwesomeIcon icon={faChevronLeft} />
-                                    </PageBtn>
-                                )}
-                                {pages.map((page) => (
-                                    <Page page={page} key={page} />
-                                ))}
-                                {currentPage !== totalPages && (
-                                    <PageBtn
-                                        onClick={() => setCurrentPage((prev) => prev + 1)}
-                                        className="pageBtn"
-                                    >
-                                        <FontAwesomeIcon icon={faChevronRight} />
-                                    </PageBtn>
-                                )}
-                            </PageContainer>
-                        </>
-                    )}
-                </>
-            )}
-        </div>
+        <>
+            <Metatag title="위브먼트 | 포트폴리오" />
+            <div className="default-container">
+                {portfolioLoadable.state === "loading" ? (
+                    <Loader isCenter={true} width="40px" height="40px" />
+                ) : (
+                    <>
+                        {portfolios.length > 0 && (
+                            <>
+                                <Container>
+                                    {portfolios.map((portfolio) => {
+                                        return (
+                                            <PortfolioCard
+                                                portfolio={portfolio}
+                                                key={portfolio._id}
+                                            />
+                                        );
+                                    })}
+                                </Container>
+                                <PageContainer>
+                                    {currentPage !== 1 && (
+                                        <PageBtn
+                                            onClick={() =>
+                                                setCurrentPage((prev) => prev - 1)
+                                            }
+                                            className="pageBtn"
+                                        >
+                                            <FontAwesomeIcon icon={faChevronLeft} />
+                                        </PageBtn>
+                                    )}
+                                    {pages.map((page) => (
+                                        <Page page={page} key={page} />
+                                    ))}
+                                    {currentPage !== totalPages && (
+                                        <PageBtn
+                                            onClick={() =>
+                                                setCurrentPage((prev) => prev + 1)
+                                            }
+                                            className="pageBtn"
+                                        >
+                                            <FontAwesomeIcon icon={faChevronRight} />
+                                        </PageBtn>
+                                    )}
+                                </PageContainer>
+                            </>
+                        )}
+                    </>
+                )}
+            </div>
+        </>
     );
 }
 

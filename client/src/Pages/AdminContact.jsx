@@ -11,6 +11,7 @@ import Modal from "../Components/Modal";
 import ContactFilterForm from "../Components/Contact/ContactFilterForm";
 import ContactFilterHead from "../Components/Contact/ContactFilterHead";
 import { removeCookie } from "../utils/cookie";
+import Metatag from "../Components/Metatag";
 
 function AdminContact() {
     const [filterItem, setFilterItem] = useRecoilState(filterItemAtom);
@@ -32,6 +33,7 @@ function AdminContact() {
 
     return (
         <div>
+            <Metatag title="위브먼트Admin | 문의" />
             <ResultContainer>
                 <ContactFilterHead setShow={setShow} excelData={contacts} />
 

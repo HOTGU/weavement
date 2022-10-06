@@ -39,8 +39,8 @@ const Container = styled.div`
             font-size: 20px;
         }
         @media ${device.mobile} {
-            padding: 6px 12px;
-            font-size: 14px;
+            padding: 8px 16px;
+            font-size: 16px;
         }
     }
     .red-btn {

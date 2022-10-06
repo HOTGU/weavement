@@ -7,6 +7,7 @@ import { allGetPortfolioSelector } from "../atoms/portfolio";
 import { deletePortfolioApi } from "../api";
 import Confirm from "../Components/Confirm";
 import Preview from "../Components/Portfolio/Preview";
+import Metatag from "../Components/Metatag";
 
 const PortfolioRow = ({ portfolio, index }) => {
     const [createConfirm, setCreateConfirm] = useState(false);
@@ -65,20 +66,23 @@ function AdminPortfolio() {
     }, [portfoliosLoadable]);
 
     return (
-        <Container className="default-container">
-            <PortfolioContainer className="row">
-                {portfolios.map((portfolio, index) => (
-                    <PortfolioRow
-                        key={portfolio._id}
-                        portfolio={portfolio}
-                        index={index}
-                    />
-                ))}
-            </PortfolioContainer>
-            <div className="row">
-                <Preview />
-            </div>
-        </Container>
+        <>
+            <Metatag title="위브먼트Admin | 포트폴리오" />
+            <Container className="default-container">
+                <PortfolioContainer className="row">
+                    {portfolios.map((portfolio, index) => (
+                        <PortfolioRow
+                            key={portfolio._id}
+                            portfolio={portfolio}
+                            index={index}
+                        />
+                    ))}
+                </PortfolioContainer>
+                <div className="row">
+                    <Preview />
+                </div>
+            </Container>
+        </>
     );
 }
 

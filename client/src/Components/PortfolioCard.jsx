@@ -47,6 +47,9 @@ const SLink = styled(Link)`
             width: 100%;
             height: 100%;
             transition: all 0.25s ease-in-out;
+            img {
+                object-fit: cover;
+            }
             &:hover {
                 opacity: 0.7;
                 transform: scale(1.1);

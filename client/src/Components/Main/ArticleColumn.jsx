@@ -91,7 +91,7 @@ const Container = styled.div`
                 width: 100%;
             }
             h4 {
-                font-size: 20px;
+                font-size: 16px;
                 font-weight: 700;
             }
             .lazy-load-image-background {

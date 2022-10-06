@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { device } from "../device";
 import { createContactApi } from "../api";
 import Loader from "../Components/Loader";
+import Metatag from "../Components/Metatag";
 
 function Contact() {
     const imgRef = useRef();
@@ -92,355 +93,371 @@ function Contact() {
     };
 
     return (
-        <div className="default-container">
-            <ProcessForm onSubmit={handleSubmit(onValid)}>
-                <ProcessHead>
-                    <div>프로젝트 의뢰</div>
-                    <div>Project Contact</div>
-                </ProcessHead>
-                <Column ref={stepRef}>
-                    <div className="column__head">어떤 단계인가요? *</div>
-                    <div className="column__info">
-                        <label htmlFor="planing">
-                            <input
-                                type="radio"
-                                id="planing"
-                                value="기획,예편"
-                                {...register("step")}
-                            />
-                            <div className="btn">기획 및 예산 편성 단계</div>
-                        </label>
-                        <label htmlFor="design">
-                            <input
-                                type="radio"
-                                id="design"
-                                value="디자인,설계"
-                                {...register("step")}
-                            />
-                            <div className="btn">디자인 및 설계 단계</div>
-                        </label>
-                        <label htmlFor="making">
-                            <input
-                                type="radio"
-                                id="making"
-                                value="제작"
-                                {...register("step")}
-                            />
-                            <div className="btn">제작단계</div>
-                        </label>
-                    </div>
-                </Column>
-                {errors.step && errors.step.message && <>{errors.step.message}</>}
-                <Column ref={hasDesignRef}>
-                    <div className="column__head">
-                        디자인이나 설계 도면이 준비되셨나요? *
-                    </div>
-                    <div className="column__info">
-                        <label htmlFor="2d">
-                            <input
-                                {...register("hasDesign")}
-                                type="radio"
-                                id="2d"
-                                name="hasDesign"
-                                value="2D"
-                            />
-                            <div className="btn">2D 디자인</div>
-                        </label>
-                        <label htmlFor="3d">
-                            <input
-                                {...register("hasDesign")}
-                                type="radio"
-                                id="3d"
-                                name="hasDesign"
-                                value="3D"
-                            />
-                            <div className="btn">3D 디자인</div>
-                        </label>
-                        <label htmlFor="diagram">
-                            <input
-                                {...register("hasDesign")}
-                                type="radio"
-                                id="diagram"
-                                name="hasDesign"
-                                value="도면"
-                            />
-                            <div className="btn">도면</div>
-                        </label>
-                        <label htmlFor="noDesign">
-                            <input
-                                {...register("hasDesign")}
-                                type="radio"
-                                id="noDesign"
-                                name="hasDesign"
-                                value="없음"
-                            />
-                            <div className="btn">아니요</div>
-                        </label>
-                    </div>
-                </Column>
-                <Column ref={costAndScheduleRef}>
-                    <div className="column__head">예산과 일정이 정해져 계신가요?</div>
-                    <div className="column__info">
-                        <SSelect
-                            className="btn"
-                            isValue={Boolean(watchAll.cost)}
-                            {...register("cost")}
-                        >
-                            <option value="">예산을 선택해주세요. *</option>
-                            <option value="500만원이하">500만원 이하</option>
-                            <option value="2000만원이하">2000만원 이하</option>
-                            <option value="5000만원이하">5000만원 이하</option>
-                            <option value="1억원이하">1억원 이하</option>
-                            <option value="1억원이상">1억원 이상</option>
-                            <option value="미정">미정</option>
-                        </SSelect>
-                        <SSelect
-                            className="btn"
-                            isValue={Boolean(watchAll.schedule)}
-                            {...register("schedule")}
-                        >
-                            <option value="">일정을 선택해주세요. *</option>
-                            <option value="1개월내">시급해요! (1개월 내 완료)</option>
-                            <option value="3개월내">3개월 내 완료</option>
-                            <option value="3개월이상">3개월 이상</option>
-                        </SSelect>
-                    </div>
-                </Column>
-                <Column ref={descriptionRef}>
-                    <div className="column__head">내용을 말씀해 주시겠어요? *</div>
-                    <div className="column__info">
-                        <MultiColumn>
-                            <span className="column__explanation">
-                                ◾ 컨텐츠(ex. 캐릭터, 글자 등)와 제작 목적, 설치 현장 등에
-                                대해 자세히 기입해주시면 보다 구체적인 상담이 가능합니다.
-                            </span>
-                            <textarea
-                                {...register("description")}
-                                placeholder="프로젝트 내용을 자세히 기입하세요 *"
-                            />
-                            <input
-                                type="file"
-                                name="images"
-                                ref={imgRef}
-                                hidden={true}
-                                onChange={handleFile}
-                            />
+        <>
+            <Metatag title="위브먼트 | 문의" />
+            <div className="default-container">
+                <ProcessForm onSubmit={handleSubmit(onValid)}>
+                    <ProcessHead>
+                        <div>프로젝트 의뢰</div>
+                        <div>Project Contact</div>
+                    </ProcessHead>
+                    <Column ref={stepRef}>
+                        <div className="column__head">어떤 단계인가요? *</div>
+                        <div className="column__info">
+                            <label htmlFor="planing">
+                                <input
+                                    type="radio"
+                                    id="planing"
+                                    value="기획,예편"
+                                    {...register("step")}
+                                />
+                                <div className="btn">기획 및 예산 편성 단계</div>
+                            </label>
+                            <label htmlFor="design">
+                                <input
+                                    type="radio"
+                                    id="design"
+                                    value="디자인,설계"
+                                    {...register("step")}
+                                />
+                                <div className="btn">디자인 및 설계 단계</div>
+                            </label>
+                            <label htmlFor="making">
+                                <input
+                                    type="radio"
+                                    id="making"
+                                    value="제작"
+                                    {...register("step")}
+                                />
+                                <div className="btn">제작단계</div>
+                            </label>
+                        </div>
+                    </Column>
+                    {errors.step && errors.step.message && <>{errors.step.message}</>}
+                    <Column ref={hasDesignRef}>
+                        <div className="column__head">
+                            디자인이나 설계 도면이 준비되셨나요? *
+                        </div>
+                        <div className="column__info">
+                            <label htmlFor="2d">
+                                <input
+                                    {...register("hasDesign")}
+                                    type="radio"
+                                    id="2d"
+                                    name="hasDesign"
+                                    value="2D"
+                                />
+                                <div className="btn">2D 디자인</div>
+                            </label>
+                            <label htmlFor="3d">
+                                <input
+                                    {...register("hasDesign")}
+                                    type="radio"
+                                    id="3d"
+                                    name="hasDesign"
+                                    value="3D"
+                                />
+                                <div className="btn">3D 디자인</div>
+                            </label>
+                            <label htmlFor="diagram">
+                                <input
+                                    {...register("hasDesign")}
+                                    type="radio"
+                                    id="diagram"
+                                    name="hasDesign"
+                                    value="도면"
+                                />
+                                <div className="btn">도면</div>
+                            </label>
+                            <label htmlFor="noDesign">
+                                <input
+                                    {...register("hasDesign")}
+                                    type="radio"
+                                    id="noDesign"
+                                    name="hasDesign"
+                                    value="없음"
+                                />
+                                <div className="btn">아니요</div>
+                            </label>
+                        </div>
+                    </Column>
+                    <Column ref={costAndScheduleRef}>
+                        <div className="column__head">예산과 일정이 정해져 계신가요?</div>
+                        <div className="column__info">
+                            <SSelect
+                                className="btn"
+                                isValue={Boolean(watchAll.cost)}
+                                {...register("cost")}
+                            >
+                                <option value="">예산을 선택해주세요. *</option>
+                                <option value="500만원이하">500만원 이하</option>
+                                <option value="2000만원이하">2000만원 이하</option>
+                                <option value="5000만원이하">5000만원 이하</option>
+                                <option value="1억원이하">1억원 이하</option>
+                                <option value="1억원이상">1억원 이상</option>
+                                <option value="미정">미정</option>
+                            </SSelect>
+                            <SSelect
+                                className="btn"
+                                isValue={Boolean(watchAll.schedule)}
+                                {...register("schedule")}
+                            >
+                                <option value="">일정을 선택해주세요. *</option>
+                                <option value="1개월내">시급해요! (1개월 내 완료)</option>
+                                <option value="3개월내">3개월 내 완료</option>
+                                <option value="3개월이상">3개월 이상</option>
+                            </SSelect>
+                        </div>
+                    </Column>
+                    <Column ref={descriptionRef}>
+                        <div className="column__head">내용을 말씀해 주시겠어요? *</div>
+                        <div className="column__info">
+                            <MultiColumn>
+                                <span className="column__explanation">
+                                    ◾ 컨텐츠(ex. 캐릭터, 글자 등)와 제작 목적, 설치 현장
+                                    등에 대해 자세히 기입해주시면 보다 구체적인 상담이
+                                    가능합니다.
+                                </span>
+                                <textarea
+                                    {...register("description")}
+                                    placeholder="프로젝트 내용을 자세히 기입하세요 *"
+                                />
+                                <input
+                                    type="file"
+                                    name="images"
+                                    ref={imgRef}
+                                    hidden={true}
+                                    onChange={handleFile}
+                                />
 
-                            <MultiColumnItem>
-                                <span className="column__explanation">
-                                    ◾ 제작에 참고할 디자인, 도면, 이미지 사진 파일을
-                                    첨부해주세요. (선택)
-                                </span>
-                                <div
-                                    className="upload-btn btn"
-                                    onClick={() => imgRef.current.click()}
-                                >
-                                    파일첨부(선택)
+                                <MultiColumnItem>
+                                    <span className="column__explanation">
+                                        ◾ 제작에 참고할 디자인, 도면, 이미지 사진 파일을
+                                        첨부해주세요. (선택)
+                                    </span>
+                                    <div
+                                        className="upload-btn btn"
+                                        onClick={() => imgRef.current.click()}
+                                    >
+                                        파일첨부(선택)
+                                    </div>
+                                    {images && (
+                                        <>
+                                            {images.map((image, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="image-btn btn"
+                                                >
+                                                    <span>{image}</span>
+                                                    <FontAwesomeIcon
+                                                        icon={faCircleXmark}
+                                                        onClick={() =>
+                                                            handleImageDelete(index)
+                                                        }
+                                                    />
+                                                </div>
+                                            ))}
+                                        </>
+                                    )}
+                                </MultiColumnItem>
+                                <MultiColumnItem>
+                                    <span className="column__explanation">
+                                        ◾ 사이트에 있는 사례 중 관심있는 사례를
+                                        적어주세요. (선택)
+                                    </span>
+                                    <input
+                                        className="btn"
+                                        {...register("like")}
+                                        placeholder="ex. 평창조형물"
+                                    />
+                                </MultiColumnItem>
+                            </MultiColumn>
+                        </div>
+                    </Column>
+                    <Column ref={knowPathRef}>
+                        <div className="column__head">
+                            위브먼트를 알게 된 경로를 선택해주세요. *
+                        </div>
+                        <div className="column__info">
+                            <label htmlFor="search">
+                                <input
+                                    {...register("knowPath")}
+                                    type="radio"
+                                    id="search"
+                                    name="knowPath"
+                                    value="검색"
+                                />
+                                <div className="btn">검색 (네이버, 구글, 다음)</div>
+                            </label>
+                            <label htmlFor="sns">
+                                <input
+                                    {...register("knowPath")}
+                                    type="radio"
+                                    id="sns"
+                                    name="knowPath"
+                                    value="SNS"
+                                />
+                                <div className="btn">SNS (인스타그램, 페이스북)</div>
+                            </label>
+                            <label htmlFor="myBlog">
+                                <input
+                                    {...register("knowPath")}
+                                    type="radio"
+                                    id="myBlog"
+                                    name="knowPath"
+                                    value="위브먼트블로그"
+                                />
+                                <div className="btn">'위브먼트' 네이버블로그</div>
+                            </label>
+                            <label htmlFor="otherBlog">
+                                <input
+                                    {...register("knowPath")}
+                                    type="radio"
+                                    id="otherBlog"
+                                    name="knowPath"
+                                    value="네이버블로그"
+                                />
+                                <div className="btn">
+                                    네이버 블로그('위브먼트'공식 블로그 제외)
                                 </div>
-                                {images && (
-                                    <>
-                                        {images.map((image, index) => (
-                                            <div key={index} className="image-btn btn">
-                                                <span>{image}</span>
-                                                <FontAwesomeIcon
-                                                    icon={faCircleXmark}
-                                                    onClick={() =>
-                                                        handleImageDelete(index)
-                                                    }
-                                                />
-                                            </div>
-                                        ))}
-                                    </>
-                                )}
-                            </MultiColumnItem>
-                            <MultiColumnItem>
-                                <span className="column__explanation">
-                                    ◾ 사이트에 있는 사례 중 관심있는 사례를 적어주세요.
-                                    (선택)
-                                </span>
+                            </label>
+                            <label htmlFor="friend">
+                                <input
+                                    {...register("knowPath")}
+                                    type="radio"
+                                    id="friend"
+                                    name="knowPath"
+                                    value="지인추천"
+                                />
+                                <div className="btn">지인추천</div>
+                            </label>
+                        </div>
+                    </Column>
+                    <Column ref={clientRef}>
+                        <div className="column__head">
+                            감사합니다! <br />
+                            기입된 정보로 회신드리겠습니다
+                        </div>
+                        <div className="column__info">
+                            <InfoColumn>
+                                <span>기업(기관)명 *</span>
                                 <input
                                     className="btn"
-                                    {...register("like")}
-                                    placeholder="ex. 평창조형물"
+                                    placeholder="ex. 위브먼트"
+                                    {...register("clientCompany")}
                                 />
-                            </MultiColumnItem>
-                        </MultiColumn>
-                    </div>
-                </Column>
-                <Column ref={knowPathRef}>
-                    <div className="column__head">
-                        위브먼트를 알게 된 경로를 선택해주세요. *
-                    </div>
-                    <div className="column__info">
-                        <label htmlFor="search">
-                            <input
-                                {...register("knowPath")}
-                                type="radio"
-                                id="search"
-                                name="knowPath"
-                                value="검색"
-                            />
-                            <div className="btn">검색 (네이버, 구글, 다음)</div>
-                        </label>
-                        <label htmlFor="sns">
-                            <input
-                                {...register("knowPath")}
-                                type="radio"
-                                id="sns"
-                                name="knowPath"
-                                value="SNS"
-                            />
-                            <div className="btn">SNS (인스타그램, 페이스북)</div>
-                        </label>
-                        <label htmlFor="myBlog">
-                            <input
-                                {...register("knowPath")}
-                                type="radio"
-                                id="myBlog"
-                                name="knowPath"
-                                value="위브먼트블로그"
-                            />
-                            <div className="btn">'위브먼트' 네이버블로그</div>
-                        </label>
-                        <label htmlFor="otherBlog">
-                            <input
-                                {...register("knowPath")}
-                                type="radio"
-                                id="otherBlog"
-                                name="knowPath"
-                                value="네이버블로그"
-                            />
-                            <div className="btn">
-                                네이버 블로그('위브먼트'공식 블로그 제외)
-                            </div>
-                        </label>
-                        <label htmlFor="friend">
-                            <input
-                                {...register("knowPath")}
-                                type="radio"
-                                id="friend"
-                                name="knowPath"
-                                value="지인추천"
-                            />
-                            <div className="btn">지인추천</div>
-                        </label>
-                    </div>
-                </Column>
-                <Column ref={clientRef}>
-                    <div className="column__head">
-                        감사합니다! <br />
-                        기입된 정보로 회신드리겠습니다
-                    </div>
-                    <div className="column__info">
-                        <InfoColumn>
-                            <span>기업(기관)명 *</span>
-                            <input
-                                className="btn"
-                                placeholder="ex. 위브먼트"
-                                {...register("clientCompany")}
-                            />
-                        </InfoColumn>
-                        <InfoColumn>
-                            <span>담당자 성함 *</span>
-                            <input
-                                className="btn"
-                                placeholder="ex. 홍길동"
-                                {...register("clientName")}
-                            />
-                        </InfoColumn>
-                        <InfoColumn>
-                            <span>직책</span>
-                            <input
-                                className="btn"
-                                placeholder="ex. 과장"
-                                {...register("clientPosition")}
-                            />
-                        </InfoColumn>
-                        <InfoColumn>
-                            <span>연락처 *</span>
-                            <input
-                                className="btn phone-btn"
-                                placeholder="010"
-                                {...register("clientStartPhone", {
-                                    onChange: (e) => {
-                                        if (isNumber)
-                                            setValue("clientStartPhone", e.target.value);
-                                        if (!isNumber || e.target.value.length > 3)
-                                            setValue(
-                                                "clientStartPhone",
-                                                watchAll.clientStartPhone
-                                            );
-                                    },
-                                })}
-                                onKeyDown={handleOnlyNumber}
-                            />
-                            <div className="rowLine"></div>
-                            <input
-                                className="btn phone-btn"
-                                placeholder="1234"
-                                {...register("clientMiddlePhone", {
-                                    onChange: (e) => {
-                                        if (isNumber)
-                                            setValue("clientMiddlePhone", e.target.value);
-                                        if (!isNumber || e.target.value.length > 4)
-                                            setValue(
-                                                "clientMiddlePhone",
-                                                watchAll.clientMiddlePhone
-                                            );
-                                    },
-                                })}
-                                onKeyDown={handleOnlyNumber}
-                            />
-                            <div className="rowLine"></div>
+                            </InfoColumn>
+                            <InfoColumn>
+                                <span>담당자 성함 *</span>
+                                <input
+                                    className="btn"
+                                    placeholder="ex. 홍길동"
+                                    {...register("clientName")}
+                                />
+                            </InfoColumn>
+                            <InfoColumn>
+                                <span>직책</span>
+                                <input
+                                    className="btn"
+                                    placeholder="ex. 과장"
+                                    {...register("clientPosition")}
+                                />
+                            </InfoColumn>
+                            <InfoColumn>
+                                <span>연락처 *</span>
+                                <input
+                                    className="btn phone-btn"
+                                    placeholder="010"
+                                    {...register("clientStartPhone", {
+                                        onChange: (e) => {
+                                            if (isNumber)
+                                                setValue(
+                                                    "clientStartPhone",
+                                                    e.target.value
+                                                );
+                                            if (!isNumber || e.target.value.length > 3)
+                                                setValue(
+                                                    "clientStartPhone",
+                                                    watchAll.clientStartPhone
+                                                );
+                                        },
+                                    })}
+                                    onKeyDown={handleOnlyNumber}
+                                />
+                                <div className="rowLine"></div>
+                                <input
+                                    className="btn phone-btn"
+                                    placeholder="1234"
+                                    {...register("clientMiddlePhone", {
+                                        onChange: (e) => {
+                                            if (isNumber)
+                                                setValue(
+                                                    "clientMiddlePhone",
+                                                    e.target.value
+                                                );
+                                            if (!isNumber || e.target.value.length > 4)
+                                                setValue(
+                                                    "clientMiddlePhone",
+                                                    watchAll.clientMiddlePhone
+                                                );
+                                        },
+                                    })}
+                                    onKeyDown={handleOnlyNumber}
+                                />
+                                <div className="rowLine"></div>
 
-                            <input
-                                className="btn phone-btn"
-                                placeholder="5678"
-                                {...register("clientEndPhone", {
-                                    onChange: (e) => {
-                                        if (isNumber)
-                                            setValue("clientEndPhone", e.target.value);
-                                        if (!isNumber || e.target.value.length > 4)
-                                            setValue(
-                                                "clientEndPhone",
-                                                watchAll.clientEndPhone
-                                            );
-                                    },
-                                })}
-                                onKeyDown={handleOnlyNumber}
-                            />
-                        </InfoColumn>
-                        <InfoColumn>
-                            <span>이메일 *</span>
-                            <input
-                                className="btn"
-                                placeholder="ex. example@naver.com"
-                                {...register("clientEmail")}
-                            />
-                        </InfoColumn>
-                        <InfoColumn>
-                            <span>홈페이지 주소</span>
-                            <input
-                                className="btn"
-                                placeholder="ex. weavement.co.kr"
-                                {...register("clientHomepage")}
-                            />
-                        </InfoColumn>
-                        <InfoColumn>
-                            <span>기타 요청사항</span>
-                            <input
-                                className="btn"
-                                placeholder="ex. 연락처 내 개인 회선 번호는 '04'번입니다"
-                                {...register("clientRequest")}
-                            />
-                        </InfoColumn>
-                    </div>
-                </Column>
-                <SubmitBtn disabled={loading}>
-                    {loading ? <Loader width="25px" height="25px" /> : "문의하기"}
-                </SubmitBtn>
-            </ProcessForm>
-        </div>
+                                <input
+                                    className="btn phone-btn"
+                                    placeholder="5678"
+                                    {...register("clientEndPhone", {
+                                        onChange: (e) => {
+                                            if (isNumber)
+                                                setValue(
+                                                    "clientEndPhone",
+                                                    e.target.value
+                                                );
+                                            if (!isNumber || e.target.value.length > 4)
+                                                setValue(
+                                                    "clientEndPhone",
+                                                    watchAll.clientEndPhone
+                                                );
+                                        },
+                                    })}
+                                    onKeyDown={handleOnlyNumber}
+                                />
+                            </InfoColumn>
+                            <InfoColumn>
+                                <span>이메일 *</span>
+                                <input
+                                    className="btn"
+                                    placeholder="ex. example@naver.com"
+                                    {...register("clientEmail")}
+                                />
+                            </InfoColumn>
+                            <InfoColumn>
+                                <span>홈페이지 주소</span>
+                                <input
+                                    className="btn"
+                                    placeholder="ex. weavement.co.kr"
+                                    {...register("clientHomepage")}
+                                />
+                            </InfoColumn>
+                            <InfoColumn>
+                                <span>기타 요청사항</span>
+                                <input
+                                    className="btn"
+                                    placeholder="ex. 연락처 내 개인 회선 번호는 '04'번입니다"
+                                    {...register("clientRequest")}
+                                />
+                            </InfoColumn>
+                        </div>
+                    </Column>
+                    <SubmitBtn disabled={loading}>
+                        {loading ? <Loader width="25px" height="25px" /> : "문의하기"}
+                    </SubmitBtn>
+                </ProcessForm>
+            </div>
+        </>
     );
 }
 

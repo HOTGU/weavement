@@ -9,9 +9,12 @@ import defaultLogo from "../images/default_logo.png";
 import scrollLogo from "../images/scroll_logo.png";
 import { device } from "../device";
 import useOutsideClick from "../hooks/useOutsideClick";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../atoms/isAuth";
 
 const SideNavbar = ({ show, setShow }) => {
     const { pathname } = useLocation();
+    const user = useRecoilValue(userAtom);
     const ref = useRef();
 
     useOutsideClick(ref, () => setShow(false));
@@ -20,8 +23,15 @@ const SideNavbar = ({ show, setShow }) => {
         <>
             <SideNavbarContainer show={show}>
                 <SideNavbarItem ref={ref} show={show}>
-                    {pathname.includes("admin") ? (
+                    {pathname.includes("admin") && user?.isAdmin ? (
                         <>
+                            <Link
+                                to="/"
+                                className="nav__column"
+                                onClick={() => setShow(false)}
+                            >
+                                홈
+                            </Link>
                             <Link
                                 to="/admin"
                                 className="nav__column"
@@ -69,6 +79,15 @@ const SideNavbar = ({ show, setShow }) => {
                             >
                                 문의하기
                             </Link>
+                            {user?.isAdmin && (
+                                <Link
+                                    to="/admin"
+                                    className="nav__column"
+                                    onClick={() => setShow(false)}
+                                >
+                                    Admin
+                                </Link>
+                            )}
                         </>
                     )}
                 </SideNavbarItem>
@@ -119,6 +138,8 @@ const SideNavbarItem = styled.div`
 function Navbar() {
     const [show, setShow] = useState(false);
     const [isScroll, setIsScroll] = useState(false);
+    const user = useRecoilValue(userAtom);
+
     const { pathname } = useLocation();
 
     const isMain = Boolean(pathname === "/");
@@ -151,8 +172,9 @@ function Navbar() {
                     />
                 </Link>
                 <nav>
-                    {pathname.includes("admin") ? (
+                    {pathname.includes("admin") && user?.isAdmin ? (
                         <>
+                            <Link to="/">홈</Link>
                             <Link to="/admin">분석</Link>
                             <Link to="/admin/project">프로젝트</Link>
                             <Link to="/admin/portfolio">포트폴리오</Link>
@@ -168,6 +190,7 @@ function Navbar() {
                             </a>
                             <Link to="/portfolio">포트폴리오</Link>
                             <Link to="/contact">문의하기</Link>
+                            {user?.isAdmin && <Link to="/admin">Admin</Link>}
                         </>
                     )}
                 </nav>

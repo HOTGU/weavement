@@ -16,6 +16,7 @@ import Footer from "./Components/Footer";
 import PortfolioDetail from "./Pages/PortfolioDetail";
 import { device } from "./device";
 import ScrollToTop from "./Components/ScrollToTop";
+import Metatag from "./Components/Metatag";
 
 const Wrapper = styled.div`
     min-height: 100vh;
@@ -29,33 +30,36 @@ const Wrapper = styled.div`
 
 function App() {
     return (
-        <Router>
-            <ScrollToTop />
-            <ThemeProvider theme={myTheme}>
-                <GlobalStyles />
-                <Wrapper>
-                    <Navbar />
-                    <Routes>
-                        <Route path="/" element={<Main />} />
-                        <Route path="/portfolio" element={<Portfolio />} />
-                        <Route path="/portfolio/:id" element={<PortfolioDetail />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route path="/auth" element={<Auth />} />
-                        <Route path="/admin" element={<Admin />} />
-                        <Route path="admin/portfolio" element={<AdminPortfolio />} />
-                        <Route path="/admin/project" element={<AdminContact />} />
-                    </Routes>
-                    <Footer />
-                </Wrapper>
-                <ToastContainer
-                    theme="dark"
-                    position="top-center"
-                    autoClose={2000}
-                    hideProgressBar={true}
-                    pauseOnHover={false}
-                />
-            </ThemeProvider>
-        </Router>
+        <>
+            <Metatag />
+            <Router>
+                <ScrollToTop />
+                <ThemeProvider theme={myTheme}>
+                    <GlobalStyles />
+                    <Wrapper>
+                        <Navbar />
+                        <Routes>
+                            <Route path="/" element={<Main />} />
+                            <Route path="/portfolio" element={<Portfolio />} />
+                            <Route path="/portfolio/:id" element={<PortfolioDetail />} />
+                            <Route path="/contact" element={<Contact />} />
+                            <Route path="/auth" element={<Auth />} />
+                            <Route path="/admin" element={<Admin />} />
+                            <Route path="admin/portfolio" element={<AdminPortfolio />} />
+                            <Route path="/admin/project" element={<AdminContact />} />
+                        </Routes>
+                        <Footer />
+                    </Wrapper>
+                    <ToastContainer
+                        theme="dark"
+                        position="top-center"
+                        autoClose={2000}
+                        hideProgressBar={true}
+                        pauseOnHover={false}
+                    />
+                </ThemeProvider>
+            </Router>
+        </>
     );
 }
 

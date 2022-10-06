@@ -11,6 +11,7 @@ import { setCookie } from "../utils/cookie";
 import Loader from "../Components/Loader";
 import Button from "../Components/Button";
 import logout from "../utils/logout";
+import Metatag from "../Components/Metatag";
 
 function Auth() {
     const navigate = useNavigate();
@@ -93,49 +94,52 @@ function Auth() {
     };
 
     return (
-        <Container>
-            <form>
-                {isSignup && (
+        <>
+            <Metatag title="위브먼트 | 로그인" />
+            <Container>
+                <form>
+                    {isSignup && (
+                        <Input
+                            type="text"
+                            name="name"
+                            value={input.name}
+                            onChange={handleInput}
+                            placeholder="이름"
+                        />
+                    )}
                     <Input
-                        type="text"
-                        name="name"
-                        value={input.name}
+                        name="email"
+                        type="email"
+                        value={input.email}
                         onChange={handleInput}
-                        placeholder="이름"
+                        placeholder="이메일"
                     />
-                )}
-                <Input
-                    name="email"
-                    type="email"
-                    value={input.email}
-                    onChange={handleInput}
-                    placeholder="이메일"
-                />
-                <Input
-                    type="password"
-                    name="password"
-                    value={input.password}
-                    onChange={handleInput}
-                    placeholder="비밀번호"
-                />
-                {isSignup && (
                     <Input
                         type="password"
-                        name="verifyPassword"
-                        value={input.verifyPassword}
+                        name="password"
+                        value={input.password}
                         onChange={handleInput}
-                        placeholder="비밀번호 확인"
+                        placeholder="비밀번호"
                     />
-                )}
+                    {isSignup && (
+                        <Input
+                            type="password"
+                            name="verifyPassword"
+                            value={input.verifyPassword}
+                            onChange={handleInput}
+                            placeholder="비밀번호 확인"
+                        />
+                    )}
 
-                <Button onClick={handleSubmit} disabled={loading}>
-                    {loading ? <Loader /> : isSignup ? "회원가입" : "로그인"}
-                </Button>
-                <div onClick={() => setIsSignup(!isSignup)} className="toggle-btn">
-                    {isSignup ? "로그인하러가기" : "회원가입하러가기"}
-                </div>
-            </form>
-        </Container>
+                    <Button onClick={handleSubmit} disabled={loading}>
+                        {loading ? <Loader /> : isSignup ? "회원가입" : "로그인"}
+                    </Button>
+                    <div onClick={() => setIsSignup(!isSignup)} className="toggle-btn">
+                        {isSignup ? "로그인하러가기" : "회원가입하러가기"}
+                    </div>
+                </form>
+            </Container>
+        </>
     );
 }
 

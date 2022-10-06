@@ -13,6 +13,7 @@ import { userAtom } from "../atoms/isAuth";
 import Loader from "../Components/Loader";
 import { contactChartSelector, filterYearAtom } from "../atoms/chart";
 import { useEffect } from "react";
+import Metatag from "../Components/Metatag";
 
 const CreateOptions = () => {
     let options = [];
@@ -102,26 +103,29 @@ function Admin() {
         return <Loader isCenter={true} width="40px" height="40px" />;
 
     return (
-        <div className="default-container">
-            <Wrapper>
-                <select
-                    value={year.year}
-                    onChange={(e) => setYear({ year: Number(e.target.value) })}
-                >
-                    <CreateOptions />
-                </select>
-                <span className="refreshBtn" onClick={() => reset()}>
-                    새로고침
-                </span>
-                <Chart
-                    options={options}
-                    series={series}
-                    type="line"
-                    width={"100%"}
-                    height={500}
-                />
-            </Wrapper>
-        </div>
+        <>
+            <Metatag title="위브먼트Admin" />
+            <div className="default-container">
+                <Wrapper>
+                    <select
+                        value={year.year}
+                        onChange={(e) => setYear({ year: Number(e.target.value) })}
+                    >
+                        <CreateOptions />
+                    </select>
+                    <span className="refreshBtn" onClick={() => reset()}>
+                        새로고침
+                    </span>
+                    <Chart
+                        options={options}
+                        series={series}
+                        type="line"
+                        width={"100%"}
+                        height={500}
+                    />
+                </Wrapper>
+            </div>
+        </>
     );
 }
 
