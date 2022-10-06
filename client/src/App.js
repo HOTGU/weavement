@@ -20,7 +20,6 @@ import Metatag from "./Components/Metatag";
 
 const Wrapper = styled.div`
     min-height: 100vh;
-
     position: relative;
     padding-bottom: 160px;
     @media ${device.mobile} {
