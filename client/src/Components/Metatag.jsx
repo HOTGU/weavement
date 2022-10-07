@@ -1,13 +1,12 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
-// import ImgSrc from "../images/weavement-meta-img.png";
+import ImgSrc from "../images/weavement-meta-img.png";
 
 function Metatag(props) {
     return (
         <Helmet>
             <title>{props.title || "위브먼트 | 홈"}</title>
-
-            {/* <meta
+            <meta
                 name="description"
                 content={
                     props.description ||
@@ -45,7 +44,7 @@ function Metatag(props) {
             />
             <meta name="twitter:image" content={props.imgsrc || ImgSrc} />
 
-            <link rel="canonical" href={props.url || "weavement.co.kr"} /> */}
+            <link rel="canonical" href={props.url || "weavement.co.kr"} />
         </Helmet>
     );
 }

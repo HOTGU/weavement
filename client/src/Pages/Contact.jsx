@@ -94,7 +94,10 @@ function Contact() {
 
     return (
         <>
-            <Metatag title="위브먼트 | 문의" />
+            <Metatag
+                title="위브먼트 | 문의"
+                description="감각적인 제조를 위한 문의. 디자인 및 설계, FRP 조형물, 3D프린팅, 디지털미디어아트, 맞춤형 서비스 제공."
+            />
             <div className="default-container">
                 <ProcessForm onSubmit={handleSubmit(onValid)}>
                     <ProcessHead>

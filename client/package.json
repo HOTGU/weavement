@@ -28,6 +28,7 @@
         "react-moment": "^1.1.2",
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.1",
+        "react-snap": "^1.23.0",
         "react-toastify": "^9.0.5",
         "recoil": "^0.7.4",
         "scroll-snap": "^4.0.3",
@@ -40,7 +41,8 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "postbuild": "react-snap"
     },
     "eslintConfig": {
         "extends": [
@@ -58,6 +60,16 @@
             "last 1 chrome version",
             "last 1 firefox version",
             "last 1 safari version"
+        ]
+    },
+    "reactSnap": {
+        "include": [
+            "/",
+            "/contact",
+            "/portfolio"
+        ],
+        "exclued": [
+            "/admin"
         ]
     }
 }

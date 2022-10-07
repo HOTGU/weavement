@@ -28,7 +28,12 @@ function PortfolioColumn() {
                 <div className="row-flex">
                     {portfolios.length > 0 &&
                         portfolios.map((portfolio) => {
-                            return <PortfolioCard portfolio={portfolio} />;
+                            return (
+                                <PortfolioCard
+                                    key={portfolio._id}
+                                    portfolio={portfolio}
+                                />
+                            );
                         })}
                 </div>
             </div>
