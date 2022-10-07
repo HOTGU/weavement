@@ -16,7 +16,7 @@ import Footer from "./Components/Footer";
 import PortfolioDetail from "./Pages/PortfolioDetail";
 import { device } from "./device";
 import ScrollToTop from "./Components/ScrollToTop";
-import Metatag from "./Components/Metatag";
+// import Metatag from "./Components/Metatag";
 
 const Wrapper = styled.div`
     min-height: 100vh;
@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 function App() {
     return (
         <>
-            <Metatag />
+            {/* <Metatag /> */}
             <Router>
                 <ScrollToTop />
                 <ThemeProvider theme={myTheme}>
