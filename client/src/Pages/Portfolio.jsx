@@ -28,10 +28,7 @@ function Portfolio() {
 
     return (
         <>
-            <Metatag
-                title="위브먼트 | 포트폴리오"
-                description="감각적인 제조, 위브먼트의 포트폴리오. 디자인 및 설계, FRP 조형물, 3D프린팅, 디지털미디어아트, 맞춤형 서비스 제공."
-            />
+            <Metatag title="위브먼트 | 포트폴리오" />
             <div className="default-container">
                 {portfolioLoadable.state === "loading" ? (
                     <Loader isCenter={true} width="40px" height="40px" />
