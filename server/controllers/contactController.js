@@ -1,6 +1,6 @@
 import Contact from "../models/Contact.js";
 import Note from "../models/Note.js";
-import { getCurrentDate } from "../utils/getCurrentDate.js";
+// import { getCurrentDate } from "../utils/getCurrentDate.js";
 
 export const chartFilter = async (req, res, next) => {
     const {
@@ -76,7 +76,9 @@ export const get = async (req, res, next) => {
                 $lt: new Date(Date.UTC(2022, Number(query.month))),
             };
 
-        const contacts = await Contact.find(filterQuery).populate("note");
+        const contacts = await Contact.find(filterQuery)
+            .populate("note")
+            .sort({ createdAt: -1 });
         return res.status(200).json(contacts);
     } catch (error) {
         console.log(error);
@@ -86,12 +88,9 @@ export const get = async (req, res, next) => {
 export const create = async (req, res, next) => {
     const { body } = req;
     try {
-        const currentDate = getCurrentDate();
-
         const newContact = new Contact({
             ...body,
-
-            createdAt: body.contactDate || currentDate,
+            createdAt: body.contactDate || new Date(),
         });
         await newContact.save();
         return res.status(200).json({ success: "ok" });

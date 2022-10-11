@@ -99,7 +99,7 @@ function Contact() {
                 <ProcessForm onSubmit={handleSubmit(onValid)}>
                     <ProcessHead>
                         <div>프로젝트 의뢰</div>
-                        <div>Project Contact</div>
+                        {/* <div>Project Contact</div> */}
                     </ProcessHead>
                     <Column ref={stepRef}>
                         <div className="column__head">어떤 단계인가요? *</div>
@@ -473,23 +473,13 @@ const ProcessHead = styled.div`
     @media ${device.mobile} {
         padding: 20px 0;
     }
-    div:first-child {
+    div {
         font-size: 34px;
         @media ${device.tablet} {
             font-size: 28px;
         }
         @media ${device.mobile} {
             font-size: 24px;
-        }
-    }
-    div:last-child {
-        font-size: 25px;
-        margin-top: 2px;
-        @media ${device.tablet} {
-            font-size: 22px;
-        }
-        @media ${device.mobile} {
-            font-size: 18px;
         }
     }
 `;

@@ -74,7 +74,7 @@ function ContactCard({ data }) {
                 <RowWrapper>
                     {data.createdAt && (
                         <span className="row__text date">
-                            <Moment format="MM/DD">{data.createdAt}</Moment>
+                            <Moment format="MM/DD HH:mm">{data.createdAt}</Moment>
                         </span>
                     )}
                     {data.clientStartPhone && (

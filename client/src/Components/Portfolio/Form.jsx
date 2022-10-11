@@ -296,7 +296,12 @@ const Preview = styled.div`
     justify-content: center;
     align-items: center;
     position: relative;
-    cursor: pointer;
+    background-color: white;
+    cursor: grab;
+    transition: all 0.1s ease;
+    &:active {
+        border: 2px dotted ${(props) => props.theme.accentColor};
+    }
     span {
         width: inherit;
         height: inherit;
@@ -306,6 +311,9 @@ const Preview = styled.div`
         border-radius: 5px;
         width: inherit;
         height: inherit;
+        &:active {
+            border: 2px dotted ${(props) => props.theme.accentColor};
+        }
     }
     h4 {
         font-size: 12px;

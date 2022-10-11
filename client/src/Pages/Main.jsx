@@ -9,20 +9,24 @@ import AboutusColumn from "../Components/Main/AboutusColumn";
 import LastColumn from "../Components/Main/LastColumn";
 import PortfolioColumn from "../Components/Main/PortfolioColumn";
 import ArticleColumn from "../Components/Main/ArticleColumn";
+import Metatag from "../Components/Metatag";
 
 function Main() {
     return (
-        <div className="wide-container">
-            <Container>
-                <MainColumn />
-                <SecondColumn />
-                <PortfolioColumn />
-                <Process />
-                <AboutusColumn />
-                <ArticleColumn />
-                <LastColumn />
-            </Container>
-        </div>
+        <>
+            <Metatag title="위브먼트 | 홈" />
+            <div className="wide-container">
+                <Container>
+                    <MainColumn />
+                    <SecondColumn />
+                    <PortfolioColumn />
+                    <Process />
+                    <AboutusColumn />
+                    <ArticleColumn />
+                    <LastColumn />
+                </Container>
+            </div>
+        </>
     );
 }
 

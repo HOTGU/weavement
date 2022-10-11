@@ -6,135 +6,100 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCheck,
     faEllipsis,
+    faFilePen,
+    faMinus,
     faPlus,
     faTrashCan,
     faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import Form from "./Form";
+import Modal from "../Modal";
+import CropImage from "../Cropper";
 
 function Preview() {
     const [columns, setColumn] = useRecoilState(columnAtom);
     const [currentIndex, setCurrentIndex] = useState();
+    const [showCrop, setShowCrop] = useState(false);
+    const [cropImageObj, setCropImageObj] = useState(null);
     const images = useRecoilValue(imageFilesAtom);
     const textArr = useRecoilValue(textsAtom);
 
-    const handler = (e, target) => {
-        const startSize = columns[target].width;
-        const startPosition = e.pageX;
-        let width;
-        function onMouseMove(event) {
-            width = startSize - startPosition + event.pageX;
-            const updatedColumn = columns.map((c, index) => {
-                if (target === index) {
-                    return { ...c, width };
-                }
-                return c;
-            });
-            setColumn(updatedColumn);
-        }
+    const previewStep = [
+        {
+            width: 70,
+            columnWidth: "20%",
+            columnRatio: 1 / 3,
+            columnShowRatio: "1:3",
+            columnShowStep: 0,
+        },
+        {
+            width: 140,
+            columnWidth: "40%",
+            columnRatio: 2 / 3,
+            columnShowRatio: "2:3",
+            columnShowStep: 1,
+        },
+        {
+            width: 175,
+            columnWidth: "50%",
+            columnRatio: 5 / 6,
+            columnShowRatio: "Half",
+            columnShowStep: 2,
+        },
+        {
+            width: 210,
+            columnWidth: "60%",
+            columnRatio: 1,
+            columnShowRatio: "1:1",
+            columnShowStep: 3,
+        },
+        {
+            width: 280,
+            columnWidth: "80%",
+            columnRatio: 4 / 3,
+            columnShowRatio: "4:3",
+            columnShowStep: 4,
+        },
+        {
+            width: 350,
+            columnWidth: "100%",
+            columnRatio: 5 / 3,
+            columnShowRatio: "Full",
+            columnShowStep: 5,
+        },
+    ];
 
-        function onMouseUp() {
-            if (width > 315) {
-                const updatedColumn = columns.map((c, index) => {
-                    if (target === index) {
-                        return {
-                            ...c,
-                            width: 350,
-                            columnWidth: "100%",
-                            columnRatio: 5 / 3,
-                        };
-                    }
-                    return c;
-                });
-                setColumn(updatedColumn);
-                document.body.removeEventListener("mousemove", onMouseMove);
-                return;
+    const minusHandler = (e, target) => {
+        const updatedColumn = columns.map((c, index) => {
+            if (target === index) {
+                return {
+                    ...c,
+                    ...previewStep[c.columnShowStep !== 0 ? c.columnShowStep - 1 : 0],
+                    columnShowStep: c.columnShowStep !== 0 ? c.columnShowStep - 1 : 0,
+                };
             }
-            if (width > 245) {
-                const updatedColumn = columns.map((c, index) => {
-                    if (target === index) {
-                        return {
-                            ...c,
-                            width: 280,
-                            columnWidth: "80%",
-                            columnRatio: 4 / 3,
-                        };
-                    }
-                    return c;
-                });
-                setColumn(updatedColumn);
-                document.body.removeEventListener("mousemove", onMouseMove);
-                return;
-            }
-            if (width > 195) {
-                const updatedColumn = columns.map((c, index) => {
-                    if (target === index) {
-                        return {
-                            ...c,
-                            width: 210,
-                            columnWidth: "60%",
-                            columnRatio: 1,
-                        };
-                    }
-                    return c;
-                });
-                setColumn(updatedColumn);
-                document.body.removeEventListener("mousemove", onMouseMove);
-                return;
-            }
-            if (width > 160) {
-                const updatedColumn = columns.map((c, index) => {
-                    if (target === index) {
-                        return {
-                            ...c,
-                            width: 175,
-                            columnWidth: "50%",
-                            columnRatio: 5 / 6,
-                        };
-                    }
-                    return c;
-                });
-                setColumn(updatedColumn);
-                document.body.removeEventListener("mousemove", onMouseMove);
-                return;
-            }
-            if (width > 105) {
-                const updatedColumn = columns.map((c, index) => {
-                    if (target === index) {
-                        return {
-                            ...c,
-                            width: 140,
-                            columnWidth: "40%",
-                            columnRatio: 2 / 3,
-                        };
-                    }
-                    return c;
-                });
-                setColumn(updatedColumn);
-                document.body.removeEventListener("mousemove", onMouseMove);
-                return;
-            }
-            if (width < 105) {
-                const updatedColumn = columns.map((c, index) => {
-                    if (target === index) {
-                        return {
-                            ...c,
-                            width: 70,
-                            columnWidth: "20%",
-                            columnRatio: 1 / 3,
-                        };
-                    }
-                    return c;
-                });
-                setColumn(updatedColumn);
-                document.body.removeEventListener("mousemove", onMouseMove);
-                return;
-            }
-            document.body.removeEventListener("mousemove", onMouseMove);
-        }
+            return c;
+        });
+        setColumn(updatedColumn);
+        return;
+    };
 
-        document.body.addEventListener("mousemove", onMouseMove);
-        document.body.addEventListener("mouseup", onMouseUp, { once: true });
+    const plusHandler = (e, target) => {
+        const updatedColumn = columns.map((c, index) => {
+            if (target === index) {
+                return {
+                    ...c,
+                    ...previewStep[
+                        c.columnShowStep !== 5 ? c.columnShowStep + 1 : c.columnShowStep
+                    ],
+                    columnShowStep:
+                        c.columnShowStep !== 5 ? c.columnShowStep + 1 : c.columnShowStep,
+                };
+            }
+            return c;
+        });
+        setColumn(updatedColumn);
+        return;
     };
 
     const handleDrop = (e) => {
@@ -170,6 +135,36 @@ function Preview() {
                 }
                 return c;
             });
+            setColumn(updatedColumn);
+        }
+        if (e.dataTransfer.getData("ColumnId")) {
+            const dragColumnId = Number(e.dataTransfer.getData("ColumnId"));
+            const dragColumn = columns.find((c, index) => index === dragColumnId);
+            const dragEndColumnId = target;
+            const dragEndColumn = columns.find((c, index) => index === target);
+
+            const updatedColumn = columns.map((column, index) => {
+                if (dragEndColumnId === index) {
+                    return {
+                        ...column,
+                        image: dragColumn.image,
+                        text: dragColumn.text,
+                        thumb: dragColumn.thumb,
+                        rep: dragColumn.rep,
+                    };
+                }
+                if (dragColumnId === index) {
+                    return {
+                        ...column,
+                        image: dragEndColumn.image,
+                        text: dragEndColumn.text,
+                        thumb: dragEndColumn.thumb,
+                        rep: dragEndColumn.rep,
+                    };
+                }
+                return { ...column };
+            });
+
             setColumn(updatedColumn);
         }
     };
@@ -216,6 +211,11 @@ function Preview() {
         return;
     };
 
+    const reset = () => {
+        setCurrentIndex(null);
+        setShowCrop(false);
+    };
+
     return (
         <Wrapper>
             <PortfolioPreview>
@@ -225,13 +225,23 @@ function Preview() {
                             <Column
                                 className="column"
                                 id={`column${index}`}
+                                onDragStart={(e) => {
+                                    e.dataTransfer.setData("ColumnId", index);
+                                }}
                                 onDragOver={(e) => {
                                     e.preventDefault();
+                                }}
+                                onDragEnter={(e) => {
+                                    // console.log("drag아이템온다");
+                                }}
+                                onDragLeave={(e) => {
+                                    // console.log("draG떠난다");
                                 }}
                                 onDrop={handleDrop}
                                 backgroundUrl={columnItem?.image?.url}
                                 columnWidth={columnItem?.width}
                                 key={index}
+                                draggable
                             >
                                 {currentIndex === index ? (
                                     <OptionPaper>
@@ -242,9 +252,25 @@ function Preview() {
                                             <FontAwesomeIcon icon={faTrashCan} />
                                         </div>
                                         {columnItem?.image && (
-                                            <div onClick={handleThumb}>
-                                                <FontAwesomeIcon icon={faCheck} />
-                                            </div>
+                                            <>
+                                                <div onClick={handleThumb}>
+                                                    <FontAwesomeIcon icon={faCheck} />
+                                                </div>
+                                                <div
+                                                    onClick={(e) => {
+                                                        setShowCrop(true);
+                                                        setCropImageObj({
+                                                            ...cropImageObj,
+                                                            file: columnItem.image.url,
+                                                            aspect: Number(
+                                                                columnItem.columnRatio
+                                                            ),
+                                                        });
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faFilePen} />
+                                                </div>
+                                            </>
                                         )}
                                         {columnItem?.text && (
                                             <div onClick={handleRep}>
@@ -263,12 +289,21 @@ function Preview() {
                                 )}
                                 <h4>{columnItem?.text?.title}</h4>
                                 <p>{columnItem?.text?.description}</p>
-                                <div
-                                    className="sizeBtn"
-                                    onMouseDown={(e) => handler(e, index)}
-                                    draggable={false}
-                                    onDragStart={(e) => e.preventDefault()}
-                                ></div>
+                                <div className="ratioFont">
+                                    {columnItem.columnShowRatio}
+                                </div>
+                                <div className="sizeBtn">
+                                    {columnItem.columnShowStep !== 0 && (
+                                        <div onClick={(e) => minusHandler(e, index)}>
+                                            <FontAwesomeIcon icon={faMinus} />
+                                        </div>
+                                    )}
+                                    {columnItem.columnShowStep !== 5 && (
+                                        <div onClick={(e) => plusHandler(e, index)}>
+                                            <FontAwesomeIcon icon={faPlus} />
+                                        </div>
+                                    )}
+                                </div>
 
                                 {columnItem?.thumb && (
                                     <div className="isRep">대표사진</div>
@@ -285,6 +320,8 @@ function Preview() {
                                 width: 350,
                                 columnWidth: "100%",
                                 columnRatio: 5 / 3,
+                                columnShowRatio: "Full",
+                                columnShowStep: 5,
                                 thumb: false,
                                 rep: null,
                             },
@@ -297,6 +334,17 @@ function Preview() {
             <Sticky>
                 <Form />
             </Sticky>
+
+            <Modal show={showCrop} setShow={setShowCrop}>
+                {showCrop && (
+                    <CropImage
+                        file={cropImageObj.file}
+                        aspect={cropImageObj.aspect}
+                        columnIndex={currentIndex}
+                        reset={reset}
+                    />
+                )}
+            </Modal>
         </Wrapper>
     );
 }
@@ -318,14 +366,14 @@ const Wrapper = styled.div`
 
 const OptionBtn = styled.div`
     position: absolute;
-    top: -2px;
-    right: -2px;
-    border-radius: 50%;
+    top: 0px;
+    right: 0px;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background-color: white;
     box-shadow: ${(props) => props.theme.boxShadow};
     cursor: pointer;
@@ -336,8 +384,8 @@ const OptionBtn = styled.div`
 `;
 const OptionPaper = styled.div`
     position: absolute;
-    top: -2px;
-    right: -2px;
+    top: 0;
+    right: 0;
     width: auto;
     height: auto;
     background-color: white;
@@ -356,7 +404,6 @@ const OptionPaper = styled.div`
 
 const Column = styled.div`
     border: 1px solid ${(props) => props.theme.borderColor};
-    border-radius: 5px;
     width: calc(${(props) => props.columnWidth}px - 2px);
     height: 210px;
     position: relative;
@@ -364,10 +411,13 @@ const Column = styled.div`
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: grab;
+    transition: all 0.1s ease;
     .back {
         position: absolute;
         height: 200px;
@@ -378,14 +428,29 @@ const Column = styled.div`
     }
     .sizeBtn {
         position: absolute;
-        border-right: 3px solid ${(props) => props.theme.accentColor};
-        border-bottom: 3px solid ${(props) => props.theme.accentColor};
-        width: 15px;
-        height: 15px;
-        bottom: 2px;
-        right: 2px;
+        font-size: 12px;
+        bottom: 0;
+        right: 0;
         z-index: 50;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        svg {
+            padding: 3px;
+            font-size: 15px;
+            background-color: ${(props) => props.theme.accentColor};
+            color: white;
+            transition: all 0.1s ease;
+            &:hover {
+                color: #ba7070;
+            }
+        }
+    }
+    .ratioFont {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 14px;
     }
     h4 {
         font-size: 12px;

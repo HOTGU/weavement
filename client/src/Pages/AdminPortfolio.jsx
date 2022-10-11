@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
 import { toast } from "react-toastify";
@@ -34,8 +35,11 @@ const PortfolioRow = ({ portfolio, index }) => {
                 key={portfolio._id}
             >
                 <div className="portfolio__index">{index + 1}</div>
-                <div className="portfolio__title">{portfolio.rep.title}</div>
-                <div className="portfolio__description">{portfolio.rep.description}</div>
+                <div className="portfolio__title">
+                    <Link to={`/portfolio/${portfolio._id}`} state={{ portfolio }}>
+                        {portfolio.rep.title}
+                    </Link>
+                </div>
                 <div className="portfolio__btnContainer">
                     <div
                         className="delete btn"
@@ -123,25 +127,20 @@ const PortfolioContainer = styled.div`
         align-items: center;
         div {
             padding: 0 10px;
-            text-align: center;
         }
         &__index {
             font-size: 20px;
             font-weight: 700;
-            width: 100px;
+            text-align: center;
+            width: 140px;
         }
         &__title {
             font-size: 20px;
-            font-weight: 500;
-            width: 30%;
-        }
-        &__description {
-            font-size: 20px;
             font-weight: 300;
-            overflow: hidden;
-            width: 50%;
+            width: 100%;
         }
         &__btnContainer {
+            text-align: center;
             width: 200px;
             display: flex;
             align-items: center;

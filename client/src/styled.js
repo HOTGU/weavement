@@ -70,6 +70,9 @@ export const GlobalStyles = createGlobalStyle`
     .Toastify__toast-body {
         white-space: pre-line;
     }
+    .grabbing * {
+        cursor: grabbing;
+    }
 `;
 
 export const myTheme = {
