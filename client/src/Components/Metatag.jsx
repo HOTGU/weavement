@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 function Metatag(props) {
     return (
         <Helmet>
-            <title>{props.title || "위브먼트 | 홈"}</title>
+            <title>{props.title}</title>
         </Helmet>
     );
 }

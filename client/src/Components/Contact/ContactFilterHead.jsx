@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {
-    faFilter,
     faRefresh,
     faPlus,
     faFileExcel,
+    faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { CSVLink } from "react-csv";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,27 +16,32 @@ import {
     filterItemAtom,
 } from "../../atoms/contact";
 import Modal from "../Modal";
-import AdminCreateContactForm from "../Form/AdminCreateContactForm";
+import CreateForm from "./CreateForm";
 import moment from "moment";
 
 const FilterWrapper = styled.div`
+    width: 500px;
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
     margin-bottom: 20px;
-    select,
-    .svg {
-        cursor: pointer;
-        border: 1px solid ${(props) => props.theme.hoverColor};
-        border-radius: 5px;
-    }
-    select {
-        width: fit-content;
-        outline: none;
-    }
-    .svg {
-        width: 18px;
-        height: 18px;
-        padding: 8px;
+    .item {
+        display: flex;
+        gap: 10px;
+        select,
+        .svg {
+            cursor: pointer;
+            border: 1px solid ${(props) => props.theme.hoverColor};
+            border-radius: 5px;
+        }
+        select {
+            width: fit-content;
+            outline: none;
+        }
+        .svg {
+            width: 18px;
+            height: 18px;
+            padding: 8px;
+        }
     }
 `;
 
@@ -108,70 +113,73 @@ function ContactFilterHead({ setShow, excelData }) {
 
     return (
         <FilterWrapper>
-            <select
-                name="month"
-                value={filterInput.month}
-                onChange={(e) => {
-                    setFilterInput({
-                        ...filterInput,
-                        month: e.target.value,
-                    });
-                    setFilterItem({
-                        ...filterItem,
-                        month: e.target.value,
-                    });
-                }}
-            >
-                <option value="">월별로 보기</option>
-                {monthArr.map((month, i) => {
-                    return (
-                        <option key={i} value={month}>
-                            {month}월
-                        </option>
-                    );
-                })}
-            </select>
-            <select
-                name="state"
-                value={filterInput.state}
-                onChange={(e) => {
-                    setFilterInput({
-                        ...filterInput,
-                        state: e.target.value,
-                    });
-                    setFilterItem({
-                        ...filterItem,
-                        state: e.target.value,
-                    });
-                }}
-            >
-                <option value="">상태로 보기</option>
-                <option value="문의">문의</option>
-                <option value="상담">상담</option>
-                <option value="계약">계약</option>
-                <option value="완료">완료</option>
-            </select>
-            <div onClick={() => setShow(true)}>
-                <FontAwesomeIcon className="svg" icon={faFilter} />
+            <div className="item">
+                <div onClick={() => setCraeteModal(true)}>
+                    <FontAwesomeIcon className="svg" icon={faPlus} />
+                </div>
+                <div onClick={handleClickReload}>
+                    <FontAwesomeIcon className="svg" icon={faRefresh} />
+                </div>
+                <div>
+                    <CSVLink
+                        headers={headers}
+                        data={data}
+                        filename={`${moment().format("YYMMDD")}_프로젝트관리`}
+                    >
+                        <FontAwesomeIcon className="svg" icon={faFileExcel} />
+                    </CSVLink>
+                </div>
             </div>
-            <div onClick={handleClickReload}>
-                <FontAwesomeIcon className="svg" icon={faRefresh} />
-            </div>
-            <div onClick={() => setCraeteModal(true)}>
-                <FontAwesomeIcon className="svg" icon={faPlus} />
-            </div>
-            <div>
-                <CSVLink
-                    headers={headers}
-                    data={data}
-                    filename={`${moment().format("YYMMDD")}_프로젝트관리`}
+            <div className="item">
+                <select
+                    name="month"
+                    value={filterInput.month}
+                    onChange={(e) => {
+                        setFilterInput({
+                            ...filterInput,
+                            month: e.target.value,
+                        });
+                        setFilterItem({
+                            ...filterItem,
+                            month: e.target.value,
+                        });
+                    }}
                 >
-                    <FontAwesomeIcon className="svg" icon={faFileExcel} />
-                </CSVLink>
+                    <option value="">월별</option>
+                    {monthArr.map((month, i) => {
+                        return (
+                            <option key={i} value={month}>
+                                {month}월
+                            </option>
+                        );
+                    })}
+                </select>
+                <select
+                    name="state"
+                    value={filterInput.state}
+                    onChange={(e) => {
+                        setFilterInput({
+                            ...filterInput,
+                            state: e.target.value,
+                        });
+                        setFilterItem({
+                            ...filterItem,
+                            state: e.target.value,
+                        });
+                    }}
+                >
+                    <option value="">상태별</option>
+                    <option value="문의">문의</option>
+                    <option value="상담">상담</option>
+                    <option value="계약">계약</option>
+                    <option value="완료">완료</option>
+                </select>
+                <div onClick={() => setShow(true)}>
+                    <FontAwesomeIcon className="svg" icon={faMagnifyingGlass} />
+                </div>
             </div>
-
             <Modal show={createModal} setShow={setCraeteModal}>
-                <AdminCreateContactForm setModal={setCraeteModal} />
+                <CreateForm setModal={setCraeteModal} />
             </Modal>
         </FilterWrapper>
     );

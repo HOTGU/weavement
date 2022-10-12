@@ -8,7 +8,7 @@ import { deleteContactApi } from "../../api";
 import { contactListSelector } from "../../atoms/contact";
 import Modal from "../Modal";
 import Confirm from "../Confirm";
-import UpdateContactForm from "../Form/UpdateContactForm";
+import UpdateForm from "./UpdateForm";
 import NoteContainer from "./NoteContainer";
 
 function ContactCard({ data }) {
@@ -402,7 +402,7 @@ function ContactCard({ data }) {
                 )}
             </Container>
             <Modal show={show} setShow={setShow}>
-                <UpdateContactForm data={data} setModal={setShow} />
+                <UpdateForm data={data} setModal={setShow} />
             </Modal>
             <Modal show={showNote} setShow={setShowNote}>
                 <NoteContainer contact={data} show={showNote} setShow={setShowNote} />
@@ -532,8 +532,9 @@ const Btn = styled.span`
 const StateBtn = styled.span`
     background-color: ${(props) => props.isState === "문의" && "#5758BB"};
     background-color: ${(props) => props.isState === "상담" && "#006266"};
-    background-color: ${(props) => props.isState === "계약" && "rgb(166,25,46)"};
+    background-color: ${(props) => props.isState === "계약" && "#d28f13"};
     background-color: ${(props) => props.isState === "완료" && "#00a8ff"};
+    background-color: ${(props) => props.isState === "불발" && "#9e0b0b"};
     padding: 3px 5px;
     color: white;
 `;

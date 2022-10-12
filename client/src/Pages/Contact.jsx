@@ -21,6 +21,7 @@ function Contact() {
     const [images, setImages] = useState([]);
     const [files, setFiles] = useState([]);
     const [isNumber, setIsNumber] = useState(false);
+    const [accept, setAccept] = useState(false);
     const {
         register,
         handleSubmit,
@@ -60,6 +61,10 @@ function Contact() {
 
     const onValid = async (data) => {
         data.images = files;
+        if (!accept) {
+            toast.error("정보수집을 동의해야 이용이 가능합니다");
+            return;
+        }
         if (
             !data.step ||
             !data.hasDesign ||
@@ -99,7 +104,6 @@ function Contact() {
                 <ProcessForm onSubmit={handleSubmit(onValid)}>
                     <ProcessHead>
                         <div>프로젝트 의뢰</div>
-                        {/* <div>Project Contact</div> */}
                     </ProcessHead>
                     <Column ref={stepRef}>
                         <div className="column__head">어떤 단계인가요? *</div>
@@ -452,7 +456,35 @@ function Contact() {
                             </InfoColumn>
                         </div>
                     </Column>
-                    <SubmitBtn disabled={loading}>
+                    <div className="accept">
+                        <div className="accept__head">개인정보 수집 동의</div>
+                        <div className="accept__info">
+                            <div className="acceptText">
+                                -수집항목: 필수(단계,예산 및
+                                일정,회사명,성명,이메일,연락처) /
+                                선택(첨부파일,직책,홈페이지)
+                            </div>
+                            <div className="acceptText">
+                                수집된 정보는 문의 접수 및 회신에 이용되며 전자상거래 등
+                                관련 법령에 따라 6개월간 보관됩니다.
+                                <br /> 이용자는 본 동의를 거부할 수 있으며, 미동의 시 문의
+                                접수가 불가능합니다.
+                            </div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    onChange={(e) => {
+                                        setAccept(e.target.checked);
+                                    }}
+                                />
+                                <span className="acceptText">동의합니다</span>
+                            </label>
+                        </div>
+                    </div>
+                    <SubmitBtn
+                        isDisabled={loading || !accept}
+                        disabled={loading || !accept}
+                    >
                         {loading ? <Loader width="25px" height="25px" /> : "문의하기"}
                     </SubmitBtn>
                 </ProcessForm>
@@ -488,6 +520,90 @@ const ProcessForm = styled.form`
     height: 100%;
     display: flex;
     flex-direction: column;
+    .accept {
+        display: flex;
+        margin-bottom: 80px;
+        @media ${device.laptop} {
+            flex-direction: column;
+            margin-bottom: 60px;
+        }
+        @media ${device.tablet} {
+            margin-bottom: 40px;
+        }
+        @media ${device.mobile} {
+            margin-bottom: 30px;
+        }
+        &__head {
+            color: ${(props) => props.theme.accentColor};
+            font-size: 18px;
+            font-weight: 500;
+            width: 40%;
+            @media ${device.laptop} {
+                width: 100%;
+                margin-bottom: 16px;
+                font-size: 16px;
+            }
+            @media ${device.tablet} {
+                margin-bottom: 14px;
+                font-size: 14px;
+            }
+            @media ${device.mobile} {
+                margin-bottom: 12px;
+                font-size: 12px;
+            }
+        }
+        &__info {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            @media ${device.laptop} {
+                width: 100%;
+                gap: 6px;
+            }
+            @media ${device.tablet} {
+                gap: 4px;
+            }
+            @media ${device.mobile} {
+                gap: 2px;
+            }
+            label {
+                display: flex;
+                align-items: center;
+                margin-top: 5px;
+                span {
+                    background-color: ${(props) => props.theme.bgColor};
+                    border: 1px solid ${(props) => props.theme.borderColor};
+                    border-radius: 5px;
+                    transition: all 0.2s ease-in-out;
+                    padding: 5px 8px;
+                    cursor: pointer;
+                }
+            }
+            input {
+                display: none;
+            }
+            input:checked + span {
+                background-color: ${(props) => props.theme.accentColor};
+                color: white;
+            }
+            .acceptText {
+                font-size: 16px;
+                color: ${(props) => props.theme.gray};
+                line-height: 20px;
+                @media ${device.laptop} {
+                    font-size: 14px;
+                }
+                @media ${device.tablet} {
+                    font-size: 12px;
+                }
+                @media ${device.mobile} {
+                    line-height: 14px;
+                    font-size: 10px;
+                }
+            }
+        }
+    }
 `;
 
 const Column = styled.div`
@@ -697,10 +813,11 @@ const InfoColumn = styled.div`
 const SubmitBtn = styled.button`
     width: 50%;
     height: 80px;
-    background-color: ${(props) => props.theme.subAccentColor};
+    background-color: ${(props) =>
+        props.isDisabled ? props.theme.hoverColor : props.theme.subAccentColor};
     color: white;
     font-size: 26px;
-    cursor: pointer;
+    cursor: ${(props) => (props.isDisabled ? "not-allowed" : "cursor")};
     font-weight: 700;
     margin-bottom: 60px;
     transition: all 0.2s ease-in-out;

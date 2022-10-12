@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { useResetRecoilState } from "recoil";
 import { contactListSelector } from "../../atoms/contact";
 import { updateContactApi } from "../../api";
-import Button from "../Button";
 import Loader from "../Loader";
 
 function UpdateContactForm({ data, setModal }) {
@@ -46,20 +45,27 @@ function UpdateContactForm({ data, setModal }) {
                 <div className="column__input">
                     <label>
                         <input {...register("state")} type="radio" value="문의" />
-                        문의
+                        <div>문의</div>
                     </label>
                     <label>
                         <input {...register("state")} type="radio" value="상담" />
-                        상담
+                        <div>상담</div>
                     </label>
                     <label>
                         <input {...register("state")} type="radio" value="계약" />
-                        계약
+                        <div>계약</div>
                     </label>
                     <label>
                         <input {...register("state")} type="radio" value="완료" />
-                        완료
+                        <div>완료</div>
                     </label>
+                    <label>
+                        <input {...register("state")} type="radio" value="불발" />
+                        <div>불발</div>
+                    </label>
+                    {/* <button onClick={handleSubmit(onValid)} disabled={loading}>
+                        {loading ? <Loader /> : "수정"}
+                    </button> */}
                 </div>
             </div>
             {watchAll.state === "문의" && (
@@ -73,7 +79,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("step")}
                                     value="기획,예편"
                                 />
-                                기획,예편
+                                <div>기획,예편</div>
                             </label>
                             <label>
                                 <input
@@ -81,11 +87,11 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("step")}
                                     value="디자인,설계"
                                 />
-                                디자인,설계
+                                <div>디자인,설계</div>
                             </label>
                             <label>
                                 <input type="radio" {...register("step")} value="제작" />
-                                제작
+                                <div>제작</div>
                             </label>
                             <label>
                                 <input
@@ -93,7 +99,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("step")}
                                     value="미확인"
                                 />
-                                미확인
+                                <div>미확인</div>
                             </label>
                         </div>
                     </div>
@@ -106,7 +112,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("hasDesign")}
                                     value="2D"
                                 />
-                                2D
+                                <div>2D</div>
                             </label>
                             <label>
                                 <input
@@ -114,7 +120,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("hasDesign")}
                                     value="3D"
                                 />
-                                3D
+                                <div>3D</div>
                             </label>
                             <label>
                                 <input
@@ -122,7 +128,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("hasDesign")}
                                     value="도면"
                                 />
-                                도면
+                                <div>도면</div>
                             </label>
                             <label>
                                 <input
@@ -130,7 +136,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("hasDesign")}
                                     value="없음"
                                 />
-                                없음
+                                <div>없음</div>
                             </label>
                             <label>
                                 <input
@@ -138,7 +144,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("hasDesign")}
                                     value="미확인"
                                 />
-                                미확인
+                                <div>미확인</div>
                             </label>
                         </div>
                     </div>
@@ -257,7 +263,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="FRP"
                                 />
-                                FRP
+                                <div>FRP</div>
                             </label>
                             <label>
                                 <input
@@ -265,7 +271,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="스티로폼"
                                 />
-                                스티로폼
+                                <div>스티로폼</div>
                             </label>
                             <label>
                                 <input
@@ -273,7 +279,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="목재"
                                 />
-                                목재
+                                <div>목재</div>
                             </label>
                             <label>
                                 <input
@@ -281,7 +287,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="금속"
                                 />
-                                금속
+                                <div>금속</div>
                             </label>
                             <label>
                                 <input
@@ -289,7 +295,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="3D프린팅"
                                 />
-                                3D프린팅
+                                <div>3D프린팅</div>
                             </label>
                         </div>
                     </div>
@@ -302,7 +308,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="복합소재"
                                 />
-                                복합소재
+                                <div>복합소재</div>
                             </label>
                             <label>
                                 <input
@@ -310,7 +316,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="미정"
                                 />
-                                미정
+                                <div>미정</div>
                             </label>
                             <label>
                                 <input
@@ -318,7 +324,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="기타"
                                 />
-                                기타
+                                <div>기타</div>
                             </label>
                         </div>
                     </div>
@@ -347,7 +353,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("due")}
                                     value="2주이내"
                                 />
-                                2주이내
+                                <div>2주이내</div>
                             </label>
                             <label>
                                 <input
@@ -355,7 +361,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("due")}
                                     value="2주~4주"
                                 />
-                                2주~4주
+                                <div>2주~4주</div>
                             </label>
                             <label>
                                 <input
@@ -363,7 +369,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("due")}
                                     value="1달~3달"
                                 />
-                                1달~3달
+                                <div>1달~3달</div>
                             </label>
                             <label>
                                 <input
@@ -371,7 +377,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("due")}
                                     value="3달이상"
                                 />
-                                3달이상
+                                <div>3달이상</div>
                             </label>
                         </div>
                     </div>
@@ -395,7 +401,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="FRP"
                                 />
-                                FRP
+                                <div>FRP</div>
                             </label>
                             <label>
                                 <input
@@ -403,7 +409,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="스티로폼"
                                 />
-                                스티로폼
+                                <div>스티로폼</div>
                             </label>
                             <label>
                                 <input
@@ -411,7 +417,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="목재"
                                 />
-                                목재
+                                <div>목재</div>
                             </label>
                             <label>
                                 <input
@@ -419,7 +425,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="금속"
                                 />
-                                금속
+                                <div>금속</div>
                             </label>
                             <label>
                                 <input
@@ -427,7 +433,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="3D프린팅"
                                 />
-                                3D프린팅
+                                <div>3D프린팅</div>
                             </label>
                         </div>
                     </div>
@@ -440,7 +446,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="복합소재"
                                 />
-                                복합소재
+                                <div>복합소재</div>
                             </label>
                             <label>
                                 <input
@@ -448,7 +454,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="미정"
                                 />
-                                미정
+                                <div>미정</div>
                             </label>
                             <label>
                                 <input
@@ -456,7 +462,7 @@ function UpdateContactForm({ data, setModal }) {
                                     {...register("meterial")}
                                     value="기타"
                                 />
-                                기타
+                                <div>기타</div>
                             </label>
                         </div>
                     </div>
@@ -488,9 +494,11 @@ function UpdateContactForm({ data, setModal }) {
                     </div>
                 </>
             )}
-            <Button onClick={handleSubmit(onValid)} disabled={loading}>
-                {loading ? <Loader /> : "수정"}
-            </Button>
+            <div className="btnWrapper">
+                <button onClick={handleSubmit(onValid)} disabled={loading}>
+                    {loading ? <Loader /> : "수정하기"}
+                </button>
+            </div>
         </SForm>
     );
 }
@@ -500,7 +508,6 @@ const SForm = styled.form`
     flex-direction: column;
     gap: 10px;
     padding: 20px;
-    min-height: 300px;
     width: 600px;
     textarea,
     input,
@@ -516,8 +523,21 @@ const SForm = styled.form`
         height: 150px;
     }
     label {
-        display: flex;
-        align-items: center;
+        div {
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: 1px solid ${(props) => props.theme.borderColor};
+            cursor: pointer;
+        }
+        input:checked {
+            + div {
+                background-color: ${(props) => props.theme.accentColor};
+                color: white;
+            }
+        }
+        input {
+            display: none;
+        }
     }
     input,
     select {
@@ -529,10 +549,6 @@ const SForm = styled.form`
         color: white;
         border: none;
         margin-top: auto;
-    }
-    input[type="radio"],
-    input[type="checkbox"] {
-        width: 10px;
     }
     .form__head {
         text-align: center;
@@ -560,6 +576,23 @@ const SForm = styled.form`
         flex: 7;
         display: flex;
         gap: 10px;
+    }
+    .btnWrapper {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            width: 140px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: ${(props) => props.theme.subAccentColor};
+            color: white;
+            display: flex;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+        }
     }
 `;
 

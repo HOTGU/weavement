@@ -30,7 +30,6 @@ const Wrapper = styled.div`
 function App() {
     return (
         <>
-            {/* <Metatag /> */}
             <Router>
                 <ScrollToTop />
                 <ThemeProvider theme={myTheme}>
