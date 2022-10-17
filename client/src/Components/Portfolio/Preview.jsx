@@ -260,8 +260,9 @@ function Preview() {
                                                     onClick={(e) => {
                                                         setShowCrop(true);
                                                         setCropImageObj({
-                                                            ...cropImageObj,
-                                                            file: columnItem.image.url,
+                                                            blobUrl: columnItem.image.url,
+                                                            name: columnItem.image.file
+                                                                .name,
                                                             aspect: Number(
                                                                 columnItem.columnRatio
                                                             ),
@@ -338,8 +339,7 @@ function Preview() {
             <Modal show={showCrop} setShow={setShowCrop}>
                 {showCrop && (
                     <CropImage
-                        file={cropImageObj.file}
-                        aspect={cropImageObj.aspect}
+                        imgObj={cropImageObj}
                         columnIndex={currentIndex}
                         reset={reset}
                     />

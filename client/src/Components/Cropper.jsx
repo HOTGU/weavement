@@ -5,7 +5,8 @@ import "react-image-crop/dist/ReactCrop.css";
 import { useRecoilState } from "recoil";
 import { columnAtom } from "../atoms/adminPortfolio";
 
-const CropImage = ({ file, aspect, columnIndex, reset }) => {
+const CropImage = ({ imgObj, columnIndex, reset }) => {
+    const { blobUrl, aspect, name } = imgObj;
     const [cropConfig, setCropConfig] = useState();
     const [completeCrop, setCompleteCrop] = useState();
     const [cropDone, setCropDone] = useState(true);
@@ -57,9 +58,8 @@ const CropImage = ({ file, aspect, columnIndex, reset }) => {
                 if (!blob) {
                     return;
                 }
-                blob.name = "자른이미지";
                 const croppedImageUrl = window.URL.createObjectURL(blob);
-                const croppedFile = new File([blob], `cropped_${blob.name}`, {
+                const croppedFile = new File([blob], name, {
                     type: "image/jpeg",
                 });
                 const imageObj = {
@@ -95,7 +95,7 @@ const CropImage = ({ file, aspect, columnIndex, reset }) => {
                     setCompleteCrop(c);
                 }}
             >
-                <img ref={imgRef} alt="cropped img" onLoad={handleLoad} src={file} />
+                <img ref={imgRef} alt="cropped img" onLoad={handleLoad} src={blobUrl} />
             </ReactCrop>
             <div
                 className="doneBtn"

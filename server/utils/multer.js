@@ -12,7 +12,13 @@ let s3 = new aws.S3({
     region: process.env.AWS_S3_REGION,
 });
 
-const upload = multer({
+let contactS3 = new aws.S3({
+    accessKeyId: process.env.AWS_CONTACT_S3_ACCESS,
+    secretAccessKey: process.env.AWS_CONTACT_S3_SECRET,
+    region: process.env.AWS_CONTACT_S3_REGION,
+});
+
+export const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: process.env.AWS_S3_BUCKET,
@@ -86,4 +92,45 @@ const upload = multer({
     },
 });
 
-export default upload;
+export const contactUpload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: process.env.AWS_CONTACT_S3_BUCKET,
+        shouldTransform: true,
+        transforms: [
+            {
+                id: "resize",
+                key: function (req, file, cb) {
+                    const client = req.body.clientCompany;
+                    const date = new Date();
+                    const year = date.getFullYear();
+                    const month = date.getMonth();
+                    const day = date.getDate();
+                    const hour = date.getHours();
+                    const minutes = date.getMinutes();
+                    cb(
+                        null,
+                        `test/${
+                            client || "images"
+                        }/${year}년${month}월${day}일${hour}:${minutes}_${client}_${
+                            file.originalname
+                        }`
+                    );
+                },
+                transform: function (req, file, cb) {
+                    cb(
+                        null,
+                        sharp()
+                            .resize({
+                                width: 1480,
+                            })
+                            .webp({ quality: 70 })
+                    );
+                },
+            },
+        ],
+    }),
+    limits: {
+        fileSize: 5 * 1024 * 1024, //5MB
+    },
+});

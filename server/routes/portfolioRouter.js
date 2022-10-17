@@ -7,7 +7,7 @@ import {
     getTwo,
 } from "../controllers/portfolioController.js";
 import { verifyIsAdmin, verifyUser } from "../middleware/verify.js";
-import upload from "../utils/multer.js";
+import { upload } from "../utils/multer.js";
 
 const portfolioRouter = express.Router();
 

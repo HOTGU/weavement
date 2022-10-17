@@ -4,6 +4,8 @@ import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import imageCompression from "browser-image-compression";
+
 import { device } from "../device";
 import { createContactApi } from "../api";
 import Loader from "../Components/Loader";
@@ -32,6 +34,13 @@ function Contact() {
     } = useForm();
 
     const watchAll = watch();
+
+    const init = () => {
+        reset();
+        setFiles([]);
+        setImages([]);
+        setAccept(false);
+    };
 
     const handleFile = (e) => {
         if (images.length >= 5 || files.length >= 5) {
@@ -82,19 +91,60 @@ function Contact() {
             toast.error("필수항목들을 입력하세요");
             return;
         }
+        setLoading(true);
+
         try {
-            setLoading(true);
-            await createContactApi(data);
-            setLoading(false);
+            const fd = new FormData();
+
+            //필수항목들
+
+            fd.append("step", data.step);
+            fd.append("hasDesign", data.hasDesign);
+            fd.append("cost", data.cost);
+            fd.append("schedule", data.schedule);
+            fd.append("description", data.description);
+            fd.append("knowPath", data.knowPath);
+            fd.append("clientName", data.clientName);
+            fd.append("clientCompany", data.clientCompany);
+            fd.append("clientStartPhone", data.clientStartPhone);
+            fd.append("clientMiddlePhone", data.clientMiddlePhone);
+            fd.append("clientEndPhone", data.clientEndPhone);
+            fd.append("clientEmail", data.clientEmail);
+
+            //선택항목들
+
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const options = {
+                        maxSizeMB: 3, // 허용하는 최대 사이즈 지정
+                        maxWidthOrHeight: 1920, // 허용하는 최대 width, height 값 지정
+                        useWebWorker: true, // webworker 사용 여부
+                    };
+                    const compressedBlob = await imageCompression(files[i], options);
+                    const compressedFile = new File(
+                        [compressedBlob],
+                        `${compressedBlob.name}`,
+                        {
+                            type: compressedBlob.type,
+                        }
+                    );
+                    fd.append("images", compressedFile);
+                }
+            }
+            fd.append("like", data.like);
+            fd.append("clientPosition", data.clientPosition);
+            fd.append("clientHomepage", data.clientHomepage);
+            fd.append("clientRequest", data.clientRequest);
+
+            await createContactApi(fd);
             toast.success(
                 `프로젝트 문의가 완료되었습니다\n빠른 시일내에 회신드리겠습니다`
             );
-            reset();
+            init();
         } catch (error) {
-            console.log(error);
-            setLoading(false);
             toast.error("뭔가 문제가 생겼습니다");
         }
+        setLoading(false);
     };
 
     return (
@@ -473,8 +523,8 @@ function Contact() {
                             <label>
                                 <input
                                     type="checkbox"
-                                    onChange={(e) => {
-                                        setAccept(e.target.checked);
+                                    onClick={(e) => {
+                                        setAccept(!accept);
                                     }}
                                 />
                                 <span className="acceptText">동의합니다</span>

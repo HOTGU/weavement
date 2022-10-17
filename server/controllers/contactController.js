@@ -1,6 +1,5 @@
 import Contact from "../models/Contact.js";
 import Note from "../models/Note.js";
-// import { getCurrentDate } from "../utils/getCurrentDate.js";
 
 export const chartFilter = async (req, res, next) => {
     const {

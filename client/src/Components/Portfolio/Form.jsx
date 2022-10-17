@@ -61,9 +61,16 @@ function Form() {
                 return;
             }
             if (column[i].image) {
-                const compressedFile = await imageCompression(
+                const compressedBlob = await imageCompression(
                     column[i].image.file,
                     options
+                );
+                const compressedFile = new File(
+                    [compressedBlob],
+                    `${compressedBlob.name}`,
+                    {
+                        type: compressedBlob.type,
+                    }
                 );
                 fd.append("image", compressedFile);
                 fd.append("imageIndex", i);

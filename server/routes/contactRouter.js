@@ -11,6 +11,7 @@ import {
     updateNote,
 } from "../controllers/contactController.js";
 import { verifyIsAdmin, verifyUser } from "../middleware/verify.js";
+import { contactUpload } from "../utils/multer.js";
 
 const contactRouter = express.Router();
 
@@ -18,7 +19,7 @@ contactRouter.get("/", verifyUser, verifyIsAdmin, get);
 contactRouter.get("/filter", verifyUser, verifyIsAdmin, chartFilter);
 contactRouter.patch("/:id", verifyUser, verifyIsAdmin, update);
 contactRouter.delete("/:id", verifyUser, verifyIsAdmin, remove);
-contactRouter.post("/", create);
+contactRouter.post("/", contactUpload.array("images", 5), create);
 contactRouter.get("/note/:contactId", verifyUser, verifyIsAdmin, getNote);
 contactRouter.post("/note/:contactId", verifyUser, verifyIsAdmin, createNote);
 
