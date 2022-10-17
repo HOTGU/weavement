@@ -1,5 +1,4 @@
 import multer from "multer";
-// import multerS3 from "multer-s3";
 import multerS3 from "multer-s3-transform";
 import aws from "aws-sdk";
 import sharp from "sharp";
@@ -94,7 +93,7 @@ export const upload = multer({
 
 export const contactUpload = multer({
     storage: multerS3({
-        s3: s3,
+        s3: contactS3,
         bucket: process.env.AWS_CONTACT_S3_BUCKET,
         shouldTransform: true,
         transforms: [
