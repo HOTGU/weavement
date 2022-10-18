@@ -6,6 +6,7 @@ import { useResetRecoilState } from "recoil";
 import { contactListSelector } from "../../atoms/contact";
 import { updateContactApi } from "../../api";
 import Loader from "../Loader";
+import Button from "../Button";
 
 function UpdateContactForm({ data, setModal }) {
     const reload = useResetRecoilState(contactListSelector);
@@ -37,469 +38,493 @@ function UpdateContactForm({ data, setModal }) {
     }, [data, reset]);
 
     return (
-        <SForm onSubmit={handleSubmit(onValid)}>
-            <div className="form__head">'{data.clientCompany}' 프로젝트</div>
+        <>
+            <SForm onSubmit={handleSubmit(onValid)}>
+                <div className="form__head">'{data.clientCompany}' 프로젝트</div>
 
-            <div className="form__column first__column">
-                <div className="column__head">상태변경</div>
-                <div className="column__input">
-                    <label>
-                        <input {...register("state")} type="radio" value="문의" />
-                        <div>문의</div>
-                    </label>
-                    <label>
-                        <input {...register("state")} type="radio" value="상담" />
-                        <div>상담</div>
-                    </label>
-                    <label>
-                        <input {...register("state")} type="radio" value="계약" />
-                        <div>계약</div>
-                    </label>
-                    <label>
-                        <input {...register("state")} type="radio" value="완료" />
-                        <div>완료</div>
-                    </label>
-                    <label>
-                        <input {...register("state")} type="radio" value="불발" />
-                        <div>불발</div>
-                    </label>
-                    {/* <button onClick={handleSubmit(onValid)} disabled={loading}>
+                <div className="form__column first__column">
+                    <div className="column__head">상태변경</div>
+                    <div className="column__input">
+                        <label>
+                            <input {...register("state")} type="radio" value="문의" />
+                            <div>문의</div>
+                        </label>
+                        <label>
+                            <input {...register("state")} type="radio" value="상담" />
+                            <div>상담</div>
+                        </label>
+                        <label>
+                            <input {...register("state")} type="radio" value="계약" />
+                            <div>계약</div>
+                        </label>
+                        <label>
+                            <input {...register("state")} type="radio" value="완료" />
+                            <div>완료</div>
+                        </label>
+                        <label>
+                            <input {...register("state")} type="radio" value="불발" />
+                            <div>불발</div>
+                        </label>
+                        {/* <button onClick={handleSubmit(onValid)} disabled={loading}>
                         {loading ? <Loader /> : "수정"}
                     </button> */}
+                    </div>
                 </div>
-            </div>
-            {watchAll.state === "문의" && (
-                <>
-                    <div className="form__column">
-                        <div className="column__head">단계</div>
-                        <div className="column__input">
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("step")}
-                                    value="기획,예편"
-                                />
-                                <div>기획,예편</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("step")}
-                                    value="디자인,설계"
-                                />
-                                <div>디자인,설계</div>
-                            </label>
-                            <label>
-                                <input type="radio" {...register("step")} value="제작" />
-                                <div>제작</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("step")}
-                                    value="미확인"
-                                />
-                                <div>미확인</div>
-                            </label>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">디자인,도면</div>
-                        <div className="column__input">
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("hasDesign")}
-                                    value="2D"
-                                />
-                                <div>2D</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("hasDesign")}
-                                    value="3D"
-                                />
-                                <div>3D</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("hasDesign")}
-                                    value="도면"
-                                />
-                                <div>도면</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("hasDesign")}
-                                    value="없음"
-                                />
-                                <div>없음</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("hasDesign")}
-                                    value="미확인"
-                                />
-                                <div>미확인</div>
-                            </label>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">예산</div>
-                        <div className="column__input">
-                            <select {...register("cost")}>
-                                <option value="">예산을 선택해주세요.</option>
-                                <option value="500만원이하">500만원 이하</option>
-                                <option value="2000만원이하">2000만원 이하</option>
-                                <option value="5000만원이하">5000만원 이하</option>
-                                <option value="1억원이하">1억원 이하</option>
-                                <option value="1억원이상">1억원 이상</option>
-                                <option value="미정">미정</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">일정</div>
-                        <div className="column__input">
-                            <select {...register("schedule")}>
-                                <option value="">일정을 선택해주세요. *</option>
-                                <option value="1개월내">시급해요! (1개월 내 완료)</option>
-                                <option value="3개월내">3개월 내 완료</option>
-                                <option value="3개월이상">3개월 이상</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">문의내용</div>
-                        <div className="column__input">
+                {watchAll.state === "문의" && (
+                    <>
+                        <div className="form__column">
+                            <div className="column__head">단계</div>
                             <div className="column__input">
-                                <textarea
-                                    placeholder="상담내용"
-                                    {...register("description")}
-                                />
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("step")}
+                                        value="기획,예편"
+                                    />
+                                    <div>기획,예편</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("step")}
+                                        value="디자인,설계"
+                                    />
+                                    <div>디자인,설계</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("step")}
+                                        value="제작"
+                                    />
+                                    <div>제작</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("step")}
+                                        value="미확인"
+                                    />
+                                    <div>미확인</div>
+                                </label>
                             </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">알게된경로</div>
-                        <div className="column__input">
+                        <div className="form__column">
+                            <div className="column__head">디자인,도면</div>
                             <div className="column__input">
-                                <select {...register("knowPath")}>
-                                    <option value="">경로를 선택해주세요.</option>
-                                    <option value="검색">검색(네이버, 구글, 다음)</option>
-                                    <option value="SNS">
-                                        SNS (인스타그램, 페이스북)
-                                    </option>
-                                    <option value="위브먼트블로그">
-                                        '위브먼트'블로그
-                                    </option>
-                                    <option value="네이버블로그">
-                                        네이버 블로그 (공식블로그 제외)
-                                    </option>
-                                    <option value="1억원이상">지인추천</option>
-                                    <option value="알수없음">알 수 없음</option>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("hasDesign")}
+                                        value="2D"
+                                    />
+                                    <div>2D</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("hasDesign")}
+                                        value="3D"
+                                    />
+                                    <div>3D</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("hasDesign")}
+                                        value="도면"
+                                    />
+                                    <div>도면</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("hasDesign")}
+                                        value="없음"
+                                    />
+                                    <div>없음</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("hasDesign")}
+                                        value="미확인"
+                                    />
+                                    <div>미확인</div>
+                                </label>
+                            </div>
+                        </div>
+                        <div className="form__column">
+                            <div className="column__head">예산</div>
+                            <div className="column__input">
+                                <select {...register("cost")}>
+                                    <option value="">예산을 선택해주세요.</option>
+                                    <option value="500만원이하">500만원 이하</option>
+                                    <option value="2000만원이하">2000만원 이하</option>
+                                    <option value="5000만원이하">5000만원 이하</option>
+                                    <option value="1억원이하">1억원 이하</option>
+                                    <option value="1억원이상">1억원 이상</option>
+                                    <option value="미정">미정</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">회사명</div>
-                        <div className="column__input">
-                            <input {...register("clientCompany")} />
+                        <div className="form__column">
+                            <div className="column__head">일정</div>
+                            <div className="column__input">
+                                <select {...register("schedule")}>
+                                    <option value="">일정을 선택해주세요.</option>
+                                    <option value="1개월내">
+                                        시급해요! (1개월 내 완료)
+                                    </option>
+                                    <option value="3개월내">3개월 내 완료</option>
+                                    <option value="3개월이상">3개월 이상</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">담당자</div>
-                        <div className="column__input">
-                            <input {...register("clientName")} />
+                        <div className="form__column">
+                            <div className="column__head">문의내용</div>
+                            <div className="column__input">
+                                <div className="column__input">
+                                    <textarea
+                                        placeholder="상담내용"
+                                        {...register("description")}
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">직책</div>
-                        <div className="column__input">
-                            <input {...register("clientPosition")} />
+                        <div className="form__column">
+                            <div className="column__head">알게된경로</div>
+                            <div className="column__input">
+                                <div className="column__input">
+                                    <select {...register("knowPath")}>
+                                        <option value="">경로를 선택해주세요.</option>
+                                        <option value="검색">
+                                            검색(네이버, 구글, 다음)
+                                        </option>
+                                        <option value="SNS">
+                                            SNS (인스타그램, 페이스북)
+                                        </option>
+                                        <option value="위브먼트블로그">
+                                            '위브먼트'블로그
+                                        </option>
+                                        <option value="네이버블로그">
+                                            네이버 블로그 (공식블로그 제외)
+                                        </option>
+                                        <option value="1억원이상">지인추천</option>
+                                        <option value="알수없음">알 수 없음</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">연락처</div>
-                        <div className="column__input">
-                            <input {...register("clientStartPhone")} />
-                            <input {...register("clientMiddlePhone")} />
-                            <input {...register("clientEndPhone")} />
+                        <div className="form__column">
+                            <div className="column__head">회사명</div>
+                            <div className="column__input">
+                                <input {...register("clientCompany")} />
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">이메일</div>
-                        <div className="column__input">
-                            <input {...register("clientEmail")} />
+                        <div className="form__column">
+                            <div className="column__head">담당자</div>
+                            <div className="column__input">
+                                <input {...register("clientName")} />
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">홈페이지</div>
-                        <div className="column__input">
-                            <input {...register("clientHomepage")} />
+                        <div className="form__column">
+                            <div className="column__head">직책</div>
+                            <div className="column__input">
+                                <input {...register("clientPosition")} />
+                            </div>
                         </div>
-                    </div>
-                </>
-            )}
-            {watchAll.state === "상담" && (
-                <>
-                    <div className="form__column">
-                        <div className="column__head">PM</div>
-                        <div className="column__input">
-                            <input {...register("pm")} placeholder="이름" type="text" />
+                        <div className="form__column">
+                            <div className="column__head">연락처</div>
+                            <div className="column__input">
+                                <input {...register("clientStartPhone")} />
+                                <input {...register("clientMiddlePhone")} />
+                                <input {...register("clientEndPhone")} />
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">소재</div>
-                        <div className="column__input">
-                            <label>
+                        <div className="form__column">
+                            <div className="column__head">이메일</div>
+                            <div className="column__input">
+                                <input {...register("clientEmail")} />
+                            </div>
+                        </div>
+                        <div className="form__column">
+                            <div className="column__head">홈페이지</div>
+                            <div className="column__input">
+                                <input {...register("clientHomepage")} />
+                            </div>
+                        </div>
+                    </>
+                )}
+                {watchAll.state === "상담" && (
+                    <>
+                        <div className="form__column">
+                            <div className="column__head">PM</div>
+                            <div className="column__input">
                                 <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="FRP"
+                                    {...register("pm")}
+                                    placeholder="이름"
+                                    type="text"
                                 />
-                                <div>FRP</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="스티로폼"
-                                />
-                                <div>스티로폼</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="목재"
-                                />
-                                <div>목재</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="금속"
-                                />
-                                <div>금속</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="3D프린팅"
-                                />
-                                <div>3D프린팅</div>
-                            </label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head"></div>
-                        <div className="column__input">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="복합소재"
-                                />
-                                <div>복합소재</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="미정"
-                                />
-                                <div>미정</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="기타"
-                                />
-                                <div>기타</div>
-                            </label>
+                        <div className="form__column">
+                            <div className="column__head">소재</div>
+                            <div className="column__input">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="FRP"
+                                    />
+                                    <div>FRP</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="스티로폼"
+                                    />
+                                    <div>스티로폼</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="목재"
+                                    />
+                                    <div>목재</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="금속"
+                                    />
+                                    <div>금속</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="3D프린팅"
+                                    />
+                                    <div>3D프린팅</div>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">콘텐츠</div>
-                        <div className="column__input">
-                            <input
-                                {...register("content")}
-                                placeholder="콘텐츠"
-                                type="text"
-                            />
+                        <div className="form__column">
+                            <div className="column__head"></div>
+                            <div className="column__input">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="복합소재"
+                                    />
+                                    <div>복합소재</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="미정"
+                                    />
+                                    <div>미정</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="기타"
+                                    />
+                                    <div>기타</div>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">크기</div>
-                        <div className="column__input">
-                            <input {...register("size")} placeholder="크기" type="text" />
+                        <div className="form__column">
+                            <div className="column__head">콘텐츠</div>
+                            <div className="column__input">
+                                <input
+                                    {...register("content")}
+                                    placeholder="콘텐츠"
+                                    type="text"
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">일정</div>
-                        <div className="column__input">
-                            <label>
+                        <div className="form__column">
+                            <div className="column__head">크기</div>
+                            <div className="column__input">
                                 <input
-                                    type="radio"
-                                    {...register("due")}
-                                    value="2주이내"
+                                    {...register("size")}
+                                    placeholder="크기"
+                                    type="text"
                                 />
-                                <div>2주이내</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("due")}
-                                    value="2주~4주"
-                                />
-                                <div>2주~4주</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("due")}
-                                    value="1달~3달"
-                                />
-                                <div>1달~3달</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    {...register("due")}
-                                    value="3달이상"
-                                />
-                                <div>3달이상</div>
-                            </label>
+                            </div>
                         </div>
-                    </div>
-                </>
-            )}
-            {watchAll.state === "계약" && (
-                <>
-                    <div className="form__column">
-                        <div className="column__head">PM</div>
-                        <div className="column__input">
-                            <input {...register("pm")} placeholder="이름" type="text" />
+                        <div className="form__column">
+                            <div className="column__head">일정</div>
+                            <div className="column__input">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("due")}
+                                        value="2주이내"
+                                    />
+                                    <div>2주이내</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("due")}
+                                        value="2주~4주"
+                                    />
+                                    <div>2주~4주</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("due")}
+                                        value="1달~3달"
+                                    />
+                                    <div>1달~3달</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        {...register("due")}
+                                        value="3달이상"
+                                    />
+                                    <div>3달이상</div>
+                                </label>
+                            </div>
                         </div>
-                    </div>
+                    </>
+                )}
+                {watchAll.state === "계약" && (
+                    <>
+                        <div className="form__column">
+                            <div className="column__head">PM</div>
+                            <div className="column__input">
+                                <input
+                                    {...register("pm")}
+                                    placeholder="이름"
+                                    type="text"
+                                />
+                            </div>
+                        </div>
 
-                    <div className="form__column">
-                        <div className="column__head">소재</div>
-                        <div className="column__input">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="FRP"
-                                />
-                                <div>FRP</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="스티로폼"
-                                />
-                                <div>스티로폼</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="목재"
-                                />
-                                <div>목재</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="금속"
-                                />
-                                <div>금속</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="3D프린팅"
-                                />
-                                <div>3D프린팅</div>
-                            </label>
+                        <div className="form__column">
+                            <div className="column__head">소재</div>
+                            <div className="column__input">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="FRP"
+                                    />
+                                    <div>FRP</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="스티로폼"
+                                    />
+                                    <div>스티로폼</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="목재"
+                                    />
+                                    <div>목재</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="금속"
+                                    />
+                                    <div>금속</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="3D프린팅"
+                                    />
+                                    <div>3D프린팅</div>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head"></div>
-                        <div className="column__input">
-                            <label>
+                        <div className="form__column">
+                            <div className="column__head"></div>
+                            <div className="column__input">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="복합소재"
+                                    />
+                                    <div>복합소재</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="미정"
+                                    />
+                                    <div>미정</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="기타"
+                                    />
+                                    <div>기타</div>
+                                </label>
+                            </div>
+                        </div>
+                        <div className="form__column">
+                            <div className="column__head">콘텐츠</div>
+                            <div className="column__input">
                                 <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="복합소재"
+                                    {...register("content")}
+                                    placeholder="콘텐츠"
+                                    type="text"
                                 />
-                                <div>복합소재</div>
-                            </label>
-                            <label>
+                            </div>
+                        </div>
+                        <div className="form__column">
+                            <div className="column__head">협력사</div>
+                            <div className="column__input">
                                 <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="미정"
+                                    {...register("orderCompany")}
+                                    placeholder="회사명"
+                                    type="text"
                                 />
-                                <div>미정</div>
-                            </label>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    {...register("meterial")}
-                                    value="기타"
-                                />
-                                <div>기타</div>
-                            </label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">콘텐츠</div>
-                        <div className="column__input">
-                            <input
-                                {...register("content")}
-                                placeholder="콘텐츠"
-                                type="text"
-                            />
+                        <div className="form__column">
+                            <div className="column__head">납기일</div>
+                            <div className="column__input">
+                                <input {...register("deadline")} type="date" />
+                            </div>
                         </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">협력사</div>
-                        <div className="column__input">
-                            <input
-                                {...register("orderCompany")}
-                                placeholder="회사명"
-                                type="text"
-                            />
-                        </div>
-                    </div>
-                    <div className="form__column">
-                        <div className="column__head">납기일</div>
-                        <div className="column__input">
-                            <input {...register("deadline")} type="date" />
-                        </div>
-                    </div>
-                </>
-            )}
-            <div className="btnWrapper">
-                <button onClick={handleSubmit(onValid)} disabled={loading}>
-                    {loading ? <Loader /> : "수정하기"}
-                </button>
-            </div>
-        </SForm>
+                    </>
+                )}
+                {(watchAll.state === "완료" || watchAll.state === "불발") && (
+                    <div>고생하셨습니다 🙇‍♀️🙇‍♂️</div>
+                )}
+            </SForm>
+
+            <Button onClick={handleSubmit(onValid)} disabled={loading}>
+                {loading ? <Loader /> : "수정하기"}
+            </Button>
+        </>
     );
 }
 
@@ -508,6 +533,8 @@ const SForm = styled.form`
     flex-direction: column;
     gap: 10px;
     padding: 20px;
+    height: 600px;
+    overflow-y: scroll;
     width: 600px;
     textarea,
     input,

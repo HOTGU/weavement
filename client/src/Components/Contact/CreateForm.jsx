@@ -52,171 +52,181 @@ function AdminCreateContactForm({ setModal }) {
     };
 
     return (
-        <SForm onSubmit={handleSubmit(onValid)}>
-            <div className="form__head">문의 생성</div>
-            <div className="form__column">
-                <div className="column__head">문의날짜</div>
-                <div className="column__input">
-                    <input {...register("contactDate")} type="date" />
-                </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">단계</div>
-                <div className="column__input">
-                    <label>
-                        <input {...register("step")} type="radio" value="기획,예편" />
-                        기획,예편
-                    </label>
-                    <label>
-                        <input {...register("step")} type="radio" value="디자인,설계" />
-                        디자인,설계
-                    </label>
-                    <label>
-                        <input {...register("step")} type="radio" value="제작" />
-                        제작
-                    </label>
-                    <label>
-                        <input {...register("step")} type="radio" value="미확인" />
-                        미확인
-                    </label>
-                </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">디자인여부</div>
-                <div className="column__input">
-                    <label>
-                        <input {...register("hasDesign")} type="radio" value="2D" />
-                        2D
-                    </label>
-                    <label>
-                        <input {...register("hasDesign")} type="radio" value="3D" />
-                        3D
-                    </label>
-                    <label>
-                        <input {...register("hasDesign")} type="radio" value="도면" />
-                        도면
-                    </label>
-                    <label>
-                        <input {...register("hasDesign")} type="radio" value="없음" />
-                        없음
-                    </label>
-                    <label>
-                        <input {...register("hasDesign")} type="radio" value="미확인" />
-                        미확인
-                    </label>
-                </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">예산</div>
-                <div className="column__input">
-                    <select {...register("cost")}>
-                        <option value="">예산을 선택해주세요.</option>
-                        <option value="500만원이하">500만원 이하</option>
-                        <option value="2000만원이하">2000만원 이하</option>
-                        <option value="5000만원이하">5000만원 이하</option>
-                        <option value="1억원이하">1억원 이하</option>
-                        <option value="1억원이상">1억원 이상</option>
-                        <option value="미정">미정</option>
-                    </select>
-                </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">일정</div>
-                <div className="column__input">
-                    <select {...register("schedule")}>
-                        <option value="">일정을 선택해주세요. *</option>
-                        <option value="1개월내">시급해요! (1개월 내 완료)</option>
-                        <option value="3개월내">3개월 내 완료</option>
-                        <option value="3개월이상">3개월 이상</option>
-                    </select>
-                </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">문의내용</div>
-                <div className="column__input">
-                    <textarea
-                        onKeyDown={handleKeyDown}
-                        {...register("description")}
-                    ></textarea>
-                </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">알게된경로</div>
-                <div className="column__input">
+        <>
+            <SForm onSubmit={handleSubmit(onValid)}>
+                <div className="form__head">문의 생성</div>
+                <div className="form__column">
+                    <div className="column__head">문의날짜</div>
                     <div className="column__input">
-                        <select {...register("knowPath")}>
-                            <option value="">알게된경로를 선택해주세요.</option>
-                            <option value="검색">검색(네이버, 구글, 다음)</option>
-                            <option value="SNS">SNS (인스타그램, 페이스북)</option>
-                            <option value="위브먼트블로그">'위브먼트'블로그</option>
-                            <option value="네이버블로그">
-                                네이버 블로그 (공식블로그 제외)
-                            </option>
-                            <option value="1억원이상">지인추천</option>
-                            <option value="기존고객">기존고객</option>
-                            <option value="알수없음">알 수 없음</option>
+                        <input {...register("contactDate")} type="date" />
+                    </div>
+                </div>
+                <div className="form__column">
+                    <div className="column__head">단계</div>
+                    <div className="column__input">
+                        <label>
+                            <input {...register("step")} type="radio" value="기획,예편" />
+                            <div>기획,예편</div>
+                        </label>
+                        <label>
+                            <input
+                                {...register("step")}
+                                type="radio"
+                                value="디자인,설계"
+                            />
+                            <div>디자인,설계</div>
+                        </label>
+                        <label>
+                            <input {...register("step")} type="radio" value="제작" />
+                            <div>제작</div>
+                        </label>
+                        <label>
+                            <input {...register("step")} type="radio" value="미확인" />
+                            <div>미확인</div>
+                        </label>
+                    </div>
+                </div>
+                <div className="form__column">
+                    <div className="column__head">디자인여부</div>
+                    <div className="column__input">
+                        <label>
+                            <input {...register("hasDesign")} type="radio" value="2D" />
+                            <div>2D</div>
+                        </label>
+                        <label>
+                            <input {...register("hasDesign")} type="radio" value="3D" />
+                            <div>3D</div>
+                        </label>
+                        <label>
+                            <input {...register("hasDesign")} type="radio" value="도면" />
+                            <div>도면</div>
+                        </label>
+                        <label>
+                            <input {...register("hasDesign")} type="radio" value="없음" />
+                            <div>없음</div>
+                        </label>
+                        <label>
+                            <input
+                                {...register("hasDesign")}
+                                type="radio"
+                                value="미확인"
+                            />
+                            <div>미확인</div>
+                        </label>
+                    </div>
+                </div>
+                <div className="form__column">
+                    <div className="column__head">예산</div>
+                    <div className="column__input">
+                        <select {...register("cost")}>
+                            <option value="">예산을 선택해주세요.</option>
+                            <option value="500만원이하">500만원 이하</option>
+                            <option value="2000만원이하">2000만원 이하</option>
+                            <option value="5000만원이하">5000만원 이하</option>
+                            <option value="1억원이하">1억원 이하</option>
+                            <option value="1억원이상">1억원 이상</option>
+                            <option value="미정">미정</option>
                         </select>
                     </div>
                 </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">유입경로</div>
-                <div className="column__input">
+                <div className="form__column">
+                    <div className="column__head">일정</div>
                     <div className="column__input">
-                        <select {...register("flowPath")}>
-                            <option value="">유입경로를 선택해주세요.</option>
-                            <option value="전화">전화</option>
-                            <option value="문자">문자</option>
-                            <option value="이메일">이메일</option>
-                            <option value="카카오톡">카카오톡</option>
-                            <option value="홈페이지">홈페이지</option>
-                            <option value="알수없음">알 수 없음</option>
+                        <select {...register("schedule")}>
+                            <option value="">일정을 선택해주세요.</option>
+                            <option value="1개월내">시급해요! (1개월 내 완료)</option>
+                            <option value="3개월내">3개월 내 완료</option>
+                            <option value="3개월이상">3개월 이상</option>
                         </select>
                     </div>
                 </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">회사명</div>
-                <div className="column__input">
-                    <input {...register("clientCompany")} />
+                <div className="form__column">
+                    <div className="column__head">문의내용</div>
+                    <div className="column__input">
+                        <textarea
+                            onKeyDown={handleKeyDown}
+                            {...register("description")}
+                        ></textarea>
+                    </div>
                 </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">담당자</div>
-                <div className="column__input">
-                    <input {...register("clientName")} />
+                <div className="form__column">
+                    <div className="column__head">알게된경로</div>
+                    <div className="column__input">
+                        <div className="column__input">
+                            <select {...register("knowPath")}>
+                                <option value="">알게된경로를 선택해주세요.</option>
+                                <option value="검색">검색(네이버, 구글, 다음)</option>
+                                <option value="SNS">SNS (인스타그램, 페이스북)</option>
+                                <option value="위브먼트블로그">'위브먼트'블로그</option>
+                                <option value="네이버블로그">
+                                    네이버 블로그 (공식블로그 제외)
+                                </option>
+                                <option value="1억원이상">지인추천</option>
+                                <option value="기존고객">기존고객</option>
+                                <option value="알수없음">알 수 없음</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">직책</div>
-                <div className="column__input">
-                    <input {...register("clientPosition")} />
+                <div className="form__column">
+                    <div className="column__head">유입경로</div>
+                    <div className="column__input">
+                        <div className="column__input">
+                            <select {...register("flowPath")}>
+                                <option value="">유입경로를 선택해주세요.</option>
+                                <option value="전화">전화</option>
+                                <option value="문자">문자</option>
+                                <option value="이메일">이메일</option>
+                                <option value="카카오톡">카카오톡</option>
+                                <option value="홈페이지">홈페이지</option>
+                                <option value="알수없음">알 수 없음</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">연락처</div>
-                <div className="column__input">
-                    <input {...register("clientStartPhone")} />
-                    <input {...register("clientMiddlePhone")} />
-                    <input {...register("clientEndPhone")} />
+                <div className="form__column">
+                    <div className="column__head">회사명</div>
+                    <div className="column__input">
+                        <input {...register("clientCompany")} />
+                    </div>
                 </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">이메일</div>
-                <div className="column__input">
-                    <input {...register("clientEmail")} />
+                <div className="form__column">
+                    <div className="column__head">담당자</div>
+                    <div className="column__input">
+                        <input {...register("clientName")} />
+                    </div>
                 </div>
-            </div>
-            <div className="form__column">
-                <div className="column__head">홈페이지</div>
-                <div className="column__input">
-                    <input {...register("clientHomepage")} />
+                <div className="form__column">
+                    <div className="column__head">직책</div>
+                    <div className="column__input">
+                        <input {...register("clientPosition")} />
+                    </div>
                 </div>
-            </div>
+                <div className="form__column">
+                    <div className="column__head">연락처</div>
+                    <div className="column__input">
+                        <input {...register("clientStartPhone")} />
+                        <input {...register("clientMiddlePhone")} />
+                        <input {...register("clientEndPhone")} />
+                    </div>
+                </div>
+                <div className="form__column">
+                    <div className="column__head">이메일</div>
+                    <div className="column__input">
+                        <input {...register("clientEmail")} />
+                    </div>
+                </div>
+                <div className="form__column">
+                    <div className="column__head">홈페이지</div>
+                    <div className="column__input">
+                        <input {...register("clientHomepage")} />
+                    </div>
+                </div>
+            </SForm>
             <Button onClick={handleSubmit(onValid)} disabled={loading}>
                 {loading ? <Loader /> : "생성"}
             </Button>
-        </SForm>
+        </>
     );
 }
 
@@ -225,8 +235,9 @@ const SForm = styled.form`
     flex-direction: column;
     gap: 12px;
     padding: 20px;
-    min-height: 300px;
-    width: 500px;
+    height: 600px;
+    overflow-y: scroll;
+    width: 600px;
     textarea,
     input,
     select {
@@ -255,6 +266,23 @@ const SForm = styled.form`
         color: white;
         border: none;
         margin-top: auto;
+    }
+    label {
+        div {
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: 1px solid ${(props) => props.theme.borderColor};
+            cursor: pointer;
+        }
+        input:checked {
+            + div {
+                background-color: ${(props) => props.theme.accentColor};
+                color: white;
+            }
+        }
+        input {
+            display: none;
+        }
     }
     .form__head {
         text-align: center;

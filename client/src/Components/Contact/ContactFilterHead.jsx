@@ -173,6 +173,7 @@ function ContactFilterHead({ setShow, excelData }) {
                     <option value="상담">상담</option>
                     <option value="계약">계약</option>
                     <option value="완료">완료</option>
+                    <option value="불발">불발</option>
                 </select>
                 <div onClick={() => setShow(true)}>
                     <FontAwesomeIcon className="svg" icon={faMagnifyingGlass} />

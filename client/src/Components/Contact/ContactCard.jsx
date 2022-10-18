@@ -45,7 +45,7 @@ function ContactCard({ data }) {
                             setShowNote(true);
                         }}
                     >
-                        ❗
+                        📝
                     </Btn>
                     <Btn
                         onClick={() => {
@@ -162,18 +162,19 @@ function ContactCard({ data }) {
                     >
                         문의내용
                     </ShowBtn>
-                    {data.state === "상담" && (
-                        <ShowBtn
-                            onClick={() => {
-                                setShowContact(false);
-                                setShowSign(false);
-                                setShowCounsel(!showCounsel);
-                            }}
-                            isOpen={showCounsel}
-                        >
-                            상담내용
-                        </ShowBtn>
-                    )}
+                    {data.state === "상담" ||
+                        (data.state === "불발" && (
+                            <ShowBtn
+                                onClick={() => {
+                                    setShowContact(false);
+                                    setShowSign(false);
+                                    setShowCounsel(!showCounsel);
+                                }}
+                                isOpen={showCounsel}
+                            >
+                                상담내용
+                            </ShowBtn>
+                        ))}
                     {data.state === "계약" && (
                         <>
                             <ShowBtn
