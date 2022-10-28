@@ -107,9 +107,10 @@ export const contactUpload = multer({
                     const day = date.getDate();
                     const hour = date.getHours();
                     const minutes = date.getMinutes();
+
                     cb(
                         null,
-                        `test/${
+                        `${process.env.NODE_ENV == "production" ? "images" : "test"}/${
                             client || "images"
                         }/${year}년${month}월${day}일${hour}:${minutes}_${client}_${
                             file.originalname

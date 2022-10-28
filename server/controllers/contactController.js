@@ -89,6 +89,7 @@ export const create = async (req, res, next) => {
     try {
         const newContact = new Contact({
             ...body,
+            isImage: req.files.length > 0 ? true : false,
             createdAt: body.contactDate || new Date(),
         });
         await newContact.save();

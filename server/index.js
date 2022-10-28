@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import csrf from "csurf";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
@@ -18,6 +19,7 @@ if (process.env.NODE_ENV == "development") {
 }
 
 const app = express();
+const csrfProtection = csrf({ cookie: true });
 
 const dbConnect = () => {
     if (process.env.NODE_ENV == "production") {
@@ -39,31 +41,49 @@ db.once("open", handleOpen);
 db.on("error", handleError);
 db.on("disconnected", dbConnect);
 
-const corsOptions = {
-    origin: process.env.NODE_ENV === "development" && "http://localhost:3000",
-    credentials: true,
-};
+if (process.env.NODE_ENV === "production") {
+    const cspOptions = {
+        directives: {
+            // 기본 옵션을 가져옵니다.
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
 
-const cspOptions = {
-    directives: {
-        // 기본 옵션을 가져옵니다.
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            "img-src": ["'self'", "data:", "blob:", "*.amazonaws.com"],
+        },
+    };
 
-        "img-src": ["'self'", "data:", "blob:", "*.amazonaws.com"],
-    },
-};
+    // Helmet의 모든 기능 사용. (contentSecurityPolicy에는 custom option 적용)
+    app.use(
+        helmet({
+            contentSecurityPolicy: cspOptions,
+        })
+    );
+}
 
-// Helmet의 모든 기능 사용. (contentSecurityPolicy에는 custom option 적용)
-app.use(
-    helmet({
-        contentSecurityPolicy: cspOptions,
-    })
-);
-app.use(cors(corsOptions));
-app.use(morgan("dev"));
+if (process.env.NODE_ENV === "development") {
+    const corsOptions = {
+        origin: "http://localhost:3000",
+        credentials: true,
+    };
+
+    app.use(cors(corsOptions));
+    app.use(morgan("dev"));
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.SESSION_SECRET));
+
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
+    res.cookie("X-CSRF-TOKEN", req.csrfToken());
+    next();
+});
+
+// app.use("/api/getCSRFToken", (req, res) => {
+//     console.log(req.csrfToken());
+//     res.json({ csrfToken: req.csrfToken() });
+// });
 
 app.use("/api/user", userRouter);
 app.use("/api/contact", contactRouter);
@@ -78,7 +98,6 @@ app.get("*", (req, res) => {
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "뭔가 오류가 생겼습니다!";
-    console.log(errorMessage);
     return res.status(errorStatus).json({
         status: errorStatus,
         message: errorMessage,
