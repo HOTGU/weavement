@@ -19,7 +19,6 @@ if (process.env.NODE_ENV == "development") {
 }
 
 const app = express();
-const csrfProtection = csrf({ cookie: true });
 
 const dbConnect = () => {
     if (process.env.NODE_ENV == "production") {
@@ -73,17 +72,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.SESSION_SECRET));
 
+let csrfProtection = csrf({ cookie: true });
+
 app.use(csrfProtection);
 
-app.use((req, res, next) => {
-    res.cookie("X-CSRF-TOKEN", req.csrfToken());
-    next();
+app.use("/api/getCSRFToken", (req, res) => {
+    res.json({ csrfToken: req.csrfToken() });
 });
-
-// app.use("/api/getCSRFToken", (req, res) => {
-//     console.log(req.csrfToken());
-//     res.json({ csrfToken: req.csrfToken() });
-// });
 
 app.use("/api/user", userRouter);
 app.use("/api/contact", contactRouter);
@@ -98,6 +93,7 @@ app.get("*", (req, res) => {
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "뭔가 오류가 생겼습니다!";
+    console.log(err);
     return res.status(errorStatus).json({
         status: errorStatus,
         message: errorMessage,

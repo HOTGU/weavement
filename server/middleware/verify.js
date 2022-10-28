@@ -1,8 +1,11 @@
 import createError from "../utils/createError.js";
+import csrf from "csurf";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import dotenv from "dotenv";
 dotenv.config();
+
+export const verifyCSRF = csrf({ cookie: true });
 
 export const verifyUser = (req, res, next) => {
     const accessToken = req?.cookies?.accessToken;
