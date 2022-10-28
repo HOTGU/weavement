@@ -12,6 +12,7 @@ import ArticleColumn from "../Components/Main/ArticleColumn";
 import Metatag from "../Components/Metatag";
 
 function Main() {
+
     return (
         <>
             <Metatag title="위브먼트 | 홈" />

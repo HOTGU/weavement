@@ -14,6 +14,7 @@ import Loader from "../Components/Loader";
 import { contactChartSelector, filterYearAtom } from "../atoms/chart";
 import { useEffect } from "react";
 import Metatag from "../Components/Metatag";
+import { getCSRFToken } from "../api";
 
 const CreateOptions = () => {
     let options = [];
@@ -90,6 +91,10 @@ function Admin() {
             data: chartData.data.success || [],
         },
     ];
+
+    useEffect(() => {
+        getCSRFToken();
+    }, []);
 
     useEffect(() => {
         if (contactChart.state === "hasValue") {

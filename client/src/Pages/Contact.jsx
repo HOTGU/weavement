@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Metatag from "../Components/Metatag";
 import ContactInfo from "../Components/MultiStepForm/ContactInfo";
 import FormContainer from "../Components/MultiStepForm/FormContainer";
 import ContactClient from "../Components/MultiStepForm/ContactClient";
 import ContactAccept from "../Components/MultiStepForm/ContactAccept";
+import { getCSRFToken } from "../api";
 
 function Contact() {
     const [step, setStep] = useState(0);
@@ -12,6 +13,10 @@ function Contact() {
     const previousStep = () => setStep(step - 1);
     const nextStep = () => setStep(step + 1);
     const resetStep = () => setStep(0);
+
+    useEffect(() => {
+        getCSRFToken();
+    }, []);
 
     return (
         <>

@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
 import { toast } from "react-toastify";
 
 import { allGetPortfolioSelector } from "../atoms/portfolio";
-import { deletePortfolioApi } from "../api";
+import { deletePortfolioApi, getCSRFToken } from "../api";
 import Confirm from "../Components/Confirm";
 import Preview from "../Components/Portfolio/Preview";
 import Metatag from "../Components/Metatag";
@@ -68,6 +68,10 @@ function AdminPortfolio() {
     const portfolios = useMemo(() => {
         return portfoliosLoadable.state === "hasValue" ? portfoliosLoadable.contents : [];
     }, [portfoliosLoadable]);
+
+    useEffect(() => {
+        getCSRFToken();
+    }, []);
 
     return (
         <>

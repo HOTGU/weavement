@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,12 +12,17 @@ import ContactFilterForm from "../Components/Contact/ContactFilterForm";
 import ContactFilterHead from "../Components/Contact/ContactFilterHead";
 import { removeCookie } from "../utils/cookie";
 import Metatag from "../Components/Metatag";
+import { getCSRFToken } from "../api";
 
 function AdminContact() {
     const [filterItem, setFilterItem] = useRecoilState(filterItemAtom);
     const [filterInput, setFilterInput] = useRecoilState(filterInputAtom);
     const contactList = useRecoilValueLoadable(contactListSelector);
     const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        getCSRFToken();
+    }, []);
 
     const contacts = useMemo(() => {
         return contactList.state === "hasValue" ? contactList.contents : [];

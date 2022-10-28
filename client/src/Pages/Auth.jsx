@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 
-import { signinApi, signupApi } from "../api";
+import { getCSRFToken, signinApi, signupApi } from "../api";
 import { userAtom } from "../atoms/isAuth";
 import Input from "../Components/Input";
 import { setCookie } from "../utils/cookie";
@@ -28,6 +28,10 @@ function Auth() {
     const handleInput = (e) => {
         setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
+
+    useEffect(() => {
+        getCSRFToken();
+    }, []);
 
     useEffect(() => {
         if (user) {

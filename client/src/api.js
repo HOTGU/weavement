@@ -72,15 +72,11 @@ axiosJWT.interceptors.response.use(
     }
 );
 
-// export const getCSRFToken = async () => {
-//     const { data } = await axios.get("/getCSRFToken");
-//     axios.defaults.headers.common["X-CSRF-Token"] = data.csrfToken;
-// };
-
-// export const getCSRFTokenWithJWT = async () => {
-//     const { data } = await axiosJWT.get("/getCSRFToken");
-//     axiosJWT.defaults.headers.common["X-CSRF-Token"] = data.csrfToken;
-// };
+export const getCSRFToken = async () => {
+    const { data } = await axios.get("/getCSRFToken");
+    axios.defaults.headers.common["X-CSRF-Token"] = data.csrfToken;
+    axiosJWT.defaults.headers.common["X-CSRF-Token"] = data.csrfToken;
+};
 
 // user
 
