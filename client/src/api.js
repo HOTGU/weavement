@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { getCookie, setCookie } from "./utils/cookie";
 import logout from "./utils/logout";
 
+axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
     process.env.NODE_ENV === "development" ? "http://localhost:5000/api" : "/api";
 
@@ -70,6 +71,16 @@ axiosJWT.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+// export const getCSRFToken = async () => {
+//     const { data } = await axios.get("/getCSRFToken");
+//     axios.defaults.headers.common["X-CSRF-Token"] = data.csrfToken;
+// };
+
+// export const getCSRFTokenWithJWT = async () => {
+//     const { data } = await axiosJWT.get("/getCSRFToken");
+//     axiosJWT.defaults.headers.common["X-CSRF-Token"] = data.csrfToken;
+// };
 
 // user
 

@@ -37,6 +37,8 @@ function ContactCard({ data }) {
         <>
             <Container isState={data.state}>
                 <BtnWrapper>
+                    {data.isImage && <Btn>📁</Btn>}
+
                     <Btn
                         onClick={() => {
                             setShowContact(false);

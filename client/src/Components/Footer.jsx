@@ -12,13 +12,24 @@ function Footer() {
                         <div className="img-container toggle">
                             <img src={LogoImg} alt="" />
                         </div>
-                        <div className="column-container">
+                        {/* <div className="column-container">
                             <h3>위브먼트 WEAVEMENT | 313-47-00901</h3>
                             <div>
                                 <span className="bold">E</span> contact@weavement.co.kr |{" "}
                                 <span className="bold">F</span> 0504 . 377 . 7181
                             </div>
                             <div>서울시 영등포구 영등포로 22길 3-6 4층</div>
+                        </div> */}
+                        <div className="column-container">
+                            <div>
+                                <span className="bold">E</span> contact@weavement.co.kr |{" "}
+                                <span className="bold">F</span> 0504 . 377 . 7181
+                            </div>
+                            <div>
+                                서울시 영등포구 영등포로 22길 3-6 4층 / 사업자등록번호
+                                313-47-00901
+                            </div>
+                            <div>&#169; 2022 WEAVEMENT CO.LTD. ALL RIGHTS RESERVED.</div>
                         </div>
                     </Item>
                     <Item>
@@ -69,7 +80,7 @@ const Item = styled.div`
         }
     }
     img {
-        height: 70px;
+        height: 60px;
         @media ${device.tablet} {
             height: 50px;
         }
@@ -81,19 +92,19 @@ const Item = styled.div`
         gap: 10px;
         font-weight: 300;
         @media ${device.tablet} {
-            gap: 2px;
+            gap: 5px;
             font-size: 14px;
-            margin-top: 5px;
         }
         @media ${device.mobile} {
+            margin-top: 5px;
             font-size: 10px;
             text-align: center;
         }
         h3 {
             font-weight: 500;
-            font-size: 18px;
+            font-size: 16px;
             @media ${device.tablet} {
-                font-size: 16px;
+                font-size: 14px;
             }
             @media ${device.mobile} {
                 font-size: 12px;
@@ -111,6 +122,15 @@ const Item = styled.div`
             }
         }
         div {
+            font-size: 14px;
+            @media ${device.tablet} {
+                font-size: 12px;
+                margin-bottom: 1px;
+            }
+            @media ${device.mobile} {
+                font-size: 10px;
+                margin-bottom: 1px;
+            }
             .bold {
                 font-weight: 500;
             }

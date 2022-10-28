@@ -19,6 +19,9 @@ const Wrapper = styled.div`
             @media ${device.mobile} {
                 font-size: 20px;
             }
+            @media ${device.mobile} {
+                font-size: 18px;
+            }
         }
         .default-text {
             text-align: center;

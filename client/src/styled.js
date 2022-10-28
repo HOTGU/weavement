@@ -79,7 +79,6 @@ export const myTheme = {
     navbarHeight: "100px",
     bgColor: "white",
     textColor: "black",
-    // accentColor: "rgb(166,25,46)",
     accentColor: "rgb(123,25,30)",
     subAccentColor: "rgb(192,156,131)",
     borderColor: "#dcdde1",

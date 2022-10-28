@@ -53,8 +53,12 @@ const Wrapper = styled.div`
         }
         @media ${device.mobile} {
             line-height: 20px;
-            width: 350px;
+            width: 360px;
             padding: 15px;
+        }
+        @media ${device.mobileS} {
+            width: 100%;
+            padding: 10px;
         }
         h4 {
             margin-bottom: 80px;
@@ -74,6 +78,10 @@ const Wrapper = styled.div`
             }
             @media ${device.mobile} {
                 padding: 0 10px 20px 10px;
+                font-size: 10px;
+            }
+            @media ${device.mobileS} {
+                padding: 0;
                 font-size: 10px;
             }
             .bold {
