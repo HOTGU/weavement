@@ -328,6 +328,22 @@ function UpdateContactForm({ data, setModal }) {
                                     <input
                                         type="checkbox"
                                         {...register("meterial")}
+                                        value="패브릭"
+                                    />
+                                    <div>패브릭</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="에어"
+                                    />
+                                    <div>에어</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
                                         value="미정"
                                     />
                                     <div>미정</div>
@@ -469,6 +485,22 @@ function UpdateContactForm({ data, setModal }) {
                                         value="복합소재"
                                     />
                                     <div>복합소재</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="패브릭"
+                                    />
+                                    <div>패브릭</div>
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        {...register("meterial")}
+                                        value="에어"
+                                    />
+                                    <div>에어</div>
                                 </label>
                                 <label>
                                     <input
