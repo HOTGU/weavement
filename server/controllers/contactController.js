@@ -75,9 +75,7 @@ export const get = async (req, res, next) => {
                 $lt: new Date(Date.UTC(2022, Number(query.month))),
             };
 
-        const contacts = await Contact.find(filterQuery)
-            .populate("note")
-            .sort({ createdAt: -1 });
+        const contacts = await Contact.find(filterQuery).sort({ createdAt: -1 });
         return res.status(200).json(contacts);
     } catch (error) {
         console.log(error);
@@ -140,7 +138,7 @@ export const getNote = async (req, res, next) => {
     } = req;
     try {
         if (!contactId) return next(400, "잘못된 접근입니다");
-        const notes = await Note.find({ contactId });
+        const notes = await Note.find({ contactId }).sort({ createdAt: 1 });
         return res.status(200).json(notes);
     } catch (error) {
         next(error);
@@ -154,11 +152,8 @@ export const createNote = async (req, res, next) => {
     } = req;
     try {
         if (!contactId) return next(400, "잘못된 접근입니다");
-        const contact = await Contact.findById(contactId);
         const newNote = new Note({ ...body, contactId });
-        contact.note.push(newNote);
         await newNote.save();
-        await contact.save();
         return res.status(200).json(newNote);
     } catch (error) {
         next(error);

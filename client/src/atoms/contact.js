@@ -43,3 +43,7 @@ export const currentNoteAtom = atom({
     key: "currentNote",
     default: null,
 });
+export const currentContactIdAtom = atom({
+    key: "currentContact",
+    default: null,
+});

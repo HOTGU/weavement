@@ -60,31 +60,8 @@ function ContactFilterHead({ setShow, excelData }) {
         ...contact,
         id: index + 1,
         client: `회사명: ${contact.clientCompany} \n성함: ${contact.clientName} \n직급: ${contact.clientPosition} \n번호: ${contact.clientStartPhone}-${contact.clientMiddlePhone}-${contact.clientEndPhone} \n홈페이지: ${contact.clientHomepage} \n이메일: ${contact.clientEmail} \n특이사항 :${contact.clientRequest}`,
-        request: contact.note
-            .filter((note) => {
-                const isRequest = Boolean(note.category === "질문");
-                return isRequest;
-            })
-            .map((note) => {
-                return `${moment(note.noteDate).format("MM월DD일")} \n${note.text} \n`;
-            }),
-        response: contact.note
-            .filter((note) => {
-                const isRequest = Boolean(note.category === "답변");
-                return isRequest;
-            })
-            .map((note) => {
-                return `${moment(note.noteDate).format("MM월DD일")} \n${note.text}\n`;
-            }),
-        alert: contact.note
-            .filter((note) => {
-                const isRequest = Boolean(note.category === "공지");
-                return isRequest;
-            })
-            .map((note) => {
-                return `${moment(note.noteDate).format("MM월DD일")}\n${note.text}\n`;
-            }),
         createdAt: `${moment(contact.createdAt).format("YYYY년MM월DD일")}`,
+        deadline: `${moment(contact.deadline).format("YYYY년MM월DD일")}`,
     }));
 
     const headers = [
@@ -106,10 +83,11 @@ function ContactFilterHead({ setShow, excelData }) {
         { label: "PM", key: "pm" },
         { label: "협력사", key: "orderCompany" },
         { label: "납기일", key: "deadline" },
-        { label: "질문내용", key: "request" },
-        { label: "문의내용", key: "response" },
-        { label: "공지", key: "alert" },
     ];
+
+    const filename = `${moment().format("YYMMDD")}_프로젝트${
+        filterItem.month ? `_${filterItem.month}월` : ""
+    }${filterItem.state ? `_${filterItem.state}` : ""}`;
 
     return (
         <FilterWrapper>
@@ -121,11 +99,7 @@ function ContactFilterHead({ setShow, excelData }) {
                     <FontAwesomeIcon className="svg" icon={faRefresh} />
                 </div>
                 <div>
-                    <CSVLink
-                        headers={headers}
-                        data={data}
-                        filename={`${moment().format("YYMMDD")}_프로젝트관리`}
-                    >
+                    <CSVLink headers={headers} data={data} filename={filename}>
                         <FontAwesomeIcon className="svg" icon={faFileExcel} />
                     </CSVLink>
                 </div>

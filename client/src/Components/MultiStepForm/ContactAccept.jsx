@@ -220,7 +220,7 @@ function ContactAccept({ previousStep, resetStep }) {
                                     type="radio"
                                     value="기타"
                                 />
-                                <div className="btn">기타</div>
+                                <div className="btn">기타(다음,줌,etc)</div>
                             </label>
                         </div>
                     </ConditionalColumn>

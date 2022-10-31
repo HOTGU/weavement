@@ -155,31 +155,51 @@ function AdminCreateContactForm({ setModal }) {
                         <div className="column__input">
                             <select {...register("knowPath")}>
                                 <option value="">알게된경로를 선택해주세요.</option>
-                                <option value="검색">검색(네이버, 구글, 다음)</option>
-                                <option value="SNS">SNS (인스타그램, 페이스북)</option>
-                                <option value="위브먼트블로그">'위브먼트'블로그</option>
-                                <option value="네이버블로그">
-                                    네이버 블로그 (공식블로그 제외)
-                                </option>
-                                <option value="1억원이상">지인추천</option>
+                                <option value="검색">검색</option>
+                                <option value="SNS">SNS</option>
+                                <option value="지인추천">지인추천</option>
                                 <option value="기존고객">기존고객</option>
                                 <option value="알수없음">알 수 없음</option>
                             </select>
                         </div>
                     </div>
                 </div>
+                {(watchAll.knowPath === "검색" || watchAll.knowPath === "SNS") && (
+                    <div className="form__column">
+                        <div className="column__head">알게된플랫폼</div>
+                        <div className="column__input">
+                            <div className="column__input">
+                                <select {...register("knowPlatform")}>
+                                    <option value="">알게된플랫폼을 선택해주세요.</option>
+                                    {watchAll.knowPath === "검색" && (
+                                        <>
+                                            <option value="네이버">네이버</option>
+                                            <option value="구글">구글</option>
+                                            <option value="기타">기타</option>
+                                        </>
+                                    )}
+                                    {watchAll.knowPath === "SNS" && (
+                                        <>
+                                            <option value="인스타그램">인스타그램</option>
+                                            <option value="페이스북">페이스북</option>
+                                        </>
+                                    )}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <div className="form__column">
                     <div className="column__head">유입경로</div>
                     <div className="column__input">
                         <div className="column__input">
-                            <select {...register("flowPath")}>
+                            <select {...register("contactPath")}>
                                 <option value="">유입경로를 선택해주세요.</option>
                                 <option value="전화">전화</option>
                                 <option value="문자">문자</option>
                                 <option value="이메일">이메일</option>
                                 <option value="카카오톡">카카오톡</option>
                                 <option value="홈페이지">홈페이지</option>
-                                <option value="알수없음">알 수 없음</option>
                             </select>
                         </div>
                     </div>

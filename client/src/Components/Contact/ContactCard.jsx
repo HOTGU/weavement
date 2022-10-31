@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useResetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import Moment from "react-moment";
 import { toast } from "react-toastify";
 
 import { deleteContactApi } from "../../api";
-import { contactListSelector } from "../../atoms/contact";
+import { contactListSelector, currentContactIdAtom } from "../../atoms/contact";
 import Modal from "../Modal";
 import Confirm from "../Confirm";
 import UpdateForm from "./UpdateForm";
@@ -19,6 +19,7 @@ function ContactCard({ data }) {
     const [showNote, setShowNote] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
+    const setCurrentContactId = useSetRecoilState(currentContactIdAtom);
     const reload = useResetRecoilState(contactListSelector);
 
     const deleteContact = async () => {
@@ -45,6 +46,7 @@ function ContactCard({ data }) {
                             setShowCounsel(false);
                             setShowSign(false);
                             setShowNote(true);
+                            setCurrentContactId(data._id);
                         }}
                     >
                         📝
@@ -164,44 +166,19 @@ function ContactCard({ data }) {
                     >
                         문의내용
                     </ShowBtn>
-                    {data.state === "상담" ||
-                        (data.state === "불발" && (
-                            <ShowBtn
-                                onClick={() => {
-                                    setShowContact(false);
-                                    setShowSign(false);
-                                    setShowCounsel(!showCounsel);
-                                }}
-                                isOpen={showCounsel}
-                            >
-                                상담내용
-                            </ShowBtn>
-                        ))}
-                    {data.state === "계약" && (
-                        <>
-                            <ShowBtn
-                                onClick={() => {
-                                    setShowContact(false);
-                                    setShowSign(false);
-                                    setShowCounsel(!showCounsel);
-                                }}
-                                isOpen={showCounsel}
-                            >
-                                상담내용
-                            </ShowBtn>
-                            <ShowBtn
-                                onClick={() => {
-                                    setShowContact(false);
-                                    setShowCounsel(false);
-                                    setShowSign(!showSign);
-                                }}
-                                isOpen={showSign}
-                            >
-                                계약내용
-                            </ShowBtn>
-                        </>
+                    {(data.state === "상담" || data.state === "불발") && (
+                        <ShowBtn
+                            onClick={() => {
+                                setShowContact(false);
+                                setShowSign(false);
+                                setShowCounsel(!showCounsel);
+                            }}
+                            isOpen={showCounsel}
+                        >
+                            상담내용
+                        </ShowBtn>
                     )}
-                    {data.state === "완료" && (
+                    {(data.state === "계약" || data.state === "완료") && (
                         <>
                             <ShowBtn
                                 onClick={() => {
@@ -252,17 +229,22 @@ function ContactCard({ data }) {
                                 <div> {data.schedule}</div>
                             </Column>
                         )}
-
                         {data.knowPath && (
                             <Column>
                                 <div className="column__text">알게된 경로</div>
                                 <div> {data.knowPath}</div>
                             </Column>
                         )}
-                        {data.knowPath && (
+                        {data.knowPlatform && (
+                            <Column>
+                                <div className="column__text">알게된 플랫폼</div>
+                                <div> {data.knowPlatform}</div>
+                            </Column>
+                        )}
+                        {data.contactPath && (
                             <Column>
                                 <div className="column__text">유입 경로</div>
-                                <div> {data.flowPath}</div>
+                                <div> {data.contactPath}</div>
                             </Column>
                         )}
                         {data.description && (
@@ -367,7 +349,7 @@ function ContactCard({ data }) {
                                 <div> {data.note}</div>
                             </Description>
                         )}
-                        {data.meterial && (
+                        {data.meterial.length > 0 && (
                             <Column>
                                 <div className="column__text">소재</div>
                                 <div>

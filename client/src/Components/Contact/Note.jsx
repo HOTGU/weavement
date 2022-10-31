@@ -53,14 +53,15 @@ const NoteWrapper = styled.div`
     border: 1px solid ${(props) => (props.isMe ? "#2f3640" : props.theme.borderColor)};
     background-color: ${(props) =>
         props.category === "답변"
-            ? "#EDF0DB"
+            ? "#fffdf9"
             : props.category === "질문"
-            ? props.theme.white
-            : props.theme.lightGray};
-    box-shadow: ${(props) =>
-        props.category === "공지" ? props.theme.boxShadow : "none"};
+            ? "#fdf7f7"
+            : props.theme.accentColor};
+    color: ${(props) =>
+        props.category === "공지" ? props.theme.white : props.theme.darkGray};
     font-weight: ${(props) => (props.category === "공지" ? "700" : "400")};
     text-align: ${(props) => (props.category === "공지" ? "center" : "left")};
+    border-radius: 5px;
     .note__text {
         white-space: pre-wrap;
         margin-bottom: 10px;

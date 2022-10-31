@@ -2,23 +2,25 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
-import { currentNoteAtom } from "../../atoms/contact";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { currentContactIdAtom, currentNoteAtom } from "../../atoms/contact";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 import Loader from "../Loader";
 import Note from "./Note";
-import { createNoteApi, removeNoteApi, updateNoteApi } from "../../api";
+import { createNoteApi, getNoteApi, removeNoteApi, updateNoteApi } from "../../api";
 
 function NoteContainer({ contact, show }) {
     const noteEndRef = useRef();
     const [loading, setLoading] = useState(false);
-    const [notes, setNotes] = useState(contact.note);
+    const [notes, setNotes] = useState([]);
     const [showAlertNote, setShowAlertNote] = useState(false);
     const [alertNoteArr, setAlertNoteArr] = useState([]);
     const [currentNote, setCurrentNote] = useRecoilState(currentNoteAtom);
+    const currentContactId = useRecoilValue(currentContactIdAtom);
+
     const { register, handleSubmit, setValue, reset } = useForm({
         defaultValues: useMemo(() => {
             const today = new Date();
@@ -40,9 +42,25 @@ function NoteContainer({ contact, show }) {
 
     useEffect(() => {
         noteEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        const alertNoteArr = contact.note.filter((note) => note.category === "공지");
+        const alertNoteArr = notes?.filter((note) => note.category === "공지");
         setAlertNoteArr(alertNoteArr);
-    }, [show, contact.note]);
+    }, [show, notes]);
+
+    useEffect(() => {
+        const getNotes = async () => {
+            setLoading(true);
+            try {
+                const { data } = await getNoteApi(contact._id);
+                setNotes(data);
+            } catch (error) {
+                toast.error("뭔가 오류가 생겼습니다");
+            }
+            setLoading(false);
+        };
+        if (currentContactId === contact._id) {
+            getNotes();
+        }
+    }, [currentContactId, contact._id]);
 
     const handleDeleteNote = async () => {
         setLoading(true);
@@ -84,82 +102,99 @@ function NoteContainer({ contact, show }) {
             setLoading(false);
         } catch (error) {
             setLoading(false);
-            console.log(error);
             toast.error("실패🤡");
         }
     };
 
     return (
         <Container>
-            {alertNoteArr.length > 0 && (
-                <div className="alertNote">
-                    <div className="alertNote__head">
-                        <h4>
-                            🔊{" "}
-                            <Moment format="MM/DD">
-                                {alertNoteArr[alertNoteArr.length - 1]?.createdAt}
-                            </Moment>{" "}
-                            {alertNoteArr[alertNoteArr.length - 1]?.text}
-                        </h4>
-                        {alertNoteArr.length > 1 && (
-                            <FontAwesomeIcon
-                                onClick={() => {
-                                    setShowAlertNote((prev) => !prev);
-                                }}
-                                icon={showAlertNote ? faChevronUp : faChevronDown}
-                            />
-                        )}
-                    </div>
-                    <div className={`alertNote__body ${showAlertNote ? "isActive" : ""}`}>
-                        {alertNoteArr.reverse().map((note, index) => {
-                            if (index === 0) return false;
-                            return (
-                                <div key={index}>
-                                    <Moment format="MM/DD">{note?.createdAt}</Moment>{" "}
-                                    {note.text}
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            )}
-            <div className="wrapper">
-                {notes.map((n) => {
-                    return <Note key={n._id} note={n} />;
-                })}
-
-                <div ref={noteEndRef}></div>
-            </div>
-            <form onSubmit={handleSubmit(onValid)}>
-                <div className="form__column">
-                    <textarea {...register("text")} />
-                </div>
-
-                <div className="form__column">
-                    <div className="row__column">
-                        <input type="date" {...register("createdAt")} />
-                        <select {...register("category")}>
-                            <option value="질문">고객</option>
-                            <option value="답변">WM</option>
-                            <option value="공지">공지</option>
-                        </select>
-                    </div>
-                    <div className="row__column">
-                        <button disabled={loading}>
-                            {loading ? <Loader /> : currentNote ? "수정" : "생성"}
-                        </button>
-                        {currentNote && (
-                            <button
-                                className="delete"
-                                disabled={loading}
-                                onClick={handleDeleteNote}
+            {loading ? (
+                <Loader isCenter={true} width="30px" height="30px" />
+            ) : (
+                <>
+                    {alertNoteArr.length > 0 && (
+                        <div className="alertNote">
+                            <div className="alertNote__head">
+                                <h4>
+                                    🔊{" "}
+                                    <Moment format="MM/DD">
+                                        {alertNoteArr[alertNoteArr.length - 1]?.createdAt}
+                                    </Moment>{" "}
+                                    {alertNoteArr[alertNoteArr.length - 1]?.text}
+                                </h4>
+                                {alertNoteArr.length > 1 && (
+                                    <FontAwesomeIcon
+                                        onClick={() => {
+                                            setShowAlertNote((prev) => !prev);
+                                        }}
+                                        icon={showAlertNote ? faChevronUp : faChevronDown}
+                                    />
+                                )}
+                            </div>
+                            <div
+                                className={`alertNote__body ${
+                                    showAlertNote ? "isActive" : ""
+                                }`}
                             >
-                                삭제
-                            </button>
-                        )}
+                                {alertNoteArr.reverse().map((note, index) => {
+                                    if (index === 0) return false;
+                                    return (
+                                        <div key={index}>
+                                            <Moment format="MM/DD">
+                                                {note?.createdAt}
+                                            </Moment>{" "}
+                                            {note.text}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+                    <div className="wrapper">
+                        {notes
+                            .sort((a, b) => {
+                                const dateA = new Date(a.createdAt);
+                                const dateB = new Date(b.createdAt);
+                                return dateA - dateB;
+                            })
+                            .map((n) => {
+                                return <Note key={n._id} note={n} />;
+                            })}
+
+                        <div ref={noteEndRef}></div>
                     </div>
-                </div>
-            </form>
+                    <form onSubmit={handleSubmit(onValid)}>
+                        <div className="form__column">
+                            <textarea {...register("text")} />
+                        </div>
+
+                        <div className="form__column">
+                            <div className="row__column">
+                                <input type="date" {...register("createdAt")} />
+                                <select {...register("category")}>
+                                    <option value="질문">고객</option>
+                                    <option value="답변">WM</option>
+                                    <option value="공지">공지</option>
+                                </select>
+                            </div>
+                            <div className="row__column">
+                                <button disabled={loading}>
+                                    {loading ? <Loader /> : currentNote ? "수정" : "생성"}
+                                </button>
+                                {currentNote && (
+                                    <button
+                                        className="delete"
+                                        disabled={loading}
+                                        onClick={handleDeleteNote}
+                                    >
+                                        삭제
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </form>
+                </>
+            )}
         </Container>
     );
 }

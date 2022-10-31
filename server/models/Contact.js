@@ -10,7 +10,7 @@ const ContactSchema = mongoose.Schema({
     isImage: { type: Boolean, default: false },
     knowPath: { type: String },
     knowPlatform: String,
-    knowTerm: String,
+    contactPath: { type: String, default: "홈페이지" },
     clientCompany: { type: String },
     clientName: { type: String },
     clientPosition: { type: String },
@@ -29,7 +29,6 @@ const ContactSchema = mongoose.Schema({
     pm: String,
     orderCompany: String,
     deadline: Date,
-    note: [{ type: mongoose.Schema.Types.ObjectId, ref: "Note" }],
 });
 
 const Contact = mongoose.model("Contact", ContactSchema);
