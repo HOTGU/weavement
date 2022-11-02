@@ -1,13 +1,9 @@
 import createError from "../utils/createError.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
-import { createAccessToken, createRefreshToken } from "../utils/token.js";
 
 import User from "../models/User.js";
-import RefreshToken from "../models/RefreshToken.js";
-import { getCurrentDate } from "../utils/getCurrentDate.js";
 
 export const signin = async (req, res, next) => {
     const {
@@ -28,12 +24,8 @@ export const signin = async (req, res, next) => {
 
         req.session.user = otherInfo;
 
-        res.cookie("logged_in", true, {
-            httpOnly: true,
-            secure: true,
-        });
-        res.cookie("user", otherInfo.name, {
-            httpOnly: true,
+        res.cookie("user", otherInfo, {
+            httpOnly: process.env.NODE_ENV === "production" ? true : false,
             secure: true,
         });
 
@@ -44,28 +36,6 @@ export const signin = async (req, res, next) => {
                 _id: user._id,
             },
         });
-
-        // const accessToken = createAccessToken(user._id);
-
-        // const refreshToken = createRefreshToken();
-
-        // const dbRefreshToken = new RefreshToken({
-        //     token: refreshToken,
-        //     userId: user._id,
-        // });
-
-        // await dbRefreshToken.save();
-
-        // return res.status(200).json({
-        //     user: {
-        //         name: user.name,
-        //         email: user.email,
-        //         id: user._id,
-        //         isAdmin: user.isAdmin,
-        //     },
-        //     accessToken,
-        //     refreshToken,
-        // });
     } catch (error) {
         console.log(error);
         next(error);
@@ -98,43 +68,6 @@ export const signup = async (req, res, next) => {
     } catch (error) {
         console.log(error);
         next(error);
-    }
-};
-
-export const refresh = async (req, res, next) => {
-    const refreshToken = req?.body?.refreshToken;
-    if (!refreshToken) {
-        return next(createError(401, "리프레쉬 토큰이 없습니다"));
-    }
-    try {
-        const dbRefreshToken = await RefreshToken.findOne({ token: refreshToken });
-        if (!dbRefreshToken)
-            return next(createError(401, "리프레쉬 토큰이 db에 없습니다"));
-
-        const verifyToken = jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET);
-
-        if (!verifyToken) {
-            await dbRefreshToken.remove();
-            return next(createError(401, "리프레쉬 토큰 인증 실패"));
-        }
-
-        if (verifyToken) {
-            const newAccessToken = createAccessToken(dbRefreshToken.userId);
-            const newRefreshToken = createRefreshToken();
-            const currentDate = getCurrentDate();
-
-            dbRefreshToken.token = newRefreshToken;
-            dbRefreshToken.expireAt = currentDate;
-
-            await dbRefreshToken.save();
-
-            res.status(200).json({
-                accessToken: newAccessToken,
-                refreshToken: newRefreshToken,
-            });
-        }
-    } catch (error) {
-        console.log(error);
     }
 };
 

@@ -79,7 +79,7 @@ const SideNavbar = ({ show, setShow }) => {
                             >
                                 문의하기
                             </Link>
-                            {user?.isAdmin && (
+                            {user && user?.isAdmin && (
                                 <Link
                                     to="/admin"
                                     className="nav__column"
@@ -190,7 +190,7 @@ function Navbar() {
                             </a>
                             <Link to="/portfolio">포트폴리오</Link>
                             <Link to="/contact">문의하기</Link>
-                            {user?.isAdmin && <Link to="/admin">Admin</Link>}
+                            {user && user?.isAdmin && <Link to="/admin">Admin</Link>}
                         </>
                     )}
                 </nav>

@@ -23,13 +23,16 @@ if (process.env.NODE_ENV == "development") {
 
 const app = express();
 
+let mongoUrl;
+
+if (process.env.NODE_ENV == "production") {
+    mongoUrl = process.env.MONGO_URL;
+} else if (process.env.NODE_ENV == "development") {
+    mongoUrl = process.env.DEV_MONGO_URL;
+}
+
 const dbConnect = () => {
-    if (process.env.NODE_ENV == "production") {
-        mongoose.connect(process.env.MONGO_URL);
-    } else if (process.env.NODE_ENV == "development") {
-        mongoose.connect(process.env.DEV_MONGO_URL);
-        console.log("local db에 연결");
-    }
+    mongoose.connect(mongoUrl);
 };
 
 dbConnect();
@@ -74,30 +77,17 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.SESSION_SECRET));
-if (process.env.NODE_ENV === "development") {
-    app.use(
-        sessions({
-            secret: process.env.SEESION_SECRET,
-            resave: false,
-            saveUninitialized: true,
-            store: MongoStore.create({
-                mongoUrl: process.env.DEV_MONGO_URL,
-            }),
-        })
-    );
-}
-if (process.env.NODE_ENV === "production") {
-    app.use(
-        sessions({
-            secret: process.env.SEESION_SECRET,
-            resave: false,
-            saveUninitialized: true,
-            store: MongoStore.create({
-                mongoUrl: process.env.MONGO_URL,
-            }),
-        })
-    );
-}
+
+app.use(
+    sessions({
+        secret: process.env.SEESION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: MongoStore.create({
+            mongoUrl,
+        }),
+    })
+);
 
 let csrfProtection = csrf({ cookie: true });
 
@@ -120,7 +110,6 @@ app.get("*", (req, res) => {
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "오류가 생겼습니다!";
-    console.log(err);
     return res.status(errorStatus).json({
         status: errorStatus,
         message: errorMessage,

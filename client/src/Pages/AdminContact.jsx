@@ -10,9 +10,9 @@ import { contactListSelector, filterInputAtom, filterItemAtom } from "../atoms/c
 import Modal from "../Components/Modal";
 import ContactFilterForm from "../Components/Contact/ContactFilterForm";
 import ContactFilterHead from "../Components/Contact/ContactFilterHead";
-import { removeCookie } from "../utils/cookie";
 import Metatag from "../Components/Metatag";
 import { getCSRFToken } from "../api";
+import { toast } from "react-toastify";
 
 function AdminContact() {
     const [filterItem, setFilterItem] = useRecoilState(filterItemAtom);
@@ -28,13 +28,11 @@ function AdminContact() {
         return contactList.state === "hasValue" ? contactList.contents : [];
     }, [contactList]);
 
-    if (contactList.state === "hasError") {
-        removeCookie("accessToken");
-        removeCookie("refreshToken");
-        removeCookie("user");
-        window.location.href = "/";
-        window.alert(`오류가 생겼습니다 \n 다시 로그인 해주세요`);
-    }
+    useEffect(() => {
+        if (contactList.state === "hasError") {
+            toast.error("에러가 발생했습니다");
+        }
+    }, [contactList.state]);
 
     return (
         <div>

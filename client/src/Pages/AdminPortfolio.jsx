@@ -73,6 +73,12 @@ function AdminPortfolio() {
         getCSRFToken();
     }, []);
 
+    useEffect(() => {
+        if (portfoliosLoadable.state === "hasError") {
+            toast.error("에러가 발생했습니다");
+        }
+    }, [portfoliosLoadable.state]);
+
     return (
         <>
             <Metatag title="위브먼트Admin | 포트폴리오" />

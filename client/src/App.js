@@ -16,6 +16,9 @@ import Footer from "./Components/Footer";
 import PortfolioDetail from "./Pages/PortfolioDetail";
 import { device } from "./device";
 import ScrollToTop from "./Components/ScrollToTop";
+import OnlyAdmin from "./Pages/OnlyAdmin";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "./atoms/isAuth";
 
 const Wrapper = styled.div`
     min-height: 100vh;
@@ -27,6 +30,8 @@ const Wrapper = styled.div`
 `;
 
 function App() {
+    const user = useRecoilValue(userAtom);
+
     return (
         <>
             <Router>
@@ -41,9 +46,16 @@ function App() {
                             <Route path="/portfolio/:id" element={<PortfolioDetail />} />
                             <Route path="/contact" element={<Contact />} />
                             <Route path="/auth" element={<Auth />} />
-                            <Route path="/admin" element={<Admin />} />
-                            <Route path="admin/portfolio" element={<AdminPortfolio />} />
-                            <Route path="/admin/project" element={<AdminContact />} />
+                            <Route
+                                element={<OnlyAdmin isAllowed={user && user?.isAdmin} />}
+                            >
+                                <Route path="/admin" element={<Admin />} />
+                                <Route
+                                    path="admin/portfolio"
+                                    element={<AdminPortfolio />}
+                                />
+                                <Route path="/admin/project" element={<AdminContact />} />
+                            </Route>
                         </Routes>
                         <Footer />
                     </Wrapper>

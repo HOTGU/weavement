@@ -7,10 +7,8 @@ import { toast } from "react-toastify";
 import { getCSRFToken, signinApi, signupApi } from "../api";
 import { userAtom } from "../atoms/isAuth";
 import Input from "../Components/Input";
-// import { setCookie } from "../utils/cookie";
 import Loader from "../Components/Loader";
 import Button from "../Components/Button";
-// import logout from "../utils/logout";
 import Metatag from "../Components/Metatag";
 
 function Auth() {
@@ -35,7 +33,7 @@ function Auth() {
 
     useEffect(() => {
         if (user) {
-            navigate("/admin");
+            return navigate("/");
         }
     }, [user, navigate]);
 
@@ -65,36 +63,8 @@ function Auth() {
             }
             try {
                 const res = await signinApi(input);
-                console.log(res);
-                if (!res.data?.user.isAdmin) {
-                    setLoading(false);
-                    toast.error("권한이 없습니다");
-                    return navigate("/");
-                }
-
                 toast.success(`${res?.data?.user?.name}님 환영합니다`);
                 setUser(res?.data?.user);
-
-                // setCookie("accessToken", res?.data?.accessToken, {
-                //     path: "/",
-                //     secure: true,
-                //     httpOnly: process.env.NODE_ENV === "production" ? true : false,
-                // });
-                // const refreshDate = new Date();
-                // refreshDate.setTime(refreshDate.getTime() + 1000 * 60 * 60 * 24 * 14); //14일
-                // setCookie("refreshToken", res?.data?.refreshToken, {
-                //     path: "/",
-                //     expires: refreshDate,
-                //     secure: true,
-                //     httpOnly: process.env.NODE_ENV === "production" ? true : false,
-                // });
-                // setCookie("user", res?.data?.user, {
-                //     path: "/",
-                //     secure: true,
-                //     httpOnly: process.env.NODE_ENV === "production" ? true : false,
-                // });
-                // toast.success(`${res?.data?.user?.name}님 환영합니다`);
-                // setUser(res?.data?.user);
             } catch (error) {
                 toast.error(error.response.data.message);
             }

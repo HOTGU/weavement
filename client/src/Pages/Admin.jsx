@@ -1,21 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Navigate } from "react-router-dom";
-import {
-    useRecoilState,
-    // useRecoilValue,
-    useRecoilValueLoadable,
-    useResetRecoilState,
-} from "recoil";
+import { useRecoilState, useRecoilValueLoadable, useResetRecoilState } from "recoil";
 import Chart from "react-apexcharts";
 
-// import { userAtom } from "../atoms/isAuth";
 import Loader from "../Components/Loader";
 import { contactChartSelector, filterYearAtom } from "../atoms/chart";
 import { useEffect } from "react";
 import Metatag from "../Components/Metatag";
 import { getCSRFToken } from "../api";
-// import { removeCookie } from "../utils/cookie";
 import { toast } from "react-toastify";
 
 const CreateOptions = () => {
@@ -37,7 +29,6 @@ const CreateOptions = () => {
 };
 
 function Admin() {
-    // const user = useRecoilValue(userAtom);
     const [chartData, setChartData] = useState({
         options: [],
         data: {
@@ -102,17 +93,13 @@ function Admin() {
         if (contactChart.state === "hasValue") {
             setChartData(contactChart.contents);
         }
+        if (contactChart.state === "hasError") {
+            toast.error("에러가 발생했습니다");
+        }
     }, [contactChart]);
-
-    // if (!user || !user.isAdmin) return <Navigate to="/" />;
 
     if (contactChart.state === "loading")
         return <Loader isCenter={true} width="40px" height="40px" />;
-
-    if (contactChart.state === "hasError") {
-        toast.error("권한이 없습니다");
-        return <Navigate to="/" />;
-    }
 
     return (
         <>
