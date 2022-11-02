@@ -10,6 +10,7 @@ userRouter.post("/signup", signup);
 
 userRouter.post("/refresh", refresh);
 
-userRouter.get("/get", verifyUser, verifyIsAdmin, get);
+userRouter.get("/get", verifyUser, get);
+// userRouter.get("/get", verifyUser, verifyIsAdmin, get);
 
 export default userRouter;

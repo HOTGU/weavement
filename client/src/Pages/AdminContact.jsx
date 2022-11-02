@@ -33,7 +33,7 @@ function AdminContact() {
         removeCookie("refreshToken");
         removeCookie("user");
         window.location.href = "/auth";
-        window.alert(`뭔가 오류가 생겼습니다 \n 다시 로그인 해주세요`);
+        window.alert(`오류가 생겼습니다 \n 다시 로그인 해주세요`);
     }
 
     return (

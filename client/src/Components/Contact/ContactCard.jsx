@@ -73,7 +73,11 @@ function ContactCard({ data }) {
                     <StateBtn className="contact__state" isState={data.state}>
                         {data.state}
                     </StateBtn>
-                    <span className="contact__clientCompany">{data.clientCompany}</span>
+                    {(data.clientCompany || data.clientName) && (
+                        <span className="contact__clientCompany">
+                            {data.clientCompany || `${data.clientName} 님`}
+                        </span>
+                    )}
                 </RowWrapper>
                 <RowWrapper>
                     {data.createdAt && (

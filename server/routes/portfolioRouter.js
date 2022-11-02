@@ -14,10 +14,15 @@ const portfolioRouter = express.Router();
 portfolioRouter.get("/", get);
 portfolioRouter.get("/two", getTwo);
 
-portfolioRouter.post("/", verifyUser, verifyIsAdmin, upload.array("image", 18), create);
+portfolioRouter.post("/", verifyUser, upload.array("image", 18), create);
 
-portfolioRouter.delete("/:id", verifyUser, verifyIsAdmin, deleteById);
+portfolioRouter.delete("/:id", verifyUser, deleteById);
 
-portfolioRouter.get("/all", verifyUser, verifyIsAdmin, allGet);
+portfolioRouter.get("/all", verifyUser, allGet);
+// portfolioRouter.post("/", verifyUser, verifyIsAdmin, upload.array("image", 18), create);
+
+// portfolioRouter.delete("/:id", verifyUser, verifyIsAdmin, deleteById);
+
+// portfolioRouter.get("/all", verifyUser, verifyIsAdmin, allGet);
 
 export default portfolioRouter;

@@ -11,38 +11,52 @@ import { getCurrentDate } from "../utils/getCurrentDate.js";
 
 export const signin = async (req, res, next) => {
     const {
-        body: { email, password },
+        body: { email, password: bodyPassword },
     } = req;
     try {
         const user = await User.findOne({ email });
 
         if (!user) return next(createError(500, "가입된 이메일이 아닙니다"));
 
-        const comparePassword = bcrypt.compareSync(password, user.password);
+        const comparePassword = bcrypt.compareSync(bodyPassword, user.password);
 
         if (!comparePassword) return next(createError(500, "비밀번호가 틀립니다"));
 
-        const accessToken = createAccessToken(user._id);
+        const userInfo = { ...user._doc };
 
-        const refreshToken = createRefreshToken();
+        const { password, ...otherInfo } = userInfo;
 
-        const dbRefreshToken = new RefreshToken({
-            token: refreshToken,
-            userId: user._id,
-        });
-
-        await dbRefreshToken.save();
+        req.session.user = otherInfo;
 
         return res.status(200).json({
             user: {
                 name: user.name,
-                email: user.email,
-                id: user._id,
                 isAdmin: user.isAdmin,
+                _id: user._id,
             },
-            accessToken,
-            refreshToken,
         });
+
+        // const accessToken = createAccessToken(user._id);
+
+        // const refreshToken = createRefreshToken();
+
+        // const dbRefreshToken = new RefreshToken({
+        //     token: refreshToken,
+        //     userId: user._id,
+        // });
+
+        // await dbRefreshToken.save();
+
+        // return res.status(200).json({
+        //     user: {
+        //         name: user.name,
+        //         email: user.email,
+        //         id: user._id,
+        //         isAdmin: user.isAdmin,
+        //     },
+        //     accessToken,
+        //     refreshToken,
+        // });
     } catch (error) {
         console.log(error);
         next(error);

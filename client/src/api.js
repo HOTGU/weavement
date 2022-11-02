@@ -1,7 +1,7 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
-import { getCookie, setCookie } from "./utils/cookie";
-import logout from "./utils/logout";
+// import jwt_decode from "jwt-decode";
+// import { getCookie, setCookie } from "./utils/cookie";
+// import logout from "./utils/logout";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
@@ -11,66 +11,66 @@ const axiosJWT = axios.create({
     withCredentials: true,
 });
 
-axiosJWT.interceptors.request.use(
-    async (config) => {
-        let currentDate = new Date();
+// axiosJWT.interceptors.request.use(
+//     async (config) => {
+//         let currentDate = new Date();
 
-        const accessToken = getCookie("accessToken");
-        const refreshToken = getCookie("refreshToken");
+//         const accessToken = getCookie("accessToken");
+//         const refreshToken = getCookie("refreshToken");
 
-        if (!accessToken && refreshToken) {
-            const res = await refreshApi({ refreshToken });
-            setCookie("accessToken", res.data.accessToken, {
-                path: "/",
-            });
-            const refreshDate = new Date();
-            refreshDate.setTime(refreshDate.getTime() + 1000 * 60 * 60 * 24 * 14); //14일
-            setCookie("refreshToken", res.data.refreshToken, {
-                path: "/",
-                expires: refreshDate,
-                secure: true,
-                httpOnly: process.env.NODE_ENV === "production" ? true : false,
-            });
-            return config;
-        }
+//         if (!accessToken && refreshToken) {
+//             const res = await refreshApi({ refreshToken });
+//             setCookie("accessToken", res.data.accessToken, {
+//                 path: "/",
+//             });
+//             const refreshDate = new Date();
+//             refreshDate.setTime(refreshDate.getTime() + 1000 * 60 * 60 * 24 * 14); //14일
+//             setCookie("refreshToken", res.data.refreshToken, {
+//                 path: "/",
+//                 expires: refreshDate,
+//                 secure: true,
+//                 httpOnly: process.env.NODE_ENV === "production" ? true : false,
+//             });
+//             return config;
+//         }
 
-        const decodedToken = jwt_decode(accessToken);
+//         const decodedToken = jwt_decode(accessToken);
 
-        if (decodedToken.exp * 1000 < currentDate.getTime()) {
-            const res = await refreshApi({ refreshToken });
-            setCookie("accessToken", res.data.accessToken, {
-                path: "/",
-            });
-            const refreshDate = new Date();
-            refreshDate.setTime(refreshDate.getTime() + 1000 * 60 * 60 * 24 * 14); //14일
-            setCookie("refreshToken", res.data.refreshToken, {
-                path: "/",
-                expires: refreshDate,
-                secure: true,
-                httpOnly: process.env.NODE_ENV === "production" ? true : false,
-            });
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
+//         if (decodedToken.exp * 1000 < currentDate.getTime()) {
+//             const res = await refreshApi({ refreshToken });
+//             setCookie("accessToken", res.data.accessToken, {
+//                 path: "/",
+//             });
+//             const refreshDate = new Date();
+//             refreshDate.setTime(refreshDate.getTime() + 1000 * 60 * 60 * 24 * 14); //14일
+//             setCookie("refreshToken", res.data.refreshToken, {
+//                 path: "/",
+//                 expires: refreshDate,
+//                 secure: true,
+//                 httpOnly: process.env.NODE_ENV === "production" ? true : false,
+//             });
+//         }
+//         return config;
+//     },
+//     (error) => {
+//         return Promise.reject(error);
+//     }
+// );
 
-axiosJWT.interceptors.response.use(
-    function (response) {
-        return response;
-    },
-    async (error) => {
-        const {
-            response: { status },
-        } = error;
-        if (status === 401) {
-            logout();
-        }
-        return Promise.reject(error);
-    }
-);
+// axiosJWT.interceptors.response.use(
+//     function (response) {
+//         return response;
+//     },
+//     async (error) => {
+//         const {
+//             response: { status },
+//         } = error;
+//         if (status === 401) {
+//             logout();
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 
 export const getCSRFToken = async () => {
     const { data } = await axios.get("/getCSRFToken");

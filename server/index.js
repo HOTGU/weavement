@@ -10,6 +10,9 @@ const __dirname = path.resolve();
 import dotenv from "dotenv";
 dotenv.config();
 
+import sessions from "express-session";
+import MongoStore from "connect-mongo";
+
 import userRouter from "./routes/userRouter.js";
 import contactRouter from "./routes/contactRouter.js";
 import portfolioRouter from "./routes/portfolioRouter.js";
@@ -70,7 +73,31 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(process.env.SESSION_SECRET));
+app.use(cookieParser());
+if (process.env.NODE_ENV === "development") {
+    app.use(
+        sessions({
+            secret: process.env.SEESION_SECRET,
+            resave: false,
+            saveUninitialized: true,
+            store: MongoStore.create({
+                mongoUrl: process.env.DEV_MONGO_URL,
+            }),
+        })
+    );
+}
+if (process.env.NODE_ENV === "production") {
+    app.use(
+        sessions({
+            secret: process.env.SEESION_SECRET,
+            resave: false,
+            saveUninitialized: true,
+            store: MongoStore.create({
+                mongoUrl: process.env.MONGO_URL,
+            }),
+        })
+    );
+}
 
 let csrfProtection = csrf({ cookie: true });
 
