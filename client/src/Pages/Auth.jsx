@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { getCSRFToken, signinApi, signupApi } from "../api";
 import { userAtom } from "../atoms/isAuth";
 import Input from "../Components/Input";
-import { setCookie } from "../utils/cookie";
+// import { setCookie } from "../utils/cookie";
 import Loader from "../Components/Loader";
 import Button from "../Components/Button";
 // import logout from "../utils/logout";
@@ -66,21 +66,13 @@ function Auth() {
             try {
                 const res = await signinApi(input);
                 console.log(res);
-
                 if (!res.data?.user.isAdmin) {
                     setLoading(false);
                     toast.error("권한이 없습니다");
                     return navigate("/");
                 }
 
-                setCookie("user", res?.data?.user, {
-                    path: "/",
-                    secure: true,
-                    httpOnly: process.env.NODE_ENV === "production" ? true : false,
-                });
-
                 toast.success(`${res?.data?.user?.name}님 환영합니다`);
-
                 setUser(res?.data?.user);
 
                 // setCookie("accessToken", res?.data?.accessToken, {

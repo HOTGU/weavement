@@ -28,6 +28,15 @@ export const signin = async (req, res, next) => {
 
         req.session.user = otherInfo;
 
+        res.cookie("logged_in", true, {
+            httpOnly: true,
+            secure: true,
+        });
+        res.cookie("user", otherInfo.name, {
+            httpOnly: true,
+            secure: true,
+        });
+
         return res.status(200).json({
             user: {
                 name: user.name,

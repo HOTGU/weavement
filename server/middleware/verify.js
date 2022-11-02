@@ -33,22 +33,17 @@ export const verifyCSRF = csrf({ cookie: true });
 
 export const verifyUser = (req, res, next) => {
     if (!req.session.user) {
+        res.clearCookie("user");
+        res.clearCookie("logged_in");
         return next(createError(401, "권한이 없습니다"));
     }
     req.user = req.session.user;
     if (!req.user.isAdmin) {
+        res.clearCookie("user");
+        res.clearCookie("logged_in");
         return next(createError(401, "권한이 없습니다"));
     }
     next();
 };
 
-export const verifyIsAdmin = async (req, res, next) => {
-    try {
-        const user = await User.findById(req.user._id);
-        console.log(user);
-        if (!user.isAdmin) return next(createError(401, "admin 권한이 없습니다"));
-        next();
-    } catch (error) {
-        next(error);
-    }
-};
+export const verifyIsAdmin = async (req, res, next) => {};
