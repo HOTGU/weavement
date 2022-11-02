@@ -73,7 +73,7 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.SESSION_SECRET));
 if (process.env.NODE_ENV === "development") {
     app.use(
         sessions({
