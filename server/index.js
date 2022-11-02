@@ -92,7 +92,7 @@ app.get("*", (req, res) => {
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
-    const errorMessage = err.message || "뭔가 오류가 생겼습니다!";
+    const errorMessage = err.message || "오류가 생겼습니다!";
     console.log(err);
     return res.status(errorStatus).json({
         status: errorStatus,

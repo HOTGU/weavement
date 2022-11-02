@@ -14,25 +14,25 @@ const TextWrapper = styled.div`
     justify-content: center;
     align-items: center;
     h3 {
-        font-size: 32px;
+        font-size: 25px;
         font-weight: 500;
         margin-bottom: 20px;
         @media ${device.tablet} {
-            font-size: 24px;
+            font-size: 22px;
         }
         @media ${device.mobile} {
             font-size: 20px;
         }
     }
     p {
-        font-size: 20px;
+        font-size: 15px;
         line-height: 24px;
         font-weight: 300;
         white-space: pre-wrap;
         text-align: center;
         @media ${device.tablet} {
             line-height: 18px;
-            font-size: 16px;
+            font-size: 14px;
         }
         @media ${device.mobile} {
             line-height: 15px;
@@ -50,10 +50,12 @@ function PortfolioDetail() {
             <div className="default-container">
                 <Container>
                     {state?.portfolio.columns.map((column, index) => {
+                        console.log(column);
                         return (
                             <Column
                                 columnWidth={column.width}
                                 columnRatio={column.ratio}
+                                isTitle={column.text && column.width === "100%"}
                                 key={index}
                             >
                                 {column.image && (
@@ -91,7 +93,8 @@ const Container = styled.div`
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin: 10px auto;
+    margin: 40px auto;
+    max-width: 1250px;
 `;
 
 const Column = styled.div`
@@ -99,8 +102,7 @@ const Column = styled.div`
         props.columnRatio === 5 / 3
             ? props.columnWidth
             : `calc(${props.columnWidth} - 5px)`};
-    aspect-ratio: ${(props) => props.columnRatio};
-
+    aspect-ratio: ${(props) => (props.isTitle ? 3 : props.columnRatio)};
     img {
         object-fit: cover;
     }

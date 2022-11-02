@@ -55,7 +55,6 @@ function Auth() {
                 toast.success("회원가입에 성공했습니다");
             } catch (error) {
                 toast.error(error.response.data.message);
-                console.log(error);
             }
         }
         if (!isSignup) {
@@ -72,7 +71,7 @@ function Auth() {
                 setCookie("accessToken", res?.data?.accessToken, {
                     path: "/",
                     secure: true,
-                    // httpOnly: true,
+                    httpOnly: process.env.NODE_ENV === "production" ? true : false,
                 });
                 const refreshDate = new Date();
                 refreshDate.setTime(refreshDate.getTime() + 1000 * 60 * 60 * 24 * 14); //14일
@@ -80,18 +79,17 @@ function Auth() {
                     path: "/",
                     expires: refreshDate,
                     secure: true,
-                    // httpOnly: true,
+                    httpOnly: process.env.NODE_ENV === "production" ? true : false,
                 });
                 setCookie("user", res?.data?.user, {
                     path: "/",
                     secure: true,
-                    // httpOnly: true,
+                    httpOnly: process.env.NODE_ENV === "production" ? true : false,
                 });
                 toast.success(`${res?.data?.user?.name}님 환영합니다`);
                 setUser(res?.data?.user);
             } catch (error) {
                 toast.error(error.response.data.message);
-                console.log(error);
             }
         }
         setLoading(false);

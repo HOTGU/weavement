@@ -343,12 +343,6 @@ function ContactCard({ data }) {
                                 <div> {data.pm}</div>
                             </Column>
                         )}
-                        {data.note && (
-                            <Description>
-                                <div className="column__text">참고사항</div>
-                                <div> {data.note}</div>
-                            </Description>
-                        )}
                         {data.meterial.length > 0 && (
                             <Column>
                                 <div className="column__text">소재</div>

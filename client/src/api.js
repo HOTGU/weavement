@@ -29,7 +29,7 @@ axiosJWT.interceptors.request.use(
                 path: "/",
                 expires: refreshDate,
                 secure: true,
-                httpOnly: false,
+                httpOnly: process.env.NODE_ENV === "production" ? true : false,
             });
             return config;
         }
@@ -47,7 +47,7 @@ axiosJWT.interceptors.request.use(
                 path: "/",
                 expires: refreshDate,
                 secure: true,
-                httpOnly: false,
+                httpOnly: process.env.NODE_ENV === "production" ? true : false,
             });
         }
         return config;
