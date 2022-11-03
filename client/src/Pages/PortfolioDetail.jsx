@@ -19,23 +19,25 @@ const TextWrapper = styled.div`
         margin-bottom: 20px;
         @media ${device.tablet} {
             font-size: 22px;
+            margin-bottom: 15px;
         }
         @media ${device.mobile} {
+            margin-bottom: 12px;
             font-size: 20px;
         }
     }
     p {
         font-size: 15px;
-        line-height: 24px;
+        line-height: 14px;
         font-weight: 300;
         white-space: pre-wrap;
         text-align: center;
         @media ${device.tablet} {
-            line-height: 18px;
+            line-height: 13px;
             font-size: 14px;
         }
         @media ${device.mobile} {
-            line-height: 15px;
+            line-height: 12px;
             font-size: 13px;
         }
     }
@@ -50,7 +52,6 @@ function PortfolioDetail() {
             <div className="default-container">
                 <Container>
                     {state?.portfolio.columns.map((column, index) => {
-                        console.log(column);
                         return (
                             <Column
                                 columnWidth={column.width}
@@ -103,6 +104,12 @@ const Column = styled.div`
             ? props.columnWidth
             : `calc(${props.columnWidth} - 5px)`};
     aspect-ratio: ${(props) => (props.isTitle ? 3 : props.columnRatio)};
+    @media ${device.tablet} {
+        aspect-ratio: ${(props) => (props.isTitle ? 2.4 : props.columnRatio)};
+    }
+    @media ${device.mobile} {
+        aspect-ratio: ${(props) => (props.isTitle ? 2 : props.columnRatio)};
+    }
     img {
         object-fit: cover;
     }

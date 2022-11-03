@@ -28,7 +28,7 @@ const Wrapper = styled.div`
     right: 0;
     width: 100%;
     height: 100%;
-    z-index: 90;
+    z-index: 99;
     background-color: ${(props) => (props.show ? "rgba(0,0,0,0.6)" : "")};
     visibility: ${(props) => (props.show ? "visible" : "hidden")};
     transition: visibility ${(props) => (props.show ? "0s 0s" : "0s 0.3s")},

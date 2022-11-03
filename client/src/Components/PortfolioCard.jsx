@@ -6,7 +6,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { device } from "../device";
 
 function PortfolioCard({ portfolio }) {
-    const length = 25;
+    const length = 30;
 
     return (
         <SLink to={`/portfolio/${portfolio._id}`} state={{ portfolio }}>
@@ -25,7 +25,7 @@ function PortfolioCard({ portfolio }) {
             <h3>{portfolio?.rep.title}</h3>
             <p>
                 {portfolio.rep.description.length > length
-                    ? portfolio.rep.description.substring(0, 27) + "..."
+                    ? portfolio.rep.description.substring(0, 30) + "..."
                     : portfolio.rep.description}
             </p>
         </SLink>

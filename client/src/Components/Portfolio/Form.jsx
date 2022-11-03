@@ -221,7 +221,6 @@ const SForm = styled.form`
     flex-direction: column;
     gap: 10px;
     height: 100%;
-
     .box-container {
         display: flex;
         gap: 2px;
@@ -244,6 +243,9 @@ const SForm = styled.form`
         display: flex;
         flex-direction: column;
         gap: 2px;
+        textarea {
+            height: 150px;
+        }
         .plus {
             text-align: center;
             cursor: pointer;

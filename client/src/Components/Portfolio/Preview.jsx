@@ -231,12 +231,6 @@ function Preview() {
                                 onDragOver={(e) => {
                                     e.preventDefault();
                                 }}
-                                onDragEnter={(e) => {
-                                    // console.log("drag아이템온다");
-                                }}
-                                onDragLeave={(e) => {
-                                    // console.log("draG떠난다");
-                                }}
                                 onDrop={handleDrop}
                                 backgroundUrl={columnItem?.image?.url}
                                 columnWidth={columnItem?.width}
@@ -288,8 +282,10 @@ function Preview() {
                                         <FontAwesomeIcon icon={faEllipsis} />
                                     </OptionBtn>
                                 )}
-                                <h4>{columnItem?.text?.title}</h4>
-                                <p>{columnItem?.text?.description}</p>
+                                <div className="textWrapper">
+                                    <h4>{columnItem?.text?.title}</h4>
+                                    <p>{columnItem?.text?.description}</p>
+                                </div>
                                 <div className="ratioFont">
                                     {columnItem.columnShowRatio}
                                 </div>
@@ -413,7 +409,6 @@ const Column = styled.div`
     background-size: cover;
     background-color: white;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: grab;
@@ -452,13 +447,21 @@ const Column = styled.div`
         left: 0;
         font-size: 14px;
     }
-    h4 {
-        font-size: 12px;
-        font-weight: 700;
-    }
-    p {
-        font-size: 10px;
-        font-weight: 300;
+    .textWrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        h4 {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        p {
+            font-size: 10px;
+            text-align: center;
+            white-space: pre-wrap;
+            font-weight: 300;
+        }
     }
     .isRep {
         position: absolute;

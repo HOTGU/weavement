@@ -53,6 +53,7 @@ function FormContainer({ children, currentStep }) {
 const Container = styled.div`
     max-width: 1024px;
     margin: 0 auto;
+    margin-bottom: 20px;
 `;
 const Head = styled.div`
     display: flex;

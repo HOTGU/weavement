@@ -102,7 +102,7 @@ function AdminPortfolio() {
 
 const Container = styled.div`
     display: flex;
-    gap: 20px;
+    gap: 10px;
     input,
     textarea {
         border: 1px solid black;
@@ -118,10 +118,10 @@ const Container = styled.div`
     .row {
         margin-top: 10px;
         &:first-child {
-            width: 55%;
+            width: 45%;
         }
         &:last-child {
-            width: 45%;
+            width: 55%;
         }
     }
 `;
