@@ -14,7 +14,7 @@ const TextWrapper = styled.div`
     justify-content: center;
     align-items: center;
     h3 {
-        font-size: 25px;
+        font-size: 28px;
         font-weight: 500;
         margin-bottom: 20px;
         @media ${device.tablet} {
@@ -27,7 +27,7 @@ const TextWrapper = styled.div`
         }
     }
     p {
-        font-size: 15px;
+        font-size: 14px;
         line-height: 14px;
         font-weight: 300;
         white-space: pre-wrap;
