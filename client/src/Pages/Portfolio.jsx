@@ -90,6 +90,7 @@ const Container = styled.div`
     }
     @media ${device.mobile} {
         margin: 10px 0;
+        gap: 5px;
     }
 `;
 

@@ -39,7 +39,7 @@ export const upload = multer({
                             .resize({
                                 width: 1480,
                             })
-                            .webp({ quality: 70 })
+                            .webp({ quality: 85 })
                     );
                 },
             },
@@ -59,7 +59,7 @@ export const upload = multer({
                             .resize({
                                 width: 768,
                             })
-                            .webp({ quality: 70 })
+                            .webp({ quality: 85 })
                     );
                 },
             },
@@ -79,7 +79,7 @@ export const upload = multer({
                             .resize({
                                 width: 450,
                             })
-                            .webp({ quality: 70 })
+                            .webp({ quality: 85 })
                     );
                 },
             },

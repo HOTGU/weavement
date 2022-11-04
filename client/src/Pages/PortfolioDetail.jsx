@@ -96,6 +96,10 @@ const Container = styled.div`
     flex-wrap: wrap;
     margin: 40px auto;
     max-width: 1250px;
+    @media ${device.mobile} {
+        margin: 20px auto;
+        gap: 6px;
+    }
 `;
 
 const Column = styled.div`
@@ -105,10 +109,14 @@ const Column = styled.div`
             : `calc(${props.columnWidth} - 5px)`};
     aspect-ratio: ${(props) => (props.isTitle ? 3 : props.columnRatio)};
     @media ${device.tablet} {
-        aspect-ratio: ${(props) => (props.isTitle ? 2.4 : props.columnRatio)};
+        aspect-ratio: ${(props) => (props.isTitle ? 2.7 : props.columnRatio)};
     }
     @media ${device.mobile} {
-        aspect-ratio: ${(props) => (props.isTitle ? 2 : props.columnRatio)};
+        width: ${(props) =>
+            props.columnRatio === 5 / 3
+                ? props.columnWidth
+                : `calc(${props.columnWidth} - 3px)`};
+        aspect-ratio: ${(props) => (props.isTitle ? 2.5 : props.columnRatio)};
     }
     img {
         object-fit: cover;
