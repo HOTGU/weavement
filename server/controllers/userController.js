@@ -24,10 +24,10 @@ export const signin = async (req, res, next) => {
 
         req.session.user = otherInfo;
 
-        res.cookie("user", otherInfo, {
-            httpOnly: process.env.NODE_ENV === "production" ? true : false,
-            secure: true,
-        });
+        // res.cookie("user", otherInfo, {
+        //     httpOnly: process.env.NODE_ENV === "production" ? true : false,
+        //     secure: true,
+        // });
 
         return res.status(200).json({
             user: {
