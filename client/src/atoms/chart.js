@@ -3,7 +3,7 @@ import { filterContactApi } from "../api";
 
 export const filterYearAtom = atom({
     key: "filterYear",
-    default: { year: 2022 },
+    default: { year: new Date().getFullYear() },
 });
 
 export const chartSelectorTrigger = atom({

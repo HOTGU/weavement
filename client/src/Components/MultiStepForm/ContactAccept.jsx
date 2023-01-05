@@ -92,7 +92,7 @@ function ContactAccept({ previousStep, resetStep }) {
                 for (let i = 0; i < files.length; i++) {
                     const options = {
                         maxSizeMB: 3, // 허용하는 최대 사이즈 지정
-                        maxWidthOrHeight: 1920, // 허용하는 최대 width, height 값 지정
+                        maxWidthOrHeight: 1280, // 허용하는 최대 width, height 값 지정
                         useWebWorker: true, // webworker 사용 여부
                     };
                     const compressedBlob = await imageCompression(files[i].file, options);
@@ -118,7 +118,9 @@ function ContactAccept({ previousStep, resetStep }) {
             init();
         } catch (error) {
             console.log(error);
-            toast.error("뭔가 문제가 생겼습니다");
+            toast.error(
+                `오류가 발생하였습니다\n이메일이나 전화로 문의 바랍니다\n불편을 드려 죄송합니다 `
+            );
         }
         setLoading(false);
     };
