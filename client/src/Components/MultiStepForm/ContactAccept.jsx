@@ -93,17 +93,24 @@ function ContactAccept({ previousStep, resetStep }) {
                     const options = {
                         maxSizeMB: 3, // 허용하는 최대 사이즈 지정
                         maxWidthOrHeight: 1280, // 허용하는 최대 width, height 값 지정
-                        useWebWorker: true, // webworker 사용 여부
+                        useWebWorker: false, // webworker 사용 여부
                     };
-                    const compressedBlob = await imageCompression(files[i].file, options);
-                    const compressedFile = new File(
-                        [compressedBlob],
-                        `${compressedBlob.name}`,
-                        {
-                            type: compressedBlob.type,
-                        }
-                    );
-                    fd.append("images", compressedFile);
+                    if (files[i].file.type.includes("image")) {
+                        const compressedBlob = await imageCompression(
+                            files[i].file,
+                            options
+                        );
+                        const compressedFile = new File(
+                            [compressedBlob],
+                            `${compressedBlob.name}`,
+                            {
+                                type: compressedBlob.type,
+                            }
+                        );
+                        fd.append("images", compressedFile);
+                    } else {
+                        fd.append("images", files[i].file);
+                    }
                 }
             }
             fd.append("like", data.like);

@@ -197,6 +197,7 @@ function ContactInfo({ nextStep }) {
                                 name="images"
                                 ref={imgRef}
                                 hidden={true}
+                                accept="image/*, .pdf"
                                 onChange={handleFile}
                             />
                             <span className="column__explanation">

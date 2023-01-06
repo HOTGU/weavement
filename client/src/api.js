@@ -35,7 +35,12 @@ export const updateContactApi = (id, data) => axios.patch(`/contact/${id}`, data
 
 export const deleteContactApi = (id) => axios.delete(`/contact/${id}`);
 
-export const createContactApi = (data) => axios.post(`/contact`, data);
+export const createContactApi = (data) =>
+    axios.post(`/contact`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data; charset=UTF-8",
+        },
+    });
 
 // portfolio
 
