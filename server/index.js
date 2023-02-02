@@ -109,7 +109,7 @@ app.get("*", (req, res) => {
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
-    const errorMessage = err.message || "오류가 생겼습니다!";
+    const errorMessage = err.message || "서버 오류가 생겼습니다";
     return res.status(errorStatus).json({
         status: errorStatus,
         message: errorMessage,

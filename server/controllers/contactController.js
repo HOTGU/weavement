@@ -65,16 +65,20 @@ export const chartFilter = async (req, res, next) => {
 export const get = async (req, res, next) => {
     const { query } = req;
     try {
-        let filterQuery = {};
+        let filterQuery = {
+            createdAt: {
+                $gte: new Date(Date.UTC(Number(query.year), 0)),
+                $lt: new Date(Date.UTC(Number(query.year), 11)),
+            },
+        };
         if (query.state) filterQuery.state = query.state;
         if (query.company) filterQuery.clientCompany = { $regex: query.company };
         if (query.phone) filterQuery.clientPhone = { $regex: query.phone };
         if (query.month)
             filterQuery.createdAt = {
-                $gte: new Date(Date.UTC(2022, Number(query.month) - 1)),
-                $lt: new Date(Date.UTC(2022, Number(query.month))),
+                $gte: new Date(Date.UTC(Number(query.year), Number(query.month) - 1)),
+                $lt: new Date(Date.UTC(Number(query.year), Number(query.month))),
             };
-
         const contacts = await Contact.find(filterQuery).sort({ createdAt: -1 });
         return res.status(200).json(contacts);
     } catch (error) {

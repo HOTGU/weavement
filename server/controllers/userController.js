@@ -37,7 +37,6 @@ export const signin = async (req, res, next) => {
             },
         });
     } catch (error) {
-        console.log(error);
         next(error);
     }
 };
@@ -66,11 +65,6 @@ export const signup = async (req, res, next) => {
 
         return res.status(200).json({});
     } catch (error) {
-        console.log(error);
         next(error);
     }
-};
-
-export const get = async (req, res, next) => {
-    console.log(req.userId);
 };
