@@ -47,6 +47,10 @@ const FilterWrapper = styled.div`
 
 function ContactFilterHead({ setShow, excelData }) {
     const monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const yearArr = [];
+    for (let i = 2022; i <= new Date().getFullYear(); i++) {
+        yearArr.push(i);
+    }
     const [filterItem, setFilterItem] = useRecoilState(filterItemAtom);
     const [filterInput, setFilterInput] = useRecoilState(filterInputAtom);
     const reload = useResetRecoilState(contactListSelector);
@@ -105,6 +109,28 @@ function ContactFilterHead({ setShow, excelData }) {
                 </div>
             </div>
             <div className="item">
+                <select
+                    name="year"
+                    value={filterInput.year}
+                    onChange={(e) => {
+                        setFilterInput({
+                            ...filterInput,
+                            year: e.target.value,
+                        });
+                        setFilterItem({
+                            ...filterItem,
+                            year: e.target.value,
+                        });
+                    }}
+                >
+                    {yearArr.map((year, i) => {
+                        return (
+                            <option key={i} value={year}>
+                                {year}년
+                            </option>
+                        );
+                    })}
+                </select>
                 <select
                     name="month"
                     value={filterInput.month}

@@ -49,6 +49,24 @@ function AdminContact() {
                         </Modal>
                         {filterItem && (
                             <SearchText>
+                                {filterItem.year && (
+                                    <div>
+                                        <span>{filterItem.year}년</span>
+                                        <FontAwesomeIcon
+                                            icon={faTimesCircle}
+                                            onClick={() => {
+                                                setFilterItem({
+                                                    ...filterItem,
+                                                    year: new Date().getFullYear(),
+                                                });
+                                                setFilterInput({
+                                                    ...filterInput,
+                                                    year: new Date().getFullYear(),
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                )}
                                 {filterItem.month && (
                                     <div>
                                         <span>{filterItem.month}월</span>

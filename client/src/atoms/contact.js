@@ -8,6 +8,7 @@ export const filterItemAtom = atom({
         company: "",
         phone: "",
         month: undefined,
+        year: new Date().getFullYear(),
     },
 });
 
@@ -18,6 +19,7 @@ export const filterInputAtom = atom({
         company: "",
         phone: "",
         month: undefined,
+        year: new Date().getFullYear(),
     },
 });
 
