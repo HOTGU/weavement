@@ -52,7 +52,7 @@ function AdminContact() {
                                 {filterItem.year && (
                                     <div>
                                         <span>{filterItem.year}년</span>
-                                        <FontAwesomeIcon
+                                        {/* <FontAwesomeIcon
                                             icon={faTimesCircle}
                                             onClick={() => {
                                                 setFilterItem({
@@ -64,7 +64,7 @@ function AdminContact() {
                                                     year: new Date().getFullYear(),
                                                 });
                                             }}
-                                        />
+                                        /> */}
                                     </div>
                                 )}
                                 {filterItem.month && (
