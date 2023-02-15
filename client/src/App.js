@@ -1,6 +1,6 @@
 import styled, { ThemeProvider } from "styled-components";
 import { ToastContainer } from "react-toastify";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 import { GlobalStyles, myTheme } from "./styled";
@@ -56,6 +56,7 @@ function App() {
                                 />
                                 <Route path="/admin/project" element={<AdminContact />} />
                             </Route>
+                            <Route path="*" element={<Navigate to="/" replace />} />
                         </Routes>
                         <Footer />
                     </Wrapper>
